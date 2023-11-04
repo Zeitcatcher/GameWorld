@@ -56,15 +56,47 @@
 		D90A9F752AF7118900F0D405 /* GameWorld */ = {
 			isa = PBXGroup;
 			children = (
-				D90A9F762AF7118900F0D405 /* AppDelegate.swift */,
-				D90A9F782AF7118900F0D405 /* SceneDelegate.swift */,
-				D90A9F7A2AF7118900F0D405 /* ViewController.swift */,
-				D90A9F7C2AF7118900F0D405 /* Main.storyboard */,
-				D90A9F7F2AF7118B00F0D405 /* Assets.xcassets */,
-				D90A9F812AF7118B00F0D405 /* LaunchScreen.storyboard */,
-				D90A9F842AF7118B00F0D405 /* Info.plist */,
+				D90A9F8A2AF711B900F0D405 /* App */,
+				D90A9F8B2AF711C700F0D405 /* ViewControllers */,
+				D90A9F8C2AF711D600F0D405 /* Storyboards */,
+				D90A9F8D2AF711EC00F0D405 /* Resources */,
 			);
 			path = GameWorld;
+			sourceTree = "<group>";
+		};
+		D90A9F8A2AF711B900F0D405 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D90A9F762AF7118900F0D405 /* AppDelegate.swift */,
+				D90A9F782AF7118900F0D405 /* SceneDelegate.swift */,
+				D90A9F842AF7118B00F0D405 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D90A9F8B2AF711C700F0D405 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D90A9F7A2AF7118900F0D405 /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D90A9F8C2AF711D600F0D405 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				D90A9F7C2AF7118900F0D405 /* Main.storyboard */,
+				D90A9F812AF7118B00F0D405 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		D90A9F8D2AF711EC00F0D405 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D90A9F7F2AF7118B00F0D405 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,8 +330,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,9 +339,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.arseniy.GameWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -326,8 +361,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,9 +370,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.arseniy.GameWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
