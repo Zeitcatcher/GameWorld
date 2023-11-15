@@ -13,6 +13,7 @@
 		D90A9F7E2AF7118900F0D405 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90A9F7C2AF7118900F0D405 /* Main.storyboard */; };
 		D90A9F802AF7118B00F0D405 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D90A9F7F2AF7118B00F0D405 /* Assets.xcassets */; };
 		D90A9F832AF7118B00F0D405 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90A9F812AF7118B00F0D405 /* LaunchScreen.storyboard */; };
+		D90A9F8F2AF7158E00F0D405 /* PlatformCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90A9F8E2AF7158E00F0D405 /* PlatformCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D90A9F7F2AF7118B00F0D405 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D90A9F822AF7118B00F0D405 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D90A9F842AF7118B00F0D405 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D90A9F8E2AF7158E00F0D405 /* PlatformCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D90A9F7A2AF7118900F0D405 /* ViewController.swift */,
+				D90A9F8E2AF7158E00F0D405 /* PlatformCollectionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D90A9F7B2AF7118900F0D405 /* ViewController.swift in Sources */,
+				D90A9F8F2AF7158E00F0D405 /* PlatformCollectionViewController.swift in Sources */,
 				D90A9F772AF7118900F0D405 /* AppDelegate.swift in Sources */,
 				D90A9F792AF7118900F0D405 /* SceneDelegate.swift in Sources */,
 			);
@@ -326,7 +330,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NTDP5U69GA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GameWorld/Info.plist;
+				INFOPLIST_FILE = GameWorld/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -357,7 +361,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NTDP5U69GA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GameWorld/Info.plist;
+				INFOPLIST_FILE = GameWorld/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
