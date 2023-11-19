@@ -41,6 +41,19 @@ final class PlatformCollectionViewController: UIViewController {
         platformsCollectionViewController.delegate = self
         platformsCollectionViewController.dataSource = self
     }
+    
+    private func collectionViewLayoutSetup() {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        self.platformsCollectionViewController = collectionView
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -65,4 +78,7 @@ extension PlatformCollectionViewController:UICollectionViewDataSource {
 
 //MARK: - UICollectionViewDelegetaFlowLayout
 extension PlatformCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.size.width - 16, height: collectionView.bounds.size.height - 120)
+    }
 }

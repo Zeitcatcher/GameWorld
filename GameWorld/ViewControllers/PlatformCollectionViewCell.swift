@@ -22,6 +22,7 @@ final class PlatformCollectionViewCell: UICollectionViewCell {
         platformLabel.text = platform.name
         imageURL = URL(string: platform.backgroundImageUrl)
         platformImageView.layer.cornerRadius = 20
+//        setupViews()
     }
 }
 
@@ -50,4 +51,42 @@ extension PlatformCollectionViewCell {
             }
         }
     }
+    
+//    private func setupViews() {
+//        // Configure platformImageView
+//        platformImageView.contentMode = .scaleAspectFill
+//        platformImageView.clipsToBounds = true
+//        
+//        // Configure platformLabel
+//        platformLabel.font = UIFont.systemFont(ofSize: 20)
+//        platformLabel.textAlignment = .center
+//        platformLabel.numberOfLines = 0 // Allow multiple lines
+//        
+//        // Add platformImageView and platformLabel to the cell's contentView
+//        contentView.addSubview(platformImageView)
+//        contentView.addSubview(platformLabel)
+//        let label = UILabel()
+//        let imageView = UIImageView()
+//        
+//        // Define constraints
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        NSLayoutConstraint.activate([
+//            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+//            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
+//            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            imageView.bottomAnchor.constraint(equalTo: platformLabel.topAnchor, constant: -8),
+//        ])
+//        
+//        platformImageView = imageView
+//        
+//        NSLayoutConstraint.activate([
+//            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
+//            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+//        ])
+//        
+//        platformLabel = label
+//    }
 }
