@@ -1,13 +1,9 @@
 //
-//  Paltform.swift
+//  Platform.swift
 //  GameWorld
 //
 //  Created by Arseniy Oksenoyt on 11/18/23.
 //
-
-enum PlatformUrl: String {
-    case platform = "https://api.rawg.io/api/platforms?key=2bc11399a7354494b1b6d068b5a7506b"
-}
 
 struct Platform: Codable {
     let id: Int

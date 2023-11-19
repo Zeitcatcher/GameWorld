@@ -5,10 +5,6 @@
 //  Created by Arseniy Oksenoyt on 11/18/23.
 //
 
-enum GamesUrl: String {
-    case game = "https://api.rawg.io/api/games?key=2bc11399a7354494b1b6d068b5a7506b"
-}
-
 struct Game: Codable {
     let id: Int
     let name, released: String

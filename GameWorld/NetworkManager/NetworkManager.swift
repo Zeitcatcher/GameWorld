@@ -23,22 +23,22 @@ final class NetworkManager {
     private init() {}
     
     //дублирование кода, правильно ли? Или это делать через запрос из VC?
-    func fetchPlatforms(completion: @escaping(Result<Platform, NetworkError>) -> Void) {
-        fetch(Platform.self, from: JsonURL.platform.rawValue) { result in
+    func fetchPlatforms(completion: @escaping(Result<PlatformCollection, NetworkError>) -> Void) {
+        fetch(PlatformCollection.self, from: JsonURL.platform.rawValue) { result in
             switch result {
-            case .success(let photoCollection):
-                completion(.success(photoCollection))
+            case .success(let platformsCollection):
+                completion(.success(platformsCollection))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func fetchGames(completion: @escaping(Result<Platform, NetworkError>) -> Void) {
-        fetch(Platform.self, from: JsonURL.game.rawValue) { result in
+    func fetchGames(completion: @escaping(Result<Game, NetworkError>) -> Void) {
+        fetch(Game.self, from: JsonURL.game.rawValue) { result in
             switch result {
-            case .success(let photoCollection):
-                completion(.success(photoCollection))
+            case .success(let gamesCollection):
+                completion(.success(gamesCollection))
             case .failure(let error):
                 completion(.failure(error))
             }
