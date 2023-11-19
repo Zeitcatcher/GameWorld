@@ -7,8 +7,10 @@
 
 import UIKit
 
-class PlatformCollectionViewController: UIViewController {
+final class PlatformCollectionViewController: UIViewController {
 
+    @IBOutlet private weak var platformsCollectionViewController: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

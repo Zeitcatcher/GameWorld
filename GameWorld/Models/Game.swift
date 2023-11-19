@@ -6,7 +6,7 @@
 //
 
 enum GamesUrl: String {
-    case games = "https://api.rawg.io/api/games?key=2bc11399a7354494b1b6d068b5a7506b"
+    case game = "https://api.rawg.io/api/games?key=2bc11399a7354494b1b6d068b5a7506b"
 }
 
 struct Game: Codable {
