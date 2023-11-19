@@ -15,11 +15,12 @@ final class PlatformCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchPlatforms()
         setupCollectionView()
     }
     
     //MARK: - Private Methods
-    private func fetchPhotos() {
+    private func fetchPlatforms() {
         NetworkManager.shared.fetchPlatforms { [ weak self ] result in
             switch result {
             case .success(let platformsCollection):
@@ -27,6 +28,7 @@ final class PlatformCollectionViewController: UIViewController {
                 self?.platforms = platformsCollection.platforms
                 self?.platformsCollectionViewController.reloadData()
             case .failure(let error):
+                print("Error after Platforms fetch")
                 print(error)
             }
         }
