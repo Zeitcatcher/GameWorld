@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class PlatformCollectionViewController: UIViewController {
+final class PlatformViewController: UIViewController {
 
-    @IBOutlet private weak var platformsCollectionViewController: UICollectionView!
+    private var platformsCollectionView: UICollectionView!
     
     private var platforms: [Platform] = []
     
@@ -17,6 +17,7 @@ final class PlatformCollectionViewController: UIViewController {
         super.viewDidLoad()
         fetchPlatforms()
         setupCollectionView()
+        view.backgroundColor = .blue
     }
     
     //MARK: - Private Methods
@@ -26,7 +27,7 @@ final class PlatformCollectionViewController: UIViewController {
             case .success(let platformsCollection):
                 print("Platforms fetched succesfully")
                 self?.platforms = platformsCollection.platforms
-                self?.platformsCollectionViewController.reloadData()
+                self?.platformsCollectionView.reloadData()
             case .failure(let error):
                 print("Error after Platforms fetch")
                 print(error)
@@ -37,27 +38,32 @@ final class PlatformCollectionViewController: UIViewController {
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        platformsCollectionViewController.collectionViewLayout = layout
-        platformsCollectionViewController.delegate = self
-        platformsCollectionViewController.dataSource = self
+        platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        platformsCollectionView.register(PlatformCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
+        
+        platformsCollectionView.delegate = self
+        platformsCollectionView.dataSource = self
+        
+        view.addSubview(platformsCollectionView)
+        
+        setupCollectionViewConstraints()
     }
     
-    private func collectionViewLayoutSetup() {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupCollectionViewConstraints() {
+        platformsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
+            platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            platformsCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
+            platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
-        self.platformsCollectionViewController = collectionView
     }
 }
 
 // MARK: - UICollectionViewDataSource
-extension PlatformCollectionViewController:UICollectionViewDataSource {
+extension PlatformViewController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         platforms.count
     }
@@ -77,8 +83,16 @@ extension PlatformCollectionViewController:UICollectionViewDataSource {
 }
 
 //MARK: - UICollectionViewDelegetaFlowLayout
-extension PlatformCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension PlatformViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.size.width - 16, height: collectionView.bounds.size.height - 120)
+        return CGSize(width: collectionView.bounds.size.width - 48, height: collectionView.bounds.size.height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//    }
 }
