@@ -27,18 +27,18 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlatrormCell" id="b8p-pa-LnR">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="platformCell" id="b8p-pa-LnR" customClass="PlatformCollectionViewCell" customModule="GameWorld" customModuleProvider="target">
                                         <rect key="frame" x="24" y="0.0" width="253" height="475"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="aPZ-co-sRZ">
                                             <rect key="frame" x="0.0" y="0.0" width="253" height="475"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zAm-cQ-t9x">
-                                                    <rect key="frame" x="8" y="8" width="237" height="342"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zAm-cQ-t9x">
+                                                    <rect key="frame" x="3" y="0.0" width="250" height="438.66666666666669"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLb-mY-jbc">
-                                                    <rect key="frame" x="16" y="366" width="211" height="84"/>
+                                                    <rect key="frame" x="3" y="454.66666666666669" width="250" height="20.333333333333314"/>
                                                     <color key="backgroundColor" systemColor="systemCyanColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -46,23 +46,26 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="top" secondItem="zAm-cQ-t9x" secondAttribute="bottom" constant="16" id="ICF-dx-im4"/>
-                                                <constraint firstItem="zAm-cQ-t9x" firstAttribute="top" secondItem="aPZ-co-sRZ" secondAttribute="top" constant="8" id="Q30-f4-6RY"/>
-                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="width" secondItem="aPZ-co-sRZ" secondAttribute="width" multiplier="0.833992" id="ZbD-5t-DtK"/>
-                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="leading" secondItem="aPZ-co-sRZ" secondAttribute="leading" constant="16" id="cdO-mo-R2C"/>
-                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="height" secondItem="aPZ-co-sRZ" secondAttribute="height" multiplier="0.176842" id="fVT-Lg-DNg"/>
-                                                <constraint firstItem="zAm-cQ-t9x" firstAttribute="leading" secondItem="aPZ-co-sRZ" secondAttribute="leading" constant="8" id="iMj-IW-rWz"/>
-                                                <constraint firstItem="zAm-cQ-t9x" firstAttribute="height" secondItem="aPZ-co-sRZ" secondAttribute="height" multiplier="0.72" id="lZv-HW-Bey"/>
-                                                <constraint firstAttribute="trailing" secondItem="zAm-cQ-t9x" secondAttribute="trailing" constant="8" id="vic-Rr-AB2"/>
+                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="top" secondItem="zAm-cQ-t9x" secondAttribute="bottom" constant="16" id="6AW-1y-iAG"/>
+                                                <constraint firstAttribute="trailing" secondItem="rLb-mY-jbc" secondAttribute="trailing" id="9ET-AO-rWe"/>
+                                                <constraint firstAttribute="bottom" secondItem="rLb-mY-jbc" secondAttribute="bottom" id="G9h-Xv-9d2"/>
+                                                <constraint firstItem="zAm-cQ-t9x" firstAttribute="top" secondItem="aPZ-co-sRZ" secondAttribute="top" id="OIJ-dB-RHh"/>
+                                                <constraint firstAttribute="trailing" secondItem="zAm-cQ-t9x" secondAttribute="trailing" id="dfh-B5-LWM"/>
+                                                <constraint firstItem="rLb-mY-jbc" firstAttribute="leading" secondItem="aPZ-co-sRZ" secondAttribute="leading" constant="3" id="mYA-Y4-pzP"/>
+                                                <constraint firstItem="zAm-cQ-t9x" firstAttribute="leading" secondItem="aPZ-co-sRZ" secondAttribute="leading" constant="3" id="r57-IY-fVa"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="253" height="475"/>
+                                        <connections>
+                                            <outlet property="platformImageView" destination="zAm-cQ-t9x" id="7Re-aj-HyO"/>
+                                            <outlet property="platformLabel" destination="rLb-mY-jbc" id="Yfn-2j-nMn"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBrownColor"/>
                         <constraints>
                             <constraint firstItem="aM8-18-iRO" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.557512" id="BDU-vm-y30"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="aM8-18-iRO" secondAttribute="bottom" constant="32" id="HYX-Zn-eXm"/>
@@ -71,6 +74,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="RoU-ZG-OAh"/>
+                    <connections>
+                        <outlet property="platformsCollectionViewController" destination="aM8-18-iRO" id="hUT-QQ-eRm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -98,6 +104,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemCyanColor">
             <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
