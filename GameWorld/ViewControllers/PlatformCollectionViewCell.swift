@@ -8,8 +8,8 @@
 import UIKit
 
 final class PlatformCollectionViewCell: UICollectionViewCell {
-    @IBOutlet private weak var platformImageView: UIImageView!
-    @IBOutlet private weak var platformLabel: UILabel!
+    private var platformImageView = UIImageView()
+    private var platformLabel = UILabel()
     
     private var imageURL: URL? {
         didSet {
@@ -18,10 +18,22 @@ final class PlatformCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func configure(with platform: Platform) {
         platformLabel.text = platform.name
         imageURL = URL(string: platform.backgroundImageUrl)
         platformImageView.layer.cornerRadius = 20
+        platformLabel.backgroundColor = .gray
+        platformLabel.layer.cornerRadius = 20
+        platformLabel.clipsToBounds = true
 //        setupViews()
     }
 }
@@ -52,41 +64,29 @@ extension PlatformCollectionViewCell {
         }
     }
     
-//    private func setupViews() {
-//        // Configure platformImageView
-//        platformImageView.contentMode = .scaleAspectFill
-//        platformImageView.clipsToBounds = true
-//        
-//        // Configure platformLabel
-//        platformLabel.font = UIFont.systemFont(ofSize: 20)
-//        platformLabel.textAlignment = .center
-//        platformLabel.numberOfLines = 0 // Allow multiple lines
-//        
-//        // Add platformImageView and platformLabel to the cell's contentView
-//        contentView.addSubview(platformImageView)
-//        contentView.addSubview(platformLabel)
-//        let label = UILabel()
-//        let imageView = UIImageView()
-//        
-//        // Define constraints
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
-//            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            imageView.bottomAnchor.constraint(equalTo: platformLabel.topAnchor, constant: -8),
-//        ])
-//        
-//        platformImageView = imageView
-//        
-//        NSLayoutConstraint.activate([
-//            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
-//            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-//        ])
-//        
-//        platformLabel = label
-//    }
+    private func setupViews() {
+        platformImageView.contentMode = .scaleAspectFill
+        platformImageView.clipsToBounds = true
+        platformImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(platformImageView)
+
+        platformLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(platformLabel)
+
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            platformImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            platformImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            platformImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
+            platformImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+
+            platformLabel.topAnchor.constraint(equalTo: platformImageView.bottomAnchor),
+            platformLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            platformLabel.widthAnchor.constraint(equalTo: platformImageView.widthAnchor),
+            platformLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
 }
