@@ -10,6 +10,7 @@ import UIKit
 final class PlatformViewController: UIViewController {
 
     private var platformsCollectionView: UICollectionView!
+    private var filterButton: UIButton!
     
     private var platforms: [Platform] = []
     
@@ -17,7 +18,8 @@ final class PlatformViewController: UIViewController {
         super.viewDidLoad()
         fetchPlatforms()
         setupCollectionView()
-        view.backgroundColor = .blue
+        setupFilterButtons()
+        view.backgroundColor = .white
     }
     
     //MARK: - Private Methods
@@ -58,6 +60,28 @@ final class PlatformViewController: UIViewController {
             platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             platformsCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
             platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
+        ])
+    }
+    
+    private func setupFilterButtons() {
+        filterButton = UIButton(type: .system)
+        filterButton.backgroundColor = .red
+        filterButton.setTitle("Test", for: .normal)
+        filterButton.layer.cornerRadius = 5
+        filterButton.transform = CGAffineTransform(rotationAngle: .pi / -2)
+        
+        view.addSubview(filterButton)
+        setupFilterButtonConstraints()
+    }
+    
+    private func setupFilterButtonConstraints() {
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            filterButton.topAnchor.constraint(equalTo: platformsCollectionView.topAnchor, constant: 20),
+            filterButton.widthAnchor.constraint(equalToConstant: 64),
+            filterButton.heightAnchor.constraint(equalToConstant: 32)
         ])
     }
 }
