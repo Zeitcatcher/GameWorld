@@ -34,7 +34,6 @@ final class PlatformCollectionViewCell: UICollectionViewCell {
         platformLabel.backgroundColor = .gray
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
-//        setupViews()
     }
 }
 
@@ -52,10 +51,17 @@ extension PlatformCollectionViewCell {
     }
     
     private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
+        if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
+            print("Image from cache: ", url.lastPathComponent)
+            complition(.success(cachedImage))
+            return
+        }
+        
         NetworkManager.shared.fetchImage(from: url) { result in
             switch result {
             case .success(let imageData):
                 guard let uiImage = UIImage(data: imageData) else { return }
+                ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
                 print("Image from network: ", url.lastPathComponent)
                 complition(.success(uiImage))
             case .failure(let error):
