@@ -20,9 +20,7 @@ final class PlatformViewController: UIViewController {
     private var pcFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
     private var mobileFilterButton: UIButton!
-    
-    private var testFilterButton: UIButton!
-    
+        
     private var buttonStackView: UIStackView!
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
