@@ -14,13 +14,13 @@ enum PlatformType: Int {
 }
 
 final class PlatformViewController: UIViewController {
-
+    
     private var platformsCollectionView: UICollectionView!
     
     private var pcFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
     private var mobileFilterButton: UIButton!
-        
+    
     private var buttonStackView: UIStackView!
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
@@ -85,19 +85,23 @@ final class PlatformViewController: UIViewController {
         consoleFilterButton = createFilterButton(title: "Console", type: .console)
         mobileFilterButton = createFilterButton(title: "Mobile", type: .mobile)
         
+        setupButtonStack()
+    }
+    
+    private func setupButtonStack() {
         buttonStackView = UIStackView(arrangedSubviews: [pcFilterButton, consoleFilterButton, mobileFilterButton])
         buttonStackView.axis = .vertical
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
         buttonStackView.spacing = 20
         view.addSubview(buttonStackView)
-
+        
         setupButtonStackViewConstraints()
     }
     
     private func setupButtonStackViewConstraints() {
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
@@ -113,13 +117,13 @@ final class PlatformViewController: UIViewController {
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(filterPlatforms(_:)), for: .touchUpInside)
         button.tag = type.rawValue
-//        button.transform = CGAffineTransform(rotationAngle: .pi / -2)
+        //        button.transform = CGAffineTransform(rotationAngle: .pi / -2)
         return button
     }
     
     @objc private func filterPlatforms(_ sender: UIButton) {
         guard let type = PlatformType(rawValue: sender.tag) else { return }
-
+        
         switch type {
         case .pc:
             filteredPlatforms = platforms.filter { desktops.contains($0.name) }
@@ -128,7 +132,7 @@ final class PlatformViewController: UIViewController {
         case .mobile:
             filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name)}
         }
-
+        
         platformsCollectionView.reloadData()
     }
 }

@@ -52,7 +52,7 @@ extension PlatformCollectionViewCell {
     
     private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
         if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
-            print("Image from cache: ", url.lastPathComponent)
+            print("Image from cache: ", url)
             complition(.success(cachedImage))
             return
         }
@@ -62,7 +62,7 @@ extension PlatformCollectionViewCell {
             case .success(let imageData):
                 guard let uiImage = UIImage(data: imageData) else { return }
                 ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
-                print("Image from network: ", url.lastPathComponent)
+                print("Image from network: ", url)
                 complition(.success(uiImage))
             case .failure(let error):
                 print(error)
