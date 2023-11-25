@@ -128,12 +128,17 @@ final class PlatformViewController: UIViewController {
         case .pc:
             filteredPlatforms = platforms
         case .console:
-            filteredPlatforms = platforms.filter { mobile.contains($0.name) }
+            filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name)}
+            filteredPlatforms = platforms.filter { mobile.contains($0.name) }
         }
         
         platformsCollectionView.reloadData()
+        
+        if !filteredPlatforms.isEmpty {
+            let indexPath = IndexPath(item: 0, section: 0)
+        platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+        }
     }
 }
 
