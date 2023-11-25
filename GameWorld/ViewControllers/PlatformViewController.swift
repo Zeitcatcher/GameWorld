@@ -17,7 +17,7 @@ final class PlatformViewController: UIViewController {
     
     private var platformsCollectionView: UICollectionView!
     
-    private var pcFilterButton: UIButton!
+    private var desktopFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
     private var mobileFilterButton: UIButton!
     
@@ -81,15 +81,15 @@ final class PlatformViewController: UIViewController {
     }
     
     private func setupFilterButtons() {
-        pcFilterButton = createFilterButton(title: "PC", type: .pc)
-        consoleFilterButton = createFilterButton(title: "Console", type: .console)
+        desktopFilterButton = createFilterButton(title: "All", type: .pc)
         mobileFilterButton = createFilterButton(title: "Mobile", type: .mobile)
+        consoleFilterButton = createFilterButton(title: "Console", type: .console)
         
         setupButtonStack()
     }
     
     private func setupButtonStack() {
-        buttonStackView = UIStackView(arrangedSubviews: [pcFilterButton, consoleFilterButton, mobileFilterButton])
+        buttonStackView = UIStackView(arrangedSubviews: [desktopFilterButton, consoleFilterButton, mobileFilterButton])
         buttonStackView.axis = .vertical
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
@@ -126,7 +126,7 @@ final class PlatformViewController: UIViewController {
         
         switch type {
         case .pc:
-            filteredPlatforms = platforms.filter { desktops.contains($0.name) }
+            filteredPlatforms = platforms
         case .console:
             filteredPlatforms = platforms.filter { mobile.contains($0.name) }
         case .mobile:
