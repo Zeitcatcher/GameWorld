@@ -23,7 +23,7 @@ final class PlatformViewController: UIViewController {
     
     private var buttonStackView: UIStackView!
     
-    private let desktops: Set<String> = ["PCs", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
+    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
     
     private var platforms: [Platform] = []
