@@ -7,17 +7,37 @@
 
 import UIKit
 
-final class PlatformViewController: UIViewController {
+enum PlatformType: Int {
+    case all = 0
+    case pc = 1
+    case console = 2
+    case mobile = 3
+}
 
+final class PlatformViewController: UIViewController {
+    
     private var platformsCollectionView: UICollectionView!
     
+    private var allFilterButton: UIButton!
+    private var desktopFilterButton: UIButton!
+    private var consoleFilterButton: UIButton!
+    private var mobileFilterButton: UIButton!
+    
+    private var buttonStackView: UIStackView!
+    
+    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
+    private let mobile: Set<String> = ["iOS", "Android"]
+    
     private var platforms: [Platform] = []
+    private var filteredPlatforms: [Platform] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchPlatforms()
         setupCollectionView()
-        view.backgroundColor = .blue
+        setupFilterButtons()
+        
+        view.backgroundColor = .white
     }
     
     //MARK: - Private Methods
@@ -27,6 +47,7 @@ final class PlatformViewController: UIViewController {
             case .success(let platformsCollection):
                 print("Platforms fetched succesfully")
                 self?.platforms = platformsCollection.platforms
+                self?.filteredPlatforms = platformsCollection.platforms
                 self?.platformsCollectionView.reloadData()
             case .failure(let error):
                 print("Error after Platforms fetch")
@@ -60,12 +81,82 @@ final class PlatformViewController: UIViewController {
             platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
     }
-}
+    
+    private func setupFilterButtons() {
+        allFilterButton = createFilterButton(title: "All", type: .all)
+        desktopFilterButton = createFilterButton(title: "Desktop", type: .pc)
+        mobileFilterButton = createFilterButton(title: "Mobile", type: .mobile)
+        consoleFilterButton = createFilterButton(title: "Console", type: .console)
+        
+        setupButtonStack()
+    }
+    
+    private func setupButtonStack() {
+        buttonStackView = UIStackView(
+            arrangedSubviews: [
+                allFilterButton,
+                desktopFilterButton,
+                consoleFilterButton,
+                mobileFilterButton
+            ]
+        )
+        buttonStackView.axis = .vertical
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.alignment = .fill
+        buttonStackView.spacing = 20
+        view.addSubview(buttonStackView)
+        
+        setupButtonStackViewConstraints()
+    }
+    
+    private func setupButtonStackViewConstraints() {
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
+            buttonStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55),
+            buttonStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.13)
+        ])
+    }
+    
+    private func createFilterButton(title: String, type: PlatformType) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .red
+        button.setTitle(title, for: .normal)
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(filterPlatforms(_:)), for: .touchUpInside)
+        button.tag = type.rawValue
+        //        button.transform = CGAffineTransform(rotationAngle: .pi / -2)
+        return button
+    }
+    
+    @objc private func filterPlatforms(_ sender: UIButton) {
+        guard let type = PlatformType(rawValue: sender.tag) else { return }
+        
+        switch type {
+        case .all:
+            filteredPlatforms = platforms
+        case .pc:
+            filteredPlatforms = platforms.filter { desktops.contains($0.name) }
+        case .console:
+            filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
+        case .mobile:
+            filteredPlatforms = platforms.filter { mobile.contains($0.name) }
+        }
+        
+        platformsCollectionView.reloadData()
+        
+        if !filteredPlatforms.isEmpty {
+            let indexPath = IndexPath(item: 0, section: 0)
+        platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+        }
+    }
 
 // MARK: - UICollectionViewDataSource
 extension PlatformViewController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        platforms.count
+        filteredPlatforms.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,7 +168,7 @@ extension PlatformViewController:UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
-        cell.configure(with: platforms[indexPath.item])
+        cell.configure(with: filteredPlatforms[indexPath.item])
         return cell
     }
 }
