@@ -18,6 +18,7 @@ final class PlatformViewController: UIViewController {
     
     private var platformsCollectionView: UICollectionView!
     
+    private var headerLabel: UILabel!
     private var allFilterButton: UIButton!
     private var desktopFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
@@ -36,6 +37,7 @@ final class PlatformViewController: UIViewController {
         fetchPlatforms()
         setupCollectionView()
         setupFilterButtons()
+        setupHeaderLabel()
         
         view.backgroundColor = .white
     }
@@ -152,6 +154,27 @@ final class PlatformViewController: UIViewController {
         platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         }
     }
+    
+    private func setupHeaderLabel() {
+        headerLabel = UILabel()
+        headerLabel.text = "Explore the Games"
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 48)
+        headerLabel.numberOfLines = 2
+        
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(headerLabel)
+        
+        NSLayoutConstraint.activate([
+            headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            headerLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
+            headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            headerLabel.heightAnchor.constraint(equalToConstant: 128)
+        ])
+    }
+}
+
+
 
 // MARK: - UICollectionViewDataSource
 extension PlatformViewController:UICollectionViewDataSource {
