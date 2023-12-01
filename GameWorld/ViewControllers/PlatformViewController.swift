@@ -8,15 +8,17 @@
 import UIKit
 
 enum PlatformType: Int {
-    case pc = 0
-    case console = 1
-    case mobile = 2
+    case all = 0
+    case pc = 1
+    case console = 2
+    case mobile = 3
 }
 
 final class PlatformViewController: UIViewController {
     
     private var platformsCollectionView: UICollectionView!
     
+    private var allFilterButton: UIButton!
     private var desktopFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
     private var mobileFilterButton: UIButton!
@@ -81,7 +83,8 @@ final class PlatformViewController: UIViewController {
     }
     
     private func setupFilterButtons() {
-        desktopFilterButton = createFilterButton(title: "All", type: .pc)
+        allFilterButton = createFilterButton(title: "All", type: .all)
+        desktopFilterButton = createFilterButton(title: "Desktop", type: .pc)
         mobileFilterButton = createFilterButton(title: "Mobile", type: .mobile)
         consoleFilterButton = createFilterButton(title: "Console", type: .console)
         
@@ -89,7 +92,7 @@ final class PlatformViewController: UIViewController {
     }
     
     private func setupButtonStack() {
-        buttonStackView = UIStackView(arrangedSubviews: [desktopFilterButton, consoleFilterButton, mobileFilterButton])
+        buttonStackView = UIStackView(arrangedSubviews: [allFilterButton, desktopFilterButton, consoleFilterButton, mobileFilterButton])
         buttonStackView.axis = .vertical
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
@@ -125,8 +128,10 @@ final class PlatformViewController: UIViewController {
         guard let type = PlatformType(rawValue: sender.tag) else { return }
         
         switch type {
-        case .pc:
+        case .all:
             filteredPlatforms = platforms
+        case .pc:
+            filteredPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
             filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
