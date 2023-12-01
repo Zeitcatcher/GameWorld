@@ -92,7 +92,14 @@ final class PlatformViewController: UIViewController {
     }
     
     private func setupButtonStack() {
-        buttonStackView = UIStackView(arrangedSubviews: [allFilterButton, desktopFilterButton, consoleFilterButton, mobileFilterButton])
+        buttonStackView = UIStackView(
+            arrangedSubviews: [
+                allFilterButton,
+                desktopFilterButton,
+                consoleFilterButton,
+                mobileFilterButton
+            ]
+        )
         buttonStackView.axis = .vertical
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
@@ -145,7 +152,6 @@ final class PlatformViewController: UIViewController {
         platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         }
     }
-}
 
 // MARK: - UICollectionViewDataSource
 extension PlatformViewController:UICollectionViewDataSource {
