@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PlatformCollectionViewCell: UICollectionViewCell {
+final class PlatformsCollectionViewCell: UICollectionViewCell {
     private var platformImageView = UIImageView()
     private var platformLabel = UILabel()
     
@@ -37,7 +37,7 @@ final class PlatformCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension PlatformCollectionViewCell {
+extension PlatformsCollectionViewCell {
     private func updateImage() {
         guard let imageURL = imageURL else { return }
         getImage(from: imageURL) { [weak self ] result in

@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PlatformViewControllerDelegate {
+    func didSelectPlatform(name: [Platform])
+}
+
 enum PlatformType: Int {
     case all = 0
     case pc = 1
@@ -26,6 +30,8 @@ final class PlatformViewController: UIViewController {
     
     private var buttonStackView: UIStackView!
     
+    var delegate: PlatformViewControllerDelegate?
+    
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
     
@@ -34,15 +40,19 @@ final class PlatformViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+    }
+    
+    //MARK: - Private Methods
+    private func setupUI() {
         fetchPlatforms()
-        setupCollectionView()
+        setupPlatformsCollectionView()
         setupFilterButtons()
         setupHeaderLabel()
         
         view.backgroundColor = .white
     }
     
-    //MARK: - Private Methods
     private func fetchPlatforms() {
         NetworkManager.shared.fetchPlatforms { [ weak self ] result in
             switch result {
@@ -58,22 +68,22 @@ final class PlatformViewController: UIViewController {
         }
     }
     
-    private func setupCollectionView() {
+    private func setupPlatformsCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        platformsCollectionView.register(PlatformCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
+        platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        platformsCollectionView.register(PlatformsCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
         
         platformsCollectionView.delegate = self
         platformsCollectionView.dataSource = self
         
         view.addSubview(platformsCollectionView)
         
-        setupCollectionViewConstraints()
+        setupPlatformsCollectionViewConstraints()
     }
     
-    private func setupCollectionViewConstraints() {
+    private func setupPlatformsCollectionViewConstraints() {
         platformsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -177,7 +187,7 @@ final class PlatformViewController: UIViewController {
 
 
 // MARK: - UICollectionViewDataSource
-extension PlatformViewController:UICollectionViewDataSource {
+extension PlatformViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         filteredPlatforms.count
     }
@@ -187,7 +197,7 @@ extension PlatformViewController:UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "platformCell",
                 for: indexPath
-            ) as? PlatformCollectionViewCell
+            ) as? PlatformsCollectionViewCell
         else {
             return UICollectionViewCell()
         }
