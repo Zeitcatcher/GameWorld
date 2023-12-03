@@ -22,7 +22,6 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    //дублирование кода, правильно ли? Или это делать через запрос из VC?
     func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
         fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
             switch result {

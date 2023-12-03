@@ -11,10 +11,14 @@ final class GamesByPlatformViewController: UIViewController {
 
     private var gamesCollectionView: UICollectionView!
     
-    private var fileredGames: [Game]!
+    private var selectedGames: [Game]!
+    private var selectedPlatform: String!
+    
+    let platformsVC = PlatformViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        platformsVC.delegate = self
     }
     
     //MARK: - Private methods
@@ -39,19 +43,34 @@ final class GamesByPlatformViewController: UIViewController {
             gamesCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
     }
+    
+    private func fetchGames() {
+        NetworkManager.shared.fetchGames { [ weak self] result in
+            switch result {
+            case .success(let selectedGames):
+                print("Games fetched succesfully")
+                self?.selectedGames = selectedGames.games
+                self?.gamesCollectionView.reloadData()
+            case .failure(let error):
+                print("Error after Platforms fetch")
+                print(error)
+            }
+        }
+    }
 }
 
 //MARK: - Extension
-//extension GamesByPlatformViewController: PlatformViewControllerDelegate {
-//    func didSelectPlatform(name: [Platform]) {
-//        0
-//    }
-//}
+extension GamesByPlatformViewController: PlatformViewControllerDelegate {
+    func didSelectPlatform(with name: String, and games: [Game]) {
+        selectedGames = games
+        selectedPlatform = name
+    }
+}
 
 //MARK: - UICollectionViewDataSource
 extension GamesByPlatformViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        fileredGames.count
+        selectedGames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -63,7 +82,7 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
-        cell.configure(with: fileredGames[indexPath.item])
+        cell.configure(with: selectedGames[indexPath.item])
         return cell
     }
 }

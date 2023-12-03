@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol PlatformViewControllerDelegate {
-    func didSelectPlatform(name: [Platform])
+protocol PlatformViewControllerDelegate: AnyObject {
+    func didSelectPlatform(with name: String, and games: [Game])
 }
 
 enum PlatformType: Int {
@@ -20,20 +20,21 @@ enum PlatformType: Int {
 
 final class PlatformViewController: UIViewController {
     
+    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
+    private let mobile: Set<String> = ["iOS", "Android"]
+    
+    weak var delegate: PlatformViewControllerDelegate?
+    
     private var platformsCollectionView: UICollectionView!
     
     private var headerLabel: UILabel!
+    
     private var allFilterButton: UIButton!
     private var desktopFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
     private var mobileFilterButton: UIButton!
     
     private var buttonStackView: UIStackView!
-    
-    var delegate: PlatformViewControllerDelegate?
-    
-    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
-    private let mobile: Set<String> = ["iOS", "Android"]
     
     private var platforms: [Platform] = []
     private var filteredPlatforms: [Platform] = []
@@ -214,5 +215,13 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension PlatformViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPlatform = filteredPlatforms[indexPath.item]
+        delegate?.didSelectPlatform(with: selectedPlatform.name, and: selectedPlatform.games)
     }
 }
