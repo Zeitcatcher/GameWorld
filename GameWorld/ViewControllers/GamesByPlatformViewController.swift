@@ -11,18 +11,24 @@ final class GamesByPlatformViewController: UIViewController {
 
     private var gamesCollectionView: UICollectionView!
     
-    private var selectedGames: [Game]!
-    private var selectedPlatform: String!
+    private var selectedGames: [Game] = []
+    private var selectedPlatform: String = ""
     
     let platformsVC = PlatformViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         platformsVC.delegate = self
+//        fetchGames()
+        setupGamesCollectionView()
     }
     
     //MARK: - Private methods
     private func setupGamesCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        gamesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         gamesCollectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
         
         gamesCollectionView.dataSource = self
@@ -44,26 +50,28 @@ final class GamesByPlatformViewController: UIViewController {
         ])
     }
     
-    private func fetchGames() {
-        NetworkManager.shared.fetchGames { [ weak self] result in
-            switch result {
-            case .success(let selectedGames):
-                print("Games fetched succesfully")
-                self?.selectedGames = selectedGames.games
-                self?.gamesCollectionView.reloadData()
-            case .failure(let error):
-                print("Error after Platforms fetch")
-                print(error)
-            }
-        }
-    }
+//    private func fetchGames() {
+//        NetworkManager.shared.fetchGames { [ weak self ] result in
+//            switch result {
+//            case .success(let selectedGames):
+//                print("Games fetched succesfully")
+//                self?.selectedGames = selectedGames.games
+//                self?.gamesCollectionView.reloadData()
+//            case .failure(let error):
+//                print("Error with Games fetching")
+//                print(error)
+//            }
+//        }
+//    }
 }
 
-//MARK: - Extension
+//MARK: - PlatformViewControllerDelegate
 extension GamesByPlatformViewController: PlatformViewControllerDelegate {
     func didSelectPlatform(with name: String, and games: [Game]) {
+        print("didSelectPlatform performed")
         selectedGames = games
         selectedPlatform = name
+        gamesCollectionView.reloadData()
     }
 }
 

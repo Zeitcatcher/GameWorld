@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol PlatformViewControllerDelegate: AnyObject {
+protocol PlatformViewControllerDelegate/*: AnyObject*/ {
     func didSelectPlatform(with name: String, and games: [Game])
 }
 
@@ -23,7 +23,7 @@ final class PlatformViewController: UIViewController {
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
     
-    weak var delegate: PlatformViewControllerDelegate?
+    /*weak */var delegate: PlatformViewControllerDelegate?
     
     private var platformsCollectionView: UICollectionView!
     
@@ -75,7 +75,6 @@ final class PlatformViewController: UIViewController {
         
         platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         platformsCollectionView.register(PlatformsCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
-        
         platformsCollectionView.delegate = self
         platformsCollectionView.dataSource = self
         
@@ -162,7 +161,7 @@ final class PlatformViewController: UIViewController {
         
         if !filteredPlatforms.isEmpty {
             let indexPath = IndexPath(item: 0, section: 0)
-        platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+            platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         }
     }
     
@@ -221,7 +220,19 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - UICollectionViewDelegate
 extension PlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Navigation Controller: \(String(describing: navigationController))")
         let selectedPlatform = filteredPlatforms[indexPath.item]
         delegate?.didSelectPlatform(with: selectedPlatform.name, and: selectedPlatform.games)
+        print("didSelectPlatform performed")
+        
+        let gamesVC = GamesByPlatformViewController()
+
+        // Debugging: Print the navigation controller
+        if let navController = navigationController {
+            print("Pushing GamesByPlatformViewController onto the navigation stack")
+            navController.pushViewController(gamesVC, animated: true)
+        } else {
+            print("Navigation controller not found")
+        }
     }
 }
