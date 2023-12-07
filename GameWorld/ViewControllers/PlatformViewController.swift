@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol PlatformViewControllerDelegate/*: AnyObject*/ {
-    func didSelectPlatform(with name: String, and games: [Game])
-}
-
 enum PlatformType: Int {
     case all = 0
     case pc = 1
@@ -22,9 +18,7 @@ final class PlatformViewController: UIViewController {
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
-    
-    /*weak */var delegate: PlatformViewControllerDelegate?
-    
+        
     private var platformsCollectionView: UICollectionView!
     
     private var headerLabel: UILabel!
@@ -221,11 +215,11 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
 extension PlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
-        let selectedPlatform = filteredPlatforms[indexPath.item]
-        delegate?.didSelectPlatform(with: selectedPlatform.name, and: selectedPlatform.games)
-        print("didSelectPlatform performed")
-        
         let gamesVC = GamesByPlatformViewController()
+        gamesVC.selectedGames = filteredPlatforms[indexPath.item].games
+        gamesVC.selectedPlatform = filteredPlatforms[indexPath.item].name
+        print("didSelectPlatform on PlatformsVC performed")
+        
 
         // Debugging: Print the navigation controller
         if let navController = navigationController {

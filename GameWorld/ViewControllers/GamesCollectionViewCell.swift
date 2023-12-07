@@ -43,9 +43,11 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         getImage(from: imageURL) { result in
             switch result {
             case .success(let image):
+                print("Image received GamesVC Cell")
                 self.gameImageView.image = image
             case .failure(let error):
                 print(error)
+                print("Image not received GamesVC Cell")
             }
         }
         
@@ -87,13 +89,13 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
-            gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
+            gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.35),
 
             gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
             gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameLabel.widthAnchor.constraint(equalTo: gameImageView.widthAnchor),
-            gameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            gameLabel.heightAnchor.constraint(equalToConstant: 35)
         ])
     }
 }

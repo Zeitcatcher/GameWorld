@@ -11,15 +11,13 @@ final class GamesByPlatformViewController: UIViewController {
 
     private var gamesCollectionView: UICollectionView!
     
-    private var selectedGames: [Game] = []
-    private var selectedPlatform: String = ""
-    
-    let platformsVC = PlatformViewController()
+    var selectedGames: [Game] = []
+    var selectedPlatform: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        platformsVC.delegate = self
-//        fetchGames()
+        fetchGames()
+        print("GameVC loaded")
         setupGamesCollectionView()
     }
     
@@ -43,35 +41,25 @@ final class GamesByPlatformViewController: UIViewController {
         gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            gamesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
             gamesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            gamesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
-            gamesCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
+            gamesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
-//    private func fetchGames() {
-//        NetworkManager.shared.fetchGames { [ weak self ] result in
-//            switch result {
-//            case .success(let selectedGames):
-//                print("Games fetched succesfully")
-//                self?.selectedGames = selectedGames.games
-//                self?.gamesCollectionView.reloadData()
-//            case .failure(let error):
-//                print("Error with Games fetching")
-//                print(error)
-//            }
-//        }
-//    }
-}
-
-//MARK: - PlatformViewControllerDelegate
-extension GamesByPlatformViewController: PlatformViewControllerDelegate {
-    func didSelectPlatform(with name: String, and games: [Game]) {
-        print("didSelectPlatform performed")
-        selectedGames = games
-        selectedPlatform = name
-        gamesCollectionView.reloadData()
+    private func fetchGames() {
+        NetworkManager.shared.fetchGames { [ weak self ] result in
+            switch result {
+            case .success(let selectedGames):
+                print("Games fetched succesfully")
+                self?.selectedGames = selectedGames.games
+                self?.gamesCollectionView.reloadData()
+            case .failure(let error):
+                print("Error with Games fetching")
+                print(error)
+            }
+        }
     }
 }
 
@@ -91,6 +79,7 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: selectedGames[indexPath.item])
+        print(selectedGames[indexPath.item])
         return cell
     }
 }

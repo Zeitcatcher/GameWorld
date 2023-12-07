@@ -42,6 +42,7 @@ final class NetworkManager {
                 completion(.success(filteredCollection))
             case .failure(let error):
                 completion(.failure(error))
+                print("Error fetching Games in NetworkManager")
             }
         }
     }
