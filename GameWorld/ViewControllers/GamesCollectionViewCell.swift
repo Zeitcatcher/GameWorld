@@ -55,7 +55,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     
     private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
         if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
-            print("Image from cache: ", url)
+            print("Image from cache: ", url.lastPathComponent)
             complition(.success(cachedImage))
             return
         }
@@ -65,7 +65,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
             case .success(let imageData):
                 guard let uiImage = UIImage(data: imageData) else { return }
                 ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
-                print("Image from network: ", url)
+                print("Image from network: ", url.lastPathComponent)
                 complition(.success(uiImage))
             case .failure(let error):
                 print(error)
@@ -74,7 +74,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        gameImageView.contentMode = .scaleToFill
+        gameImageView.contentMode = .scaleAspectFill
         gameImageView.clipsToBounds = true
         gameImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(gameImageView)

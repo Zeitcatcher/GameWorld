@@ -11,7 +11,7 @@ final class GamesByPlatformViewController: UIViewController {
 
     private var gamesCollectionView: UICollectionView!
     
-    var selectedGames: [Game] = []
+    var allGames: [Game] = []
     var selectedPlatform: String!
     
     override func viewDidLoad() {
@@ -53,7 +53,7 @@ final class GamesByPlatformViewController: UIViewController {
             switch result {
             case .success(let selectedGames):
                 print("Games fetched succesfully")
-                self?.selectedGames = selectedGames.games
+                self?.allGames = selectedGames.games
                 self?.gamesCollectionView.reloadData()
             case .failure(let error):
                 print("Error with Games fetching")
@@ -66,7 +66,9 @@ final class GamesByPlatformViewController: UIViewController {
 //MARK: - UICollectionViewDataSource
 extension GamesByPlatformViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        selectedGames.count
+        
+        print("GameByPlatformVC allGames.count = \(allGames.count)")
+        return allGames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -78,8 +80,8 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
-        cell.configure(with: selectedGames[indexPath.item])
-        print(selectedGames[indexPath.item])
+        cell.configure(with: allGames[indexPath.item])
+//        print(allGames[indexPath.item])
         return cell
     }
 }

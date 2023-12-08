@@ -57,10 +57,10 @@ final class NetworkManager {
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             // Вывод всего Json для поиска ошибки
-            if let data = data {
-                let responseString = String(data: data, encoding: .utf8)
-                print("Response String: \(responseString ?? "nil")")
-            }
+//            if let data = data {
+//                let responseString = String(data: data, encoding: .utf8)
+//                print("Response String: \(responseString ?? "nil")")
+//            }
             
             guard let data = data else {
                 complition(.failure(.noData))

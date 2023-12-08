@@ -247,7 +247,7 @@ extension PlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
         let gamesVC = GamesByPlatformViewController()
-        gamesVC.selectedGames = games
+        gamesVC.allGames = games
         gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
         print("didSelectPlatform on PlatformsVC performed")
         
