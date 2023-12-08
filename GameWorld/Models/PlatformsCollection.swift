@@ -6,9 +6,9 @@
 //
 
 struct PlatformsCollection: Codable {
-    let platforms: [Platform]
+    let platform: Platform
     
-    enum CodingKeys: String, CodingKey {
-        case platforms = "results"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case platforms = "results"
+//    }
 }

@@ -15,7 +15,7 @@ struct Game: Codable {
 //    let metacritic, playtime: Int
 //    let updated: String
 //    let reviewsCount: Int
-    let platforms: [Platform]?
+    let platforms: [PlatformsCollection]?
 //    let genres: [Genre]
 //    let stores: [Store]
 //    let esrbRating: EsrbRating

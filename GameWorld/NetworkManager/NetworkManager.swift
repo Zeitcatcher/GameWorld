@@ -22,16 +22,16 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
-        fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
-            switch result {
-            case .success(let platformsCollection):
-                completion(.success(platformsCollection))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
+//        fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
+//            switch result {
+//            case .success(let platformsCollection):
+//                completion(.success(platformsCollection))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
     func fetchGames(completion: @escaping(Result<GamesCollection, NetworkError>) -> Void) {
         fetch(GamesCollection.self, from: JsonURL.game.rawValue) { result in
@@ -39,6 +39,7 @@ final class NetworkManager {
             case .success(let gamesCollection):
                 let filteredGames = gamesCollection.games.filter { $0.platforms != nil && $0.backgroundImage != nil}
                 let filteredCollection = GamesCollection(games: filteredGames)
+                print("Games fetched successfuly in NetworkManager")
                 completion(.success(filteredCollection))
             case .failure(let error):
                 completion(.failure(error))
@@ -55,11 +56,11 @@ final class NetworkManager {
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-// Вывод всего Json для поиска ошибки
-//            if let data = data {
-//                let responseString = String(data: data, encoding: .utf8)
-//                print("Response String: \(responseString ?? "nil")")
-//            }
+            // Вывод всего Json для поиска ошибки
+            if let data = data {
+                let responseString = String(data: data, encoding: .utf8)
+                print("Response String: \(responseString ?? "nil")")
+            }
             
             guard let data = data else {
                 complition(.failure(.noData))
