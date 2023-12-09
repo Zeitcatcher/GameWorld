@@ -29,7 +29,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     
     func configure(with game: Game) {
         gameLabel.text = game.name
-        gameLabel.layer.cornerRadius = 10
+        gameLabel.layer.cornerRadius = 5
         gameLabel.backgroundColor = .gray
         gameLabel.clipsToBounds = true
         
@@ -74,13 +74,13 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
+        contentView.addSubview(gameLabel)
+        gameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         gameImageView.contentMode = .scaleAspectFill
         gameImageView.clipsToBounds = true
         gameImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(gameImageView)
-        
-        gameLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(gameLabel)
         
         setupConstraints()
     }
@@ -89,13 +89,13 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
-            gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.35),
+            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -8),
+            gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -2),
 
             gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
             gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameLabel.widthAnchor.constraint(equalTo: gameImageView.widthAnchor),
-            gameLabel.heightAnchor.constraint(equalToConstant: 35)
+            gameLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
 }

@@ -89,7 +89,15 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegetaFlowLayout
 extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.size.width - 48, height: collectionView.bounds.size.height)
+//        let numberOfCellsPerRow: CGFloat = 2 // Change this to 4 if you want four columns
+//               let spacing: CGFloat = 20 // Assuming 20 points for spacing, adjust as needed
+//               let totalSpacing = (numberOfCellsPerRow - 1) * spacing // Amount of total spacing in a row
+//
+//               let width = (collectionView.bounds.width - totalSpacing) / numberOfCellsPerRow
+//               let height = width // Adjust height as per your requirement
+//               return CGSize(width: width, height: height)
+        return CGSize(width: collectionView.bounds.size.width / 2 - 16, height: collectionView.bounds.size.height / 2 - 16)
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
