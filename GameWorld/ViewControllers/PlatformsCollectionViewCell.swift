@@ -31,7 +31,9 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         platformLabel.text = platform.name
         imageURL = URL(string: platform.backgroundImageUrl)
         platformImageView.layer.cornerRadius = 20
-        platformLabel.backgroundColor = .gray
+        platformLabel.backgroundColor = .white
+        platformLabel.font = UIFont.systemFont(ofSize: 20)
+        platformLabel.textAlignment = .center
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
     }

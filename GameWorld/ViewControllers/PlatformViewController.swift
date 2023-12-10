@@ -101,7 +101,7 @@ final class PlatformViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             platformsCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
             platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
@@ -202,9 +202,9 @@ final class PlatformViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            headerLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
+            headerLabel.bottomAnchor.constraint(equalTo: platformsCollectionView.topAnchor, constant: -32),
             headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
-            headerLabel.heightAnchor.constraint(equalToConstant: 128)
+            headerLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15)
         ])
     }
 }
