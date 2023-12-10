@@ -30,7 +30,6 @@ final class PlatformViewController: UIViewController {
     
     private var buttonStackView: UIStackView!
     
-//    private var platforms: [Platform] = []
     private var games: [Game] = []
     private var filteredPlatforms: Set<Platform> = []
     private var selectedPlatforms: [Platform] = []
@@ -42,7 +41,6 @@ final class PlatformViewController: UIViewController {
     
     //MARK: - Private Methods
     private func setupUI() {
-//        fetchPlatforms()
         fetchGames()
         setupPlatformsCollectionView()
         setupFilterButtons()
@@ -66,21 +64,6 @@ final class PlatformViewController: UIViewController {
             }
         }
     }
-    
-//    private func fetchPlatforms() {
-//        NetworkManager.shared.fetchPlatforms { [ weak self ] result in
-//            switch result {
-//            case .success(let platformsCollection):
-//                print("Platforms fetched succesfully")
-//                self?.platforms = platformsCollection.platforms
-//                self?.filteredPlatforms = platformsCollection.platforms
-//                self?.platformsCollectionView.reloadData()
-//            case .failure(let error):
-//                print("Error after Platforms fetch")
-//                print(error)
-//            }
-//        }
-//    }
     
     private func setupPlatformsCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -164,18 +147,13 @@ final class PlatformViewController: UIViewController {
         case .all:
             selectedPlatforms = platforms
         case .pc:
-//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { mobile.contains($0.name) }
         }
-        
-//        self.filterPlatrorms()
-        
+                
         platformsCollectionView.reloadData()
         
         if !filteredPlatforms.isEmpty {

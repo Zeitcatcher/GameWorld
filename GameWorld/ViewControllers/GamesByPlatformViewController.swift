@@ -19,7 +19,6 @@ final class GamesByPlatformViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .yellow
-//        fetchGames()
         print("GameVC loaded")
         setupGamesCollectionView()
         setupSelectedPlatformLabel()
@@ -31,7 +30,7 @@ final class GamesByPlatformViewController: UIViewController {
         sortingButton = UIButton()
         sortingButton.titleLabel?.numberOfLines = 2
         sortingButton.backgroundColor = .gray
-        sortingButton.setTitle("Sort By:", for: .normal)
+        sortingButton.setTitle("Sort the list", for: .normal)
         sortingButton.addTarget(self, action: #selector(sortGames(_:)), for: .touchUpInside)
         
         sortingButton.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +46,14 @@ final class GamesByPlatformViewController: UIViewController {
     }
     
     @objc private func sortGames(_ sender: UIButton) {
-        allGames.sort { $0.name < $1.name }
+        if sortingButton.titleLabel?.text == "Sort By: ↓" {
+            sortingButton.setTitle("Sort By: ↑", for: .normal)
+            allGames.sort { $0.name > $1.name }
+        } else {
+            allGames.sort { $0.name < $1.name }
+            sortingButton.setTitle("Sort By: ↓", for: .normal)
+        }
+        
         gamesCollectionView.reloadData()
     }
     
@@ -95,26 +101,11 @@ final class GamesByPlatformViewController: UIViewController {
             gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
         ])
     }
-    
-//    private func fetchGames() {
-//        NetworkManager.shared.fetchGames { [ weak self ] result in
-//            switch result {
-//            case .success(let selectedGames):
-//                print("Games fetched succesfully")
-//                self?.allGames = selectedGames.games.filter { $0.name == self?.selectedPlatform }
-//                self?.gamesCollectionView.reloadData()
-//            case .failure(let error):
-//                print("Error with Games fetching")
-//                print(error)
-//            }
-//        }
-//    }
 }
 
 //MARK: - UICollectionViewDataSource
 extension GamesByPlatformViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         print("GameByPlatformVC allGames.count = \(allGames.count)")
         return allGames.count
     }
@@ -137,7 +128,6 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
 extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.size.width / 2 - 16, height: collectionView.bounds.size.height / 2 - 16)
-
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
