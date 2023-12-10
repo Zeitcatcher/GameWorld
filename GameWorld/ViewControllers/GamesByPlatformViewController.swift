@@ -31,7 +31,7 @@ final class GamesByPlatformViewController: UIViewController {
         sortingButton = UIButton()
         sortingButton.titleLabel?.numberOfLines = 2
         sortingButton.backgroundColor = .gray
-        sortingButton.setTitle("Sort By", for: .normal)
+        sortingButton.setTitle("Sort By:", for: .normal)
         
         sortingButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -139,3 +139,5 @@ extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
         return 20
     }
 }
+
+let sda = Int.random(in: 10...23)
