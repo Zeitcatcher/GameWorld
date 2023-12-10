@@ -46,15 +46,16 @@ final class GamesByPlatformViewController: UIViewController {
     }
     
     @objc private func sortGames(_ sender: UIButton) {
-        if sortingButton.titleLabel?.text == "Sort By: ↓" {
-            sortingButton.setTitle("Sort By: ↑", for: .normal)
-            allGames.sort { $0.name > $1.name }
-        } else {
-            allGames.sort { $0.name < $1.name }
-            sortingButton.setTitle("Sort By: ↓", for: .normal)
-        }
-        
+        let isAscending = sortingButton.title(for: .normal) == "Sort By: ↓"
+        allGames.sort { isAscending ? $0.name > $1.name : $0.name < $1.name }
+        sortingButton.setTitle(isAscending ? "Sort By: ↑" : "Sort By: ↓", for: .normal)
+
         gamesCollectionView.reloadData()
+
+        if !allGames.isEmpty {
+            let indexPath = IndexPath(item: 0, section: 0)
+            gamesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        }
     }
     
     private func setupSelectedPlatformLabel() {
