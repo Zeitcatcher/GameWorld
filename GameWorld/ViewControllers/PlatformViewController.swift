@@ -158,20 +158,23 @@ final class PlatformViewController: UIViewController {
     
     @objc private func filterPlatforms(_ sender: UIButton) {
         guard let type = PlatformType(rawValue: sender.tag) else { return }
+        let platforms = filteredPlatforms.sorted { $0.name < $1.name }
         
         switch type {
         case .all:
-            selectedPlatforms = filteredPlatforms.sorted { $0.name < $1.name }
+            selectedPlatforms = platforms
         case .pc:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+//            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { mobile.contains($0.name) }
         }
+        
+//        self.filterPlatrorms()
         
         platformsCollectionView.reloadData()
         
@@ -247,7 +250,15 @@ extension PlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
         let gamesVC = GamesByPlatformViewController()
-        gamesVC.allGames = games
+        print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
+        gamesVC.allGames = games.filter {
+            $0.platforms?.contains(where: {
+                $0.platform.name == selectedPlatforms[indexPath.item].name
+            }) ?? false
+        }
+        gamesVC.allGames.forEach { game in
+            print("transfered games are: \(game.name)")
+        }
         gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
         print("didSelectPlatform on PlatformsVC performed")
         

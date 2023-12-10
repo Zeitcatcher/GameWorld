@@ -19,7 +19,7 @@ final class GamesByPlatformViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .yellow
-        fetchGames()
+//        fetchGames()
         print("GameVC loaded")
         setupGamesCollectionView()
         setupSelectedPlatformLabel()
@@ -32,6 +32,7 @@ final class GamesByPlatformViewController: UIViewController {
         sortingButton.titleLabel?.numberOfLines = 2
         sortingButton.backgroundColor = .gray
         sortingButton.setTitle("Sort By:", for: .normal)
+        sortingButton.addTarget(self, action: #selector(sortGames(_:)), for: .touchUpInside)
         
         sortingButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -43,7 +44,11 @@ final class GamesByPlatformViewController: UIViewController {
             sortingButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
             sortingButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1)
         ])
-        
+    }
+    
+    @objc private func sortGames(_ sender: UIButton) {
+        allGames.sort { $0.name < $1.name }
+        gamesCollectionView.reloadData()
     }
     
     private func setupSelectedPlatformLabel() {
@@ -91,19 +96,19 @@ final class GamesByPlatformViewController: UIViewController {
         ])
     }
     
-    private func fetchGames() {
-        NetworkManager.shared.fetchGames { [ weak self ] result in
-            switch result {
-            case .success(let selectedGames):
-                print("Games fetched succesfully")
-                self?.allGames = selectedGames.games
-                self?.gamesCollectionView.reloadData()
-            case .failure(let error):
-                print("Error with Games fetching")
-                print(error)
-            }
-        }
-    }
+//    private func fetchGames() {
+//        NetworkManager.shared.fetchGames { [ weak self ] result in
+//            switch result {
+//            case .success(let selectedGames):
+//                print("Games fetched succesfully")
+//                self?.allGames = selectedGames.games.filter { $0.name == self?.selectedPlatform }
+//                self?.gamesCollectionView.reloadData()
+//            case .failure(let error):
+//                print("Error with Games fetching")
+//                print(error)
+//            }
+//        }
+//    }
 }
 
 //MARK: - UICollectionViewDataSource
@@ -139,5 +144,3 @@ extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
         return 20
     }
 }
-
-let sda = Int.random(in: 10...23)
