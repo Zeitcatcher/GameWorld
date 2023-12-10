@@ -8,7 +8,7 @@
 import UIKit
 
 final class GamesByPlatformViewController: UIViewController {
-
+    
     private var gamesCollectionView: UICollectionView!
     private var selectedPlatformLabel: UILabel!
     private var sortingButton: UIButton!
@@ -49,9 +49,9 @@ final class GamesByPlatformViewController: UIViewController {
         let isAscending = sortingButton.title(for: .normal) == "Sort By: ↓"
         allGames.sort { isAscending ? $0.name > $1.name : $0.name < $1.name }
         sortingButton.setTitle(isAscending ? "Sort By: ↑" : "Sort By: ↓", for: .normal)
-
+        
         gamesCollectionView.reloadData()
-
+        
         if !allGames.isEmpty {
             let indexPath = IndexPath(item: 0, section: 0)
             gamesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
