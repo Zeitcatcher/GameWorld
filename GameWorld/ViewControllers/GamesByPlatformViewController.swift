@@ -10,18 +10,61 @@ import UIKit
 final class GamesByPlatformViewController: UIViewController {
 
     private var gamesCollectionView: UICollectionView!
+    private var selectedPlatformLabel: UILabel!
+    private var sortingButton: UIButton!
     
     var allGames: [Game] = []
     var selectedPlatform: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .yellow
         fetchGames()
         print("GameVC loaded")
         setupGamesCollectionView()
+        setupSelectedPlatformLabel()
+        setupSortingButton()
     }
     
     //MARK: - Private methods
+    private func setupSortingButton() {
+        sortingButton = UIButton()
+        sortingButton.titleLabel?.numberOfLines = 2
+        sortingButton.backgroundColor = .gray
+        sortingButton.setTitle("Sort By", for: .normal)
+        
+        sortingButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(sortingButton)
+        
+        NSLayoutConstraint.activate([
+            sortingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            sortingButton.bottomAnchor.constraint(equalTo: gamesCollectionView.topAnchor, constant: -32),
+            sortingButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
+            sortingButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1)
+        ])
+        
+    }
+    
+    private func setupSelectedPlatformLabel() {
+        selectedPlatformLabel = UILabel()
+        selectedPlatformLabel.text = selectedPlatform
+        selectedPlatformLabel.font = UIFont.boldSystemFont(ofSize: 32)
+        selectedPlatformLabel.numberOfLines = 2
+        selectedPlatformLabel.backgroundColor = .green
+        
+        selectedPlatformLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(selectedPlatformLabel)
+        
+        NSLayoutConstraint.activate([
+            selectedPlatformLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            selectedPlatformLabel.bottomAnchor.constraint(equalTo: gamesCollectionView.topAnchor, constant: -32),
+            selectedPlatformLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            selectedPlatformLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.10)
+        ])
+    }
+    
     private func setupGamesCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -41,10 +84,10 @@ final class GamesByPlatformViewController: UIViewController {
         gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            gamesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
+            gamesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 256),
             gamesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            gamesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            gamesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
         ])
     }
     
@@ -81,7 +124,6 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: allGames[indexPath.item])
-//        print(allGames[indexPath.item])
         return cell
     }
 }
@@ -89,13 +131,6 @@ extension GamesByPlatformViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegetaFlowLayout
 extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let numberOfCellsPerRow: CGFloat = 2 // Change this to 4 if you want four columns
-//               let spacing: CGFloat = 20 // Assuming 20 points for spacing, adjust as needed
-//               let totalSpacing = (numberOfCellsPerRow - 1) * spacing // Amount of total spacing in a row
-//
-//               let width = (collectionView.bounds.width - totalSpacing) / numberOfCellsPerRow
-//               let height = width // Adjust height as per your requirement
-//               return CGSize(width: width, height: height)
         return CGSize(width: collectionView.bounds.size.width / 2 - 16, height: collectionView.bounds.size.height / 2 - 16)
 
     }
