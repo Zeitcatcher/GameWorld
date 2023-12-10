@@ -16,9 +16,13 @@ enum PlatformType: Int {
 
 final class PlatformViewController: UIViewController {
     
+    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
+    private let mobile: Set<String> = ["iOS", "Android"]
+        
     private var platformsCollectionView: UICollectionView!
     
     private var headerLabel: UILabel!
+    
     private var allFilterButton: UIButton!
     private var desktopFilterButton: UIButton!
     private var consoleFilterButton: UIButton!
@@ -26,59 +30,78 @@ final class PlatformViewController: UIViewController {
     
     private var buttonStackView: UIStackView!
     
-    private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
-    private let mobile: Set<String> = ["iOS", "Android"]
-    
-    private var platforms: [Platform] = []
-    private var filteredPlatforms: [Platform] = []
+//    private var platforms: [Platform] = []
+    private var games: [Game] = []
+    private var filteredPlatforms: Set<Platform> = []
+    private var selectedPlatforms: [Platform] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchPlatforms()
-        setupCollectionView()
+        setupUI()
+    }
+    
+    //MARK: - Private Methods
+    private func setupUI() {
+//        fetchPlatforms()
+        fetchGames()
+        setupPlatformsCollectionView()
         setupFilterButtons()
         setupHeaderLabel()
         
         view.backgroundColor = .white
     }
     
-    //MARK: - Private Methods
-    private func fetchPlatforms() {
-        NetworkManager.shared.fetchPlatforms { [ weak self ] result in
+    private func fetchGames() {
+        print("Starting fetching games in PlatformVC")
+        NetworkManager.shared.fetchGames { [ weak self ] result in
             switch result {
-            case .success(let platformsCollection):
-                print("Platforms fetched succesfully")
-                self?.platforms = platformsCollection.platforms
-                self?.filteredPlatforms = platformsCollection.platforms
+            case .success(let gamesCollection):
+                print("Games fetched succesfully")
+                self?.games = gamesCollection.games
+                self?.filterPlatrorms()
                 self?.platformsCollectionView.reloadData()
             case .failure(let error):
-                print("Error after Platforms fetch")
+                print("Error after Games fetch")
                 print(error)
             }
         }
     }
     
-    private func setupCollectionView() {
+//    private func fetchPlatforms() {
+//        NetworkManager.shared.fetchPlatforms { [ weak self ] result in
+//            switch result {
+//            case .success(let platformsCollection):
+//                print("Platforms fetched succesfully")
+//                self?.platforms = platformsCollection.platforms
+//                self?.filteredPlatforms = platformsCollection.platforms
+//                self?.platformsCollectionView.reloadData()
+//            case .failure(let error):
+//                print("Error after Platforms fetch")
+//                print(error)
+//            }
+//        }
+//    }
+    
+    private func setupPlatformsCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        
         platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        platformsCollectionView.register(PlatformCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
-        
+        platformsCollectionView.register(PlatformsCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
         platformsCollectionView.delegate = self
         platformsCollectionView.dataSource = self
         
         view.addSubview(platformsCollectionView)
         
-        setupCollectionViewConstraints()
+        setupPlatformsCollectionViewConstraints()
     }
     
-    private func setupCollectionViewConstraints() {
+    private func setupPlatformsCollectionViewConstraints() {
         platformsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             platformsCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
             platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
@@ -138,21 +161,33 @@ final class PlatformViewController: UIViewController {
         
         switch type {
         case .all:
-            filteredPlatforms = platforms
+            selectedPlatforms = filteredPlatforms.sorted { $0.name < $1.name }
         case .pc:
-            filteredPlatforms = platforms.filter { desktops.contains($0.name) }
+            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+            selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-            filteredPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
+            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+            selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            filteredPlatforms = platforms.filter { mobile.contains($0.name) }
+            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
+            selectedPlatforms = platforms.filter { mobile.contains($0.name) }
         }
         
         platformsCollectionView.reloadData()
         
         if !filteredPlatforms.isEmpty {
             let indexPath = IndexPath(item: 0, section: 0)
-        platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+            platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         }
+    }
+    
+    private func filterPlatrorms() {
+        games.forEach { game in
+            game.platforms?.forEach({ platform in
+                filteredPlatforms.insert(platform.platform)
+            })
+        }
+        selectedPlatforms = filteredPlatforms.sorted { $0.name < $1.name }
     }
     
     private func setupHeaderLabel() {
@@ -167,9 +202,9 @@ final class PlatformViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            headerLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 128),
+            headerLabel.bottomAnchor.constraint(equalTo: platformsCollectionView.topAnchor, constant: -32),
             headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
-            headerLabel.heightAnchor.constraint(equalToConstant: 128)
+            headerLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15)
         ])
     }
 }
@@ -177,9 +212,9 @@ final class PlatformViewController: UIViewController {
 
 
 // MARK: - UICollectionViewDataSource
-extension PlatformViewController:UICollectionViewDataSource {
+extension PlatformViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        filteredPlatforms.count
+        selectedPlatforms.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -187,11 +222,11 @@ extension PlatformViewController:UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "platformCell",
                 for: indexPath
-            ) as? PlatformCollectionViewCell
+            ) as? PlatformsCollectionViewCell
         else {
             return UICollectionViewCell()
         }
-        cell.configure(with: filteredPlatforms[indexPath.item])
+        cell.configure(with: selectedPlatforms[indexPath.item])
         return cell
     }
 }
@@ -204,5 +239,25 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension PlatformViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Navigation Controller: \(String(describing: navigationController))")
+        let gamesVC = GamesByPlatformViewController()
+        gamesVC.allGames = games
+        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
+        print("didSelectPlatform on PlatformsVC performed")
+        
+
+        // Debugging: Print the navigation controller
+        if let navController = navigationController {
+            print("Pushing GamesByPlatformViewController onto the navigation stack")
+            navController.pushViewController(gamesVC, animated: true)
+        } else {
+            print("Navigation controller not found")
+        }
     }
 }

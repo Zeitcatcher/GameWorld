@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PlatformCollectionViewCell: UICollectionViewCell {
+final class PlatformsCollectionViewCell: UICollectionViewCell {
     private var platformImageView = UIImageView()
     private var platformLabel = UILabel()
     
@@ -31,13 +31,15 @@ final class PlatformCollectionViewCell: UICollectionViewCell {
         platformLabel.text = platform.name
         imageURL = URL(string: platform.backgroundImageUrl)
         platformImageView.layer.cornerRadius = 20
-        platformLabel.backgroundColor = .gray
+        platformLabel.backgroundColor = .white
+        platformLabel.font = UIFont.systemFont(ofSize: 20)
+        platformLabel.textAlignment = .center
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
     }
 }
 
-extension PlatformCollectionViewCell {
+extension PlatformsCollectionViewCell {
     private func updateImage() {
         guard let imageURL = imageURL else { return }
         getImage(from: imageURL) { [weak self ] result in

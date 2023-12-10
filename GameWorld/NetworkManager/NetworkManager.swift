@@ -22,25 +22,28 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    //дублирование кода, правильно ли? Или это делать через запрос из VC?
-    func fetchPlatforms(completion: @escaping(Result<PlatformCollection, NetworkError>) -> Void) {
-        fetch(PlatformCollection.self, from: JsonURL.platform.rawValue) { result in
-            switch result {
-            case .success(let platformsCollection):
-                completion(.success(platformsCollection))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
+//        fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
+//            switch result {
+//            case .success(let platformsCollection):
+//                completion(.success(platformsCollection))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
-    func fetchGames(completion: @escaping(Result<Game, NetworkError>) -> Void) {
-        fetch(Game.self, from: JsonURL.game.rawValue) { result in
+    func fetchGames(completion: @escaping(Result<GamesCollection, NetworkError>) -> Void) {
+        fetch(GamesCollection.self, from: JsonURL.game.rawValue) { result in
             switch result {
             case .success(let gamesCollection):
-                completion(.success(gamesCollection))
+                let filteredGames = gamesCollection.games.filter { $0.platforms != nil && $0.backgroundImage != nil}
+                let filteredCollection = GamesCollection(games: filteredGames)
+                print("Games fetched successfuly in NetworkManager")
+                completion(.success(filteredCollection))
             case .failure(let error):
                 completion(.failure(error))
+                print("Error fetching Games in NetworkManager")
             }
         }
     }
@@ -52,7 +55,13 @@ final class NetworkManager {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { (data, _, error) in
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            // Вывод всего Json для поиска ошибки
+//            if let data = data {
+//                let responseString = String(data: data, encoding: .utf8)
+//                print("Response String: \(responseString ?? "nil")")
+//            }
+            
             guard let data = data else {
                 complition(.failure(.noData))
                 print(error?.localizedDescription ?? "No error description")
