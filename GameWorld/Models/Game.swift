@@ -7,7 +7,8 @@
 
 struct Game: Codable {
 //    let id: Int
-    let name/*, released*/: String
+    let name: String
+    let released: String
     let backgroundImage: String?
 //    let rating: Double
 //    let ratingTop: Int
@@ -22,7 +23,7 @@ struct Game: Codable {
 //    let shortScreenshots: [ShortScreenshot]
 
     enum CodingKeys: String, CodingKey {
-        case /*id,*/ name/*, released*/
+        case /*id,*/ name, released
         case backgroundImage = "background_image"
 //        case rating
 //        case ratingTop = "rating_top"

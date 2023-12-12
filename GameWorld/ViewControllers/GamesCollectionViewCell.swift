@@ -28,11 +28,17 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with game: Game) {
-        gameLabel.text = game.name
+        gameLabel.numberOfLines = 2
+        gameLabel.text =
+            """
+            \(game.name)
+            \(game.released)
+            """
         gameLabel.layer.cornerRadius = 5
         gameLabel.backgroundColor = .white
         gameLabel.textAlignment = .center
         gameLabel.clipsToBounds = true
+        gameLabel.font = UIFont.systemFont(ofSize: 16)
         
         imageURL = URL(string: game.backgroundImage ?? "")
         
@@ -90,13 +96,13 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -16),
+            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40),
             gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -2),
 
             gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
             gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameLabel.widthAnchor.constraint(equalTo: gameImageView.widthAnchor),
-            gameLabel.heightAnchor.constraint(equalToConstant: 20)
+            gameLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }

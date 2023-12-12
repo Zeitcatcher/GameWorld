@@ -14,7 +14,7 @@ enum PlatformType: Int {
     case mobile = 3
 }
 
-final class PlatformViewController: UIViewController {
+final class PlatformsViewController: UIViewController {
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
@@ -30,7 +30,6 @@ final class PlatformViewController: UIViewController {
     
     private var buttonStackView: UIStackView!
     
-//    private var platforms: [Platform] = []
     private var games: [Game] = []
     private var filteredPlatforms: Set<Platform> = []
     private var selectedPlatforms: [Platform] = []
@@ -42,7 +41,6 @@ final class PlatformViewController: UIViewController {
     
     //MARK: - Private Methods
     private func setupUI() {
-//        fetchPlatforms()
         fetchGames()
         setupPlatformsCollectionView()
         setupFilterButtons()
@@ -66,21 +64,6 @@ final class PlatformViewController: UIViewController {
             }
         }
     }
-    
-//    private func fetchPlatforms() {
-//        NetworkManager.shared.fetchPlatforms { [ weak self ] result in
-//            switch result {
-//            case .success(let platformsCollection):
-//                print("Platforms fetched succesfully")
-//                self?.platforms = platformsCollection.platforms
-//                self?.filteredPlatforms = platformsCollection.platforms
-//                self?.platformsCollectionView.reloadData()
-//            case .failure(let error):
-//                print("Error after Platforms fetch")
-//                print(error)
-//            }
-//        }
-//    }
     
     private func setupPlatformsCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -158,21 +141,19 @@ final class PlatformViewController: UIViewController {
     
     @objc private func filterPlatforms(_ sender: UIButton) {
         guard let type = PlatformType(rawValue: sender.tag) else { return }
+        let platforms = filteredPlatforms.sorted { $0.name < $1.name }
         
         switch type {
         case .all:
-            selectedPlatforms = filteredPlatforms.sorted { $0.name < $1.name }
+            selectedPlatforms = platforms
         case .pc:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            let platforms = filteredPlatforms.sorted { $0.name < $1.name }
             selectedPlatforms = platforms.filter { mobile.contains($0.name) }
         }
-        
+                
         platformsCollectionView.reloadData()
         
         if !filteredPlatforms.isEmpty {
@@ -212,7 +193,7 @@ final class PlatformViewController: UIViewController {
 
 
 // MARK: - UICollectionViewDataSource
-extension PlatformViewController: UICollectionViewDataSource {
+extension PlatformsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         selectedPlatforms.count
     }
@@ -232,7 +213,7 @@ extension PlatformViewController: UICollectionViewDataSource {
 }
 
 //MARK: - UICollectionViewDelegetaFlowLayout
-extension PlatformViewController: UICollectionViewDelegateFlowLayout {
+extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.size.width - 48, height: collectionView.bounds.size.height)
     }
@@ -243,11 +224,19 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: - UICollectionViewDelegate
-extension PlatformViewController: UICollectionViewDelegate {
+extension PlatformsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
         let gamesVC = GamesByPlatformViewController()
-        gamesVC.allGames = games
+        print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
+        gamesVC.allGames = games.filter {
+            $0.platforms?.contains(where: {
+                $0.platform.name == selectedPlatforms[indexPath.item].name
+            }) ?? false
+        }
+        gamesVC.allGames.forEach { game in
+            print("transfered games are: \(game.name)")
+        }
         gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
         print("didSelectPlatform on PlatformsVC performed")
         

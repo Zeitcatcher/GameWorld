@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let platformViewController = PlatformViewController()
+        let platformViewController = PlatformsViewController()
         let navigationController = UINavigationController(rootViewController: platformViewController)
         
         window.rootViewController = navigationController
