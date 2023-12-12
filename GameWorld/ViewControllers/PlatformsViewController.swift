@@ -14,7 +14,7 @@ enum PlatformType: Int {
     case mobile = 3
 }
 
-final class PlatformViewController: UIViewController {
+final class PlatformsViewController: UIViewController {
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]
@@ -193,7 +193,7 @@ final class PlatformViewController: UIViewController {
 
 
 // MARK: - UICollectionViewDataSource
-extension PlatformViewController: UICollectionViewDataSource {
+extension PlatformsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         selectedPlatforms.count
     }
@@ -213,7 +213,7 @@ extension PlatformViewController: UICollectionViewDataSource {
 }
 
 //MARK: - UICollectionViewDelegetaFlowLayout
-extension PlatformViewController: UICollectionViewDelegateFlowLayout {
+extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.size.width - 48, height: collectionView.bounds.size.height)
     }
@@ -224,7 +224,7 @@ extension PlatformViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: - UICollectionViewDelegate
-extension PlatformViewController: UICollectionViewDelegate {
+extension PlatformsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
         let gamesVC = GamesByPlatformViewController()
