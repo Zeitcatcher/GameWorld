@@ -57,7 +57,6 @@ final class GamesCollectionViewCell: UICollectionViewCell {
                 print("Image not received GamesVC Cell")
             }
         }
-        
     }
     
     private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
