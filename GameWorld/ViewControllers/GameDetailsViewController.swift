@@ -24,7 +24,6 @@ class GameDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageURL = URL(string: game.backgroundImage ?? "")
         setupUI()
     }
     
@@ -36,6 +35,8 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsImageView() {
+        imageURL = URL(string: game.backgroundImage ?? "")
+
         screenshotsImageView.contentMode = .scaleAspectFill
         screenshotsImageView.clipsToBounds = true
         screenshotsImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,9 +67,14 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupDescriptionTextView() {
-        descriptionTextView.font = UIFont.systemFont(ofSize: 40)
-        descriptionTextView.text = "123 test test test"
-        descriptionTextView.textContainer.maximumNumberOfLines = 2
+        descriptionTextView.font = UIFont.systemFont(ofSize: 20)
+        descriptionTextView.text =
+        """
+        Name: \(game.name)
+        Release date: \(game.released)
+        Test test
+        """
+        descriptionTextView.isEditable = false
         descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(descriptionTextView)
