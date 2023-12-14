@@ -10,8 +10,8 @@ import UIKit
 final class GamesByPlatformViewController: UIViewController {
     
     private var gamesCollectionView: UICollectionView!
-    private var selectedPlatformLabel: UILabel!
-    private var sortingButton: UIButton!
+    private var selectedPlatformLabel = UILabel()
+    private var sortingButton = UIButton()
     
     var allGames: [Game] = []
     var selectedPlatform: String!
@@ -27,7 +27,6 @@ final class GamesByPlatformViewController: UIViewController {
     
     //MARK: - Private methods
     private func setupSortingButton() {
-        sortingButton = UIButton()
         sortingButton.titleLabel?.numberOfLines = 2
         sortingButton.backgroundColor = .gray
         sortingButton.setTitle("Sort the list", for: .normal)
@@ -59,7 +58,6 @@ final class GamesByPlatformViewController: UIViewController {
     }
     
     private func setupSelectedPlatformLabel() {
-        selectedPlatformLabel = UILabel()
         selectedPlatformLabel.text = selectedPlatform
         selectedPlatformLabel.font = UIFont.boldSystemFont(ofSize: 32)
         selectedPlatformLabel.numberOfLines = 2
@@ -133,5 +131,21 @@ extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension GamesByPlatformViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailsVC = GameDetailsViewController()
+        detailsVC.game = allGames[indexPath.item]
+        
+        if let navController = navigationController {
+            //            print("Pushing GameDetailsViewController onto the navigation stack")
+            navController.pushViewController(detailsVC, animated: true)
+        }
+//        } else {
+//            print("Navigation controller not found")
+//        }
     }
 }

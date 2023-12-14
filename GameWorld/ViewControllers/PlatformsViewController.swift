@@ -21,7 +21,7 @@ final class PlatformsViewController: UIViewController {
         
     private var platformsCollectionView: UICollectionView!
     
-    private var headerLabel: UILabel!
+    private var headerLabel = UILabel()
     
     private var allFilterButton: UIButton!
     private var desktopFilterButton: UIButton!
@@ -172,7 +172,6 @@ final class PlatformsViewController: UIViewController {
     }
     
     private func setupHeaderLabel() {
-        headerLabel = UILabel()
         headerLabel.text = "Explore the Games"
         headerLabel.font = UIFont.boldSystemFont(ofSize: 48)
         headerLabel.numberOfLines = 2
@@ -234,19 +233,20 @@ extension PlatformsViewController: UICollectionViewDelegate {
                 $0.platform.name == selectedPlatforms[indexPath.item].name
             }) ?? false
         }
-        gamesVC.allGames.forEach { game in
-            print("transfered games are: \(game.name)")
-        }
+//        gamesVC.allGames.forEach { game in
+//            print("transfered games are: \(game.name)")
+//        }
         gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
-        print("didSelectPlatform on PlatformsVC performed")
+//        print("didSelectPlatform on PlatformsVC performed")
         
 
         // Debugging: Print the navigation controller
         if let navController = navigationController {
-            print("Pushing GamesByPlatformViewController onto the navigation stack")
+            //            print("Pushing GamesByPlatformViewController onto the navigation stack")
             navController.pushViewController(gamesVC, animated: true)
-        } else {
-            print("Navigation controller not found")
         }
+//        } else {
+//            print("Navigation controller not found")
+//        }
     }
 }

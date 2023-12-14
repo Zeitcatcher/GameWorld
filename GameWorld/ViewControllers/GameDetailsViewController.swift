@@ -9,9 +9,11 @@ import UIKit
 
 class GameDetailsViewController: UIViewController {
     
-    private var screenshotsImageView: UIImageView!
-    private var backgroundView: UIView!
-    private var descriptionTextView: UITextView!
+    private var screenshotsImageView = UIImageView()
+    private var backgroundView = UIView()
+    private var descriptionTextView = UITextView()
+    
+    var game: Game!
     
     private var imageURL: URL? {
         didSet {
@@ -22,6 +24,7 @@ class GameDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageURL = URL(string: game.backgroundImage ?? "")
         setupUI()
     }
     
@@ -33,15 +36,49 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsImageView() {
+        screenshotsImageView.contentMode = .scaleAspectFill
+        screenshotsImageView.clipsToBounds = true
+        screenshotsImageView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(screenshotsImageView)
+        
+        NSLayoutConstraint.activate([
+            screenshotsImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            screenshotsImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenshotsImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenshotsImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
+        ])
     }
     
     private func setupBackgroundView() {
+        backgroundView.layer.cornerRadius = 20
+        backgroundView.backgroundColor = .white
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(backgroundView)
+        
+        NSLayoutConstraint.activate([
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+        ])
     }
     
     private func setupDescriptionTextView() {
+        descriptionTextView.font = UIFont.systemFont(ofSize: 40)
+        descriptionTextView.text = "123 test test test"
+        descriptionTextView.textContainer.maximumNumberOfLines = 2
+        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(descriptionTextView)
+        
+        NSLayoutConstraint.activate([
+            descriptionTextView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 8),
+            descriptionTextView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 8),
+            descriptionTextView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 50),
+            descriptionTextView.heightAnchor.constraint(equalTo: backgroundView.heightAnchor, constant: 0.5)
+        ])
     }
     
     private func updateImage() {
@@ -51,8 +88,10 @@ class GameDetailsViewController: UIViewController {
             switch result {
             case .success(let image):
                 self.screenshotsImageView.image = image
+                print("DetailsVC - Image fetched successfully")
             case .failure(let error):
                 print(error)
+                print("DetailsVC - Image not fetched")
             }
         }
     }
