@@ -20,7 +20,7 @@ struct Game: Codable {
 //    let genres: [Genre]
 //    let stores: [Store]
 //    let esrbRating: EsrbRating
-//    let shortScreenshots: [ShortScreenshot]
+    let shortScreenshots: [ShortScreenshot]
 
     enum CodingKeys: String, CodingKey {
         case /*id,*/ name, released
@@ -34,6 +34,6 @@ struct Game: Codable {
         case platforms
 //        case genres, stores
 //        case esrbRating = "esrb_rating"
-//        case shortScreenshots = "short_screenshots"
+        case shortScreenshots = "short_screenshots"
     }
 }

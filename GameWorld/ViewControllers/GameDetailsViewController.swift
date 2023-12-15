@@ -9,9 +9,11 @@ import UIKit
 
 class GameDetailsViewController: UIViewController {
     
+    private var screenshotsScrollView = UIScrollView()
     private var screenshotsImageView = UIImageView()
     private var backgroundView = UIView()
     private var descriptionTextView = UITextView()
+    private var images = [UIImageView]()
     
     var game: Game!
     
@@ -29,9 +31,29 @@ class GameDetailsViewController: UIViewController {
     
     //MARK: - Private methods
     private func setupUI() {
-        setupScreenshotsImageView()
+        setupScreenshotsScrollView()
+//        setupScreenshotsImageView()
         setupBackgroundView()
         setupDescriptionTextView()
+    }
+    
+    private func setupScreenshotsScrollView() {
+        screenshotsScrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        screenshotsScrollView.backgroundColor = .systemTeal
+        screenshotsScrollView.contentSize = CGSize(width: screenshotsScrollView.contentSize.width, height: UIScreen.main.bounds.height*100)
+        
+        view.addSubview(screenshotsScrollView)
+        
+        addImages()
+    }
+    
+    private func addImages() {
+        for i in 0...10 {
+            images.append(UIImageView(image: UIImage(systemName: "person.3.fill")))
+            images[i].frame = CGRect(x: 0, y: UIScreen.main.bounds.height*CGFloat(i), width: view.frame.width, height: view.frame.height)
+            images[i].contentMode = .scaleAspectFit
+            screenshotsScrollView.addSubview(images[i])
+        }
     }
     
     private func setupScreenshotsImageView() {
