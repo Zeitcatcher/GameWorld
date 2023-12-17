@@ -9,20 +9,12 @@ import UIKit
 
 class GameDetailsViewController: UIViewController {
     
-    private var screenshotsScrollView = UIScrollView()
+    private var screenshotsCollectionView: UICollectionView!
     private var screenshotsImageView = UIImageView()
     private var backgroundView = UIView()
     private var descriptionTextView = UITextView()
-    private var images = [UIImageView]()
     
     var game: Game!
-    
-    private var imageURL: URL? {
-        didSet {
-            screenshotsImageView.image = nil
-            updateImage()
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,45 +23,28 @@ class GameDetailsViewController: UIViewController {
     
     //MARK: - Private methods
     private func setupUI() {
-        setupScreenshotsScrollView()
-//        setupScreenshotsImageView()
+        setupScreenshotsCollectionView()
         setupBackgroundView()
         setupDescriptionTextView()
     }
     
-    private func setupScreenshotsScrollView() {
-        screenshotsScrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        screenshotsScrollView.backgroundColor = .systemTeal
-        screenshotsScrollView.contentSize = CGSize(width: screenshotsScrollView.contentSize.width, height: UIScreen.main.bounds.height*100)
+    private func setupScreenshotsCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         
-        view.addSubview(screenshotsScrollView)
+        screenshotsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        screenshotsCollectionView.register(GameDetailsViewCell.self, forCellWithReuseIdentifier: "screenshotCell")
+        screenshotsCollectionView.delegate = self
+        screenshotsCollectionView.dataSource = self
+        screenshotsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        addImages()
-    }
-    
-    private func addImages() {
-        for i in 0...10 {
-            images.append(UIImageView(image: UIImage(systemName: "person.3.fill")))
-            images[i].frame = CGRect(x: 0, y: UIScreen.main.bounds.height*CGFloat(i), width: view.frame.width, height: view.frame.height)
-            images[i].contentMode = .scaleAspectFit
-            screenshotsScrollView.addSubview(images[i])
-        }
-    }
-    
-    private func setupScreenshotsImageView() {
-        imageURL = URL(string: game.backgroundImage ?? "")
-
-        screenshotsImageView.contentMode = .scaleAspectFill
-        screenshotsImageView.clipsToBounds = true
-        screenshotsImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(screenshotsImageView)
+        view.addSubview(screenshotsCollectionView)
         
         NSLayoutConstraint.activate([
-            screenshotsImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            screenshotsImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            screenshotsImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            screenshotsImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
+            screenshotsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            screenshotsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenshotsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenshotsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6)
         ])
     }
     
@@ -108,37 +83,39 @@ class GameDetailsViewController: UIViewController {
             descriptionTextView.heightAnchor.constraint(equalTo: backgroundView.heightAnchor, constant: 0.5)
         ])
     }
-    
-    private func updateImage() {
-        guard let imageURL = imageURL else { return }
-        
-        getImage(from: imageURL) { result in
-            switch result {
-            case .success(let image):
-                self.screenshotsImageView.image = image
-                print("DetailsVC - Image fetched successfully")
-            case .failure(let error):
-                print(error)
-                print("DetailsVC - Image not fetched")
-            }
-        }
+}
+
+//MARK: - UICollectionViewDataSource
+extension GameDetailsViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        game.shortScreenshots.count
+        print("game.shortScreenshots.count = \(game.shortScreenshots.count)")
+        return game.shortScreenshots.count
     }
     
-    private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
-        if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
-            complition(.success(cachedImage))
-            return
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "screenshotCell",
+                for: indexPath
+            ) as? GameDetailsViewCell
+        else {
+            return UICollectionViewCell()
         }
-        
-        NetworkManager.shared.fetchImage(from: url) { result in
-            switch result {
-            case .success(let imageData):
-                guard let uiImage = UIImage(data: imageData) else { return }
-                ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
-                complition(.success(uiImage))
-            case .failure(let error):
-                complition(.failure(error))
-            }
-        }
+        cell.configure(with: game.shortScreenshots[indexPath.item])
+        return cell
+    }
+    
+    
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension GameDetailsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        0
     }
 }

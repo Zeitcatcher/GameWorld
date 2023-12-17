@@ -97,7 +97,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
             gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40),
             gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -2),
-
+            
             gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
             gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameLabel.widthAnchor.constraint(equalTo: gameImageView.widthAnchor),
