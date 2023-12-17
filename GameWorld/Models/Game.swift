@@ -6,13 +6,12 @@
 //
 
 struct Game: Codable {
-//    let id: Int
+    let id: Int
     let name: String
     let released: String
     let backgroundImage: String?
-//    let rating: Double
-//    let ratingTop: Int
-//    let ratingsCount: Int
+    let rating: Double?
+    let ratingsCount: Int?
 //    let metacritic, playtime: Int
 //    let updated: String
 //    let reviewsCount: Int
@@ -23,11 +22,10 @@ struct Game: Codable {
     let shortScreenshots: [ShortScreenshot]
 
     enum CodingKeys: String, CodingKey {
-        case /*id,*/ name, released
+        case id, name, released
         case backgroundImage = "background_image"
-//        case rating
-//        case ratingTop = "rating_top"
-//        case ratingsCount = "ratings_count"
+        case rating
+        case ratingsCount = "ratings_count"
 //        case metacritic, playtime
 //        case updated
 //        case reviewsCount = "reviews_count"

@@ -11,7 +11,6 @@ class GameDetailsViewController: UIViewController {
     
     private var screenshotsCollectionView: UICollectionView!
     private var descriptionScrollView: UIScrollView!
-//    private var backgroundView = UIView()
     private var descriptioLabel = UILabel()
     
     var game: Game!
@@ -25,8 +24,6 @@ class GameDetailsViewController: UIViewController {
     private func setupUI() {
         setupScreenshotsCollectionView()
         setupDescriptionScrollView()
-//        setupBackgroundView()
-//        setupDescriptionTextView()
     }
     
     private func setupScreenshotsCollectionView() {
@@ -71,14 +68,12 @@ class GameDetailsViewController: UIViewController {
     
     private func setupDescriptioLabel() {
         descriptioLabel.font = .systemFont(ofSize: 20)
-//        descriptioLabel.layer.cornerRadius = 20
         descriptioLabel.numberOfLines = 20
         descriptioLabel.text =
-        """
-        Title: \(game.name)
-        Release date: \(game.released)
-        """
-        print("1231241214")
+            """
+            Title: \(game.name)
+            Release date: \(game.released)
+            """
         descriptioLabel.translatesAutoresizingMaskIntoConstraints = false
 
         descriptionScrollView.addSubview(descriptioLabel)
@@ -90,50 +85,12 @@ class GameDetailsViewController: UIViewController {
             descriptioLabel.bottomAnchor.constraint(equalTo: descriptionScrollView.bottomAnchor, constant: 16)
         ])
     }
-    
-//    private func setupBackgroundView() {
-//        backgroundView.layer.cornerRadius = 20
-//        backgroundView.backgroundColor = .white
-//        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        view.addSubview(backgroundView)
-//        
-//        NSLayoutConstraint.activate([
-//            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            backgroundView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
-//        ])
-//    }
-    
-//    private func setupDescriptionTextView() {
-//        descriptionTextView.font = UIFont.systemFont(ofSize: 20)
-//        descriptionTextView.text =
-//        """
-//        Name: \(game.name)
-//        Release date: \(game.released)
-//        Test test
-//        """
-//        descriptionTextView.isEditable = false
-//        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        view.addSubview(descriptionTextView)
-//        
-//        NSLayoutConstraint.activate([
-//            descriptionTextView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 8),
-//            descriptionTextView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 8),
-//            descriptionTextView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 50),
-//            descriptionTextView.heightAnchor.constraint(equalTo: backgroundView.heightAnchor, constant: 0.5)
-//        ])
-//    }
 }
 
 //MARK: - UICollectionViewDataSource
 extension GameDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        game.shortScreenshots.count
-        print("game.shortScreenshots.count = \(game.shortScreenshots.count)")
-        return game.shortScreenshots.count
+        game.shortScreenshots.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -148,8 +105,6 @@ extension GameDetailsViewController: UICollectionViewDataSource {
         cell.configure(with: game.shortScreenshots[indexPath.item])
         return cell
     }
-    
-    
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout

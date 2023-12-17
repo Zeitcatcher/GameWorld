@@ -21,11 +21,11 @@ struct Platform: Codable, Hashable {
 //        case yearStart = "year_start"
     }
     
-    static func == (lhs: Platform, rhs: Platform) -> Bool {
-        lhs.name == rhs.name // Add other properties if needed for equality check
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name) // Add other properties if used in `==` for equality check
-    }
+//    static func == (lhs: Platform, rhs: Platform) -> Bool {
+//        lhs.name == rhs.name // Add other properties if needed for equality check
+//    }
+//
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(name) // Add other properties if used in `==` for equality check
+//    }
 }
