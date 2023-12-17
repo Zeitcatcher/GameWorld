@@ -44,7 +44,7 @@ class GameDetailsViewController: UIViewController {
             screenshotsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             screenshotsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             screenshotsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            screenshotsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6)
+            screenshotsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
     }
     
