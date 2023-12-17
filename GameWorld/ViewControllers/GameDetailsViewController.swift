@@ -10,9 +10,9 @@ import UIKit
 class GameDetailsViewController: UIViewController {
     
     private var screenshotsCollectionView: UICollectionView!
-    private var screenshotsImageView = UIImageView()
-    private var backgroundView = UIView()
-    private var descriptionTextView = UITextView()
+    private var descriptionScrollView: UIScrollView!
+//    private var backgroundView = UIView()
+    private var descriptioLabel = UILabel()
     
     var game: Game!
     
@@ -24,8 +24,9 @@ class GameDetailsViewController: UIViewController {
     //MARK: - Private methods
     private func setupUI() {
         setupScreenshotsCollectionView()
-        setupBackgroundView()
-        setupDescriptionTextView()
+        setupDescriptionScrollView()
+//        setupBackgroundView()
+//        setupDescriptionTextView()
     }
     
     private func setupScreenshotsCollectionView() {
@@ -48,41 +49,83 @@ class GameDetailsViewController: UIViewController {
         ])
     }
     
-    private func setupBackgroundView() {
-        backgroundView.layer.cornerRadius = 20
-        backgroundView.backgroundColor = .white
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupDescriptionScrollView() {
+        descriptionScrollView = UIScrollView()
+        descriptionScrollView.backgroundColor = .white
+        descriptionScrollView.layer.cornerRadius = 20
+        descriptionScrollView.showsHorizontalScrollIndicator = false
+        descriptionScrollView.isDirectionalLockEnabled = true
+        descriptionScrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(backgroundView)
+        view.addSubview(descriptionScrollView)
         
         NSLayoutConstraint.activate([
-            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            descriptionScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            descriptionScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            descriptionScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            descriptionScrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+        ])
+        
+        setupDescriptioLabel()
+    }
+    
+    private func setupDescriptioLabel() {
+        descriptioLabel.font = .systemFont(ofSize: 20)
+//        descriptioLabel.layer.cornerRadius = 20
+        descriptioLabel.numberOfLines = 20
+        descriptioLabel.text =
+        """
+        Title: \(game.name)
+        Release date: \(game.released)
+        """
+        print("1231241214")
+        descriptioLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        descriptionScrollView.addSubview(descriptioLabel)
+        
+        NSLayoutConstraint.activate([
+            descriptioLabel.topAnchor.constraint(equalTo: descriptionScrollView.topAnchor, constant: 10),
+            descriptioLabel.leadingAnchor.constraint(equalTo: descriptionScrollView.leadingAnchor, constant: 8),
+            descriptioLabel.trailingAnchor.constraint(equalTo: descriptionScrollView.trailingAnchor, constant: -8),
+            descriptioLabel.bottomAnchor.constraint(equalTo: descriptionScrollView.bottomAnchor, constant: 16)
         ])
     }
     
-    private func setupDescriptionTextView() {
-        descriptionTextView.font = UIFont.systemFont(ofSize: 20)
-        descriptionTextView.text =
-        """
-        Name: \(game.name)
-        Release date: \(game.released)
-        Test test
-        """
-        descriptionTextView.isEditable = false
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(descriptionTextView)
-        
-        NSLayoutConstraint.activate([
-            descriptionTextView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 8),
-            descriptionTextView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 8),
-            descriptionTextView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 50),
-            descriptionTextView.heightAnchor.constraint(equalTo: backgroundView.heightAnchor, constant: 0.5)
-        ])
-    }
+//    private func setupBackgroundView() {
+//        backgroundView.layer.cornerRadius = 20
+//        backgroundView.backgroundColor = .white
+//        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        view.addSubview(backgroundView)
+//        
+//        NSLayoutConstraint.activate([
+//            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            backgroundView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+//        ])
+//    }
+    
+//    private func setupDescriptionTextView() {
+//        descriptionTextView.font = UIFont.systemFont(ofSize: 20)
+//        descriptionTextView.text =
+//        """
+//        Name: \(game.name)
+//        Release date: \(game.released)
+//        Test test
+//        """
+//        descriptionTextView.isEditable = false
+//        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        view.addSubview(descriptionTextView)
+//        
+//        NSLayoutConstraint.activate([
+//            descriptionTextView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 8),
+//            descriptionTextView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: 8),
+//            descriptionTextView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: 50),
+//            descriptionTextView.heightAnchor.constraint(equalTo: backgroundView.heightAnchor, constant: 0.5)
+//        ])
+//    }
 }
 
 //MARK: - UICollectionViewDataSource
