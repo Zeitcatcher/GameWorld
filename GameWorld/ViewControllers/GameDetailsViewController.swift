@@ -120,7 +120,7 @@ class GameDetailsViewController: UIViewController {
             }
         })
         
-        let styledHtmlString = styleHtmlString(htmlString: pcRequirements)
+        let styledHtmlString = styleHtmlString(with: pcRequirements)
         
         if let attributedString = convertToAttributedString(with: styledHtmlString) {
             pcRequirementsLabel.attributedText = attributedString
@@ -153,10 +153,13 @@ class GameDetailsViewController: UIViewController {
     }
     
     //Change font size in HTML
-    private func styleHtmlString(htmlString: String) -> String {
+    private func styleHtmlString(with htmlString: String) -> String {
         let styledHtml = """
         <style>
-            body { font-size: 20px; } // Change the font-size to your desired value
+            body { 
+                font-size: 20px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            }
         </style>
         \(htmlString)
         """
