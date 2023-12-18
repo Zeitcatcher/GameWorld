@@ -152,7 +152,7 @@ class GameDetailsViewController: UIViewController {
         return try? NSAttributedString(data: data, options: options, documentAttributes: nil)
     }
     
-    //Change font size in HTML
+    //Change font size and style in HTML code received
     private func styleHtmlString(with htmlString: String) -> String {
         let styledHtml = """
         <style>
