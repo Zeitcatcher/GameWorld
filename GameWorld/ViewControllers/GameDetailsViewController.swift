@@ -14,6 +14,7 @@ class GameDetailsViewController: UIViewController {
     private var contentView = UIView()
     private var gameDetailsLabel = UILabel()
     private var pcRequirementsLabel = UILabel()
+    private var screenshotsPageControl = UIPageControl()
     
     var game: Game!
     
@@ -26,6 +27,7 @@ class GameDetailsViewController: UIViewController {
     private func setupUI() {
         setupScreenshotsCollectionView()
         setupDescriptionScrollView()
+        setupScreenshotsPageControl()
     }
     
     private func setupScreenshotsCollectionView() {
@@ -33,6 +35,7 @@ class GameDetailsViewController: UIViewController {
         layout.scrollDirection = .horizontal
         
         screenshotsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        screenshotsCollectionView.isPagingEnabled = true //enables instagram like scrolling of items in UICollectionView
         screenshotsCollectionView.register(GameDetailsViewCell.self, forCellWithReuseIdentifier: "screenshotCell")
         screenshotsCollectionView.delegate = self
         screenshotsCollectionView.dataSource = self
@@ -48,6 +51,22 @@ class GameDetailsViewController: UIViewController {
         ])
     }
     
+    private func setupScreenshotsPageControl() {
+        screenshotsPageControl.numberOfPages = game.shortScreenshots.count
+        screenshotsPageControl.currentPage = 0
+        screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(screenshotsPageControl)
+        
+        NSLayoutConstraint.activate([
+            screenshotsPageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenshotsPageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenshotsPageControl.bottomAnchor.constraint(equalTo: descriptionScrollView.topAnchor, constant: -5),
+            screenshotsPageControl.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+    }
+    
     private func setupDescriptionScrollView() {
         descriptionScrollView = UIScrollView()
         descriptionScrollView.backgroundColor = .white
@@ -59,7 +78,7 @@ class GameDetailsViewController: UIViewController {
         view.addSubview(descriptionScrollView)
         
         NSLayoutConstraint.activate([
-            descriptionScrollView.topAnchor.constraint(equalTo: screenshotsCollectionView.bottomAnchor, constant: -10),
+            descriptionScrollView.topAnchor.constraint(equalTo: screenshotsCollectionView.bottomAnchor, constant: -15),
             descriptionScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             descriptionScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             descriptionScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -195,5 +214,11 @@ extension GameDetailsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         0
+    }
+    
+    //Switches pages on the UIPageControl
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let width = scrollView.frame.width
+        screenshotsPageControl.currentPage = Int(scrollView.contentOffset.x / width)
     }
 }
