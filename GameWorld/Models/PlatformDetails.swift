@@ -7,9 +7,10 @@
 
 struct PlatformDetails: Codable {
     let platform: Platform
+    let requirements: DesktopRequirements?
     
-//    enum CodingKeys: String, CodingKey {
-//        case platforms = "results"
-//    }
+    enum CodingKeys: String, CodingKey {
+        case platform
+        case requirements = "requirements_en"
+    }
 }
-

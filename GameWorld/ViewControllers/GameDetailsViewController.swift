@@ -11,7 +11,9 @@ class GameDetailsViewController: UIViewController {
     
     private var screenshotsCollectionView: UICollectionView!
     private var descriptionScrollView: UIScrollView!
-    private var descriptioLabel = UILabel()
+    private var contentView = UIView()
+    private var gameDetailsLabel = UILabel()
+    private var pcRequirementsLabel = UILabel()
     
     var game: Game!
     
@@ -63,26 +65,66 @@ class GameDetailsViewController: UIViewController {
             descriptionScrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
         ])
         
-        setupDescriptioLabel()
+        setupContentView()
     }
     
-    private func setupDescriptioLabel() {
-        descriptioLabel.font = .systemFont(ofSize: 20)
-        descriptioLabel.numberOfLines = 20
-        descriptioLabel.text =
-            """
-            Title: \(game.name)
-            Release date: \(game.released)
-            """
-        descriptioLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        descriptionScrollView.addSubview(descriptioLabel)
+    private func setupContentView() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionScrollView.addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            descriptioLabel.topAnchor.constraint(equalTo: descriptionScrollView.topAnchor, constant: 10),
-            descriptioLabel.leadingAnchor.constraint(equalTo: descriptionScrollView.leadingAnchor, constant: 8),
-            descriptioLabel.trailingAnchor.constraint(equalTo: descriptionScrollView.trailingAnchor, constant: -8),
-            descriptioLabel.bottomAnchor.constraint(equalTo: descriptionScrollView.bottomAnchor, constant: 16)
+            contentView.topAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.bottomAnchor),
+            contentView.centerXAnchor.constraint(equalTo: descriptionScrollView.centerXAnchor)
+        ])
+        
+        setupGameDetailsLabel()
+        setupPcRequirementsLabel()
+    }
+    
+    private func setupGameDetailsLabel() {
+        gameDetailsLabel.font = .systemFont(ofSize: 20)
+        gameDetailsLabel.numberOfLines = 20
+        gameDetailsLabel.text =
+        """
+        Title: \(game.name)
+        Release date: \(game.released)
+        """
+        
+        gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.addSubview(gameDetailsLabel)
+        
+        NSLayoutConstraint.activate([
+            gameDetailsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            gameDetailsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            gameDetailsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            gameDetailsLabel.heightAnchor.constraint(equalToConstant: 100)
+        ])
+    }
+    
+    private func setupPcRequirementsLabel() {
+        pcRequirementsLabel.font = .systemFont(ofSize: 20)
+        pcRequirementsLabel.numberOfLines = 0
+        pcRequirementsLabel.sizeToFit()
+        pcRequirementsLabel.lineBreakMode = .byWordWrapping
+        pcRequirementsLabel.text =
+        """
+        Title: \(game.name)
+        Release date: \(game.released)
+        """
+        
+        pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.addSubview(pcRequirementsLabel)
+        
+        NSLayoutConstraint.activate([
+            pcRequirementsLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
+            pcRequirementsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            pcRequirementsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            pcRequirementsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16)
         ])
     }
 }
