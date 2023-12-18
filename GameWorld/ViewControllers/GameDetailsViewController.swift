@@ -62,7 +62,7 @@ class GameDetailsViewController: UIViewController {
             descriptionScrollView.topAnchor.constraint(equalTo: screenshotsCollectionView.bottomAnchor, constant: -10),
             descriptionScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             descriptionScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            descriptionScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            descriptionScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
         setupContentView()
@@ -76,7 +76,7 @@ class GameDetailsViewController: UIViewController {
             contentView.topAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.bottomAnchor, constant: -10),
             contentView.centerXAnchor.constraint(equalTo: descriptionScrollView.centerXAnchor)
         ])
         
@@ -120,11 +120,11 @@ class GameDetailsViewController: UIViewController {
             }
         })
         
-        pcRequirementsLabel.text =
-        """
-        Minimum requirments:
-        \(pcRequirements)
-        """
+        let styledHtmlString = styleHtmlString(htmlString: pcRequirements)
+        
+        if let attributedString = convertToAttributedString(with: styledHtmlString) {
+            pcRequirementsLabel.attributedText = attributedString
+        }
         
         pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -136,6 +136,31 @@ class GameDetailsViewController: UIViewController {
             pcRequirementsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             pcRequirementsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16)
         ])
+    }
+    
+    //Convert HTML text into readable String
+    private func convertToAttributedString(with htmlString: String) -> NSAttributedString? {
+        guard let data = htmlString.data(using: .utf8) else {
+            return nil
+        }
+        
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        
+        return try? NSAttributedString(data: data, options: options, documentAttributes: nil)
+    }
+    
+    //Change font size in HTML
+    private func styleHtmlString(htmlString: String) -> String {
+        let styledHtml = """
+        <style>
+            body { font-size: 20px; } // Change the font-size to your desired value
+        </style>
+        \(htmlString)
+        """
+        return styledHtml
     }
 }
 
