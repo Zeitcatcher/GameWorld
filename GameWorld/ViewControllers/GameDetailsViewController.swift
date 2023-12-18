@@ -59,10 +59,10 @@ class GameDetailsViewController: UIViewController {
         view.addSubview(descriptionScrollView)
         
         NSLayoutConstraint.activate([
+            descriptionScrollView.topAnchor.constraint(equalTo: screenshotsCollectionView.bottomAnchor, constant: -10),
             descriptionScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             descriptionScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            descriptionScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            descriptionScrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            descriptionScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         setupContentView()
@@ -106,14 +106,24 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupPcRequirementsLabel() {
+        pcRequirementsLabel.isHidden = true
         pcRequirementsLabel.font = .systemFont(ofSize: 20)
         pcRequirementsLabel.numberOfLines = 0
         pcRequirementsLabel.sizeToFit()
         pcRequirementsLabel.lineBreakMode = .byWordWrapping
+        
+        var pcRequirements = ""
+        game.platforms?.forEach({ platform in
+            if platform.requirements != nil {
+                pcRequirements = platform.requirements?.minimum ?? ""
+                pcRequirementsLabel.isHidden = false
+            }
+        })
+        
         pcRequirementsLabel.text =
         """
-        Title: \(game.name)
-        Release date: \(game.released)
+        Minimum requirments:
+        \(pcRequirements)
         """
         
         pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
