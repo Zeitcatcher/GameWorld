@@ -14,3 +14,4 @@ struct PlatformDetails: Codable {
         case requirements = "requirements_en"
     }
 }
+
