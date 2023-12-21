@@ -21,6 +21,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -28,21 +29,46 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with game: Game) {
+        gameLabel.text = "\(game.name)\n\(game.released)"
+        imageURL = URL(string: game.backgroundImage ?? "")
+    }
+    
+    private func setupViews() {
+        setupImageView()
+        setupLabel()
+    }
+    
+    private func setupImageView() {
+        gameImageView.layer.cornerRadius = 20
+        gameImageView.contentMode = .scaleAspectFill
+        gameImageView.clipsToBounds = true
+        gameImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(gameImageView)
+    }
+    
+    private func setupLabel() {
         gameLabel.numberOfLines = 2
-        gameLabel.text =
-            """
-            \(game.name)
-            \(game.released)
-            """
         gameLabel.layer.cornerRadius = 5
         gameLabel.backgroundColor = .white
         gameLabel.textAlignment = .center
         gameLabel.clipsToBounds = true
         gameLabel.font = UIFont.systemFont(ofSize: 16)
-        
-        imageURL = URL(string: game.backgroundImage ?? "")
-        
-        gameImageView.layer.cornerRadius = 20
+        gameLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(gameLabel)
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            gameImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40),
+            
+            gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
+            gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            gameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            gameLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
     
     private func updateImage() {
@@ -77,31 +103,5 @@ final class GamesCollectionViewCell: UICollectionViewCell {
                 print(error)
             }
         }
-    }
-    
-    private func setupViews() {
-        contentView.addSubview(gameLabel)
-        gameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        gameImageView.contentMode = .scaleAspectFill
-        gameImageView.clipsToBounds = true
-        gameImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(gameImageView)
-        
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40),
-            gameImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -2),
-            
-            gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
-            gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameLabel.widthAnchor.constraint(equalTo: gameImageView.widthAnchor),
-            gameLabel.heightAnchor.constraint(equalToConstant: 40)
-        ])
     }
 }
