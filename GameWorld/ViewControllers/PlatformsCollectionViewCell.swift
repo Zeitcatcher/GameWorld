@@ -27,15 +27,33 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with platform: Platform) {
-        platformLabel.text = platform.name
-        imageURL = URL(string: platform.backgroundImageUrl)
+    private func setupViews() {
+        configureImageView()
+        configureLabel()
+        setupConstraints()
+    }
+    
+    private func configureImageView() {
+        platformImageView.contentMode = .scaleAspectFill
         platformImageView.layer.cornerRadius = 20
+        platformImageView.clipsToBounds = true
+        platformImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(platformImageView)
+    }
+
+    private func configureLabel() {
         platformLabel.backgroundColor = .white
         platformLabel.font = UIFont.systemFont(ofSize: 20)
         platformLabel.textAlignment = .center
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
+        platformLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(platformLabel)
+    }
+    
+    func configure(with platform: Platform) {
+        platformLabel.text = platform.name
+        imageURL = URL(string: platform.backgroundImageUrl)
     }
     
     
@@ -69,18 +87,6 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
                 print(error)
             }
         }
-    }
-    
-    private func setupViews() {
-        platformImageView.contentMode = .scaleAspectFill
-        platformImageView.clipsToBounds = true
-        platformImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(platformImageView)
-        
-        platformLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(platformLabel)
-        
-        setupConstraints()
     }
     
     private func setupConstraints() {

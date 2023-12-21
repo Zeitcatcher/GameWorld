@@ -37,11 +37,11 @@ final class PlatformsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        fetchGames()
     }
     
     //MARK: - Private Methods
     private func setupUI() {
-        fetchGames()
         setupPlatformsCollectionView()
         setupFilterButtons()
         setupHeaderLabel()
@@ -59,8 +59,7 @@ final class PlatformsViewController: UIViewController {
                 self?.filterPlatrorms()
                 self?.platformsCollectionView.reloadData()
             case .failure(let error):
-                print("Error after Games fetch")
-                print(error)
+                print("Error after Games fetch: \(error)")
             }
         }
     }
@@ -233,20 +232,14 @@ extension PlatformsViewController: UICollectionViewDelegate {
                 $0.platform.name == selectedPlatforms[indexPath.item].name
             }) ?? false
         }
-//        gamesVC.allGames.forEach { game in
-//            print("transfered games are: \(game.name)")
-//        }
-        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
-//        print("didSelectPlatform on PlatformsVC performed")
-        
 
-        // Debugging: Print the navigation controller
+        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
+        
         if let navController = navigationController {
-            //            print("Pushing GamesByPlatformViewController onto the navigation stack")
+            print("Pushing GamesByPlatformViewController onto the navigation stack")
             navController.pushViewController(gamesVC, animated: true)
+            print("Navigation controller not found")
+        } else {
         }
-//        } else {
-//            print("Navigation controller not found")
-//        }
     }
 }
