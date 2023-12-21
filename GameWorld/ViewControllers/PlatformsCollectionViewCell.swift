@@ -37,9 +37,8 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
     }
-}
-
-extension PlatformsCollectionViewCell {
+    
+    
     private func updateImage() {
         guard let imageURL = imageURL else { return }
         getImage(from: imageURL) { [weak self ] result in
@@ -54,7 +53,7 @@ extension PlatformsCollectionViewCell {
     
     private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
         if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
-            print("Image from cache: ", url)
+            print("Image from cache: ", url.lastPathComponent)
             complition(.success(cachedImage))
             return
         }
@@ -64,7 +63,7 @@ extension PlatformsCollectionViewCell {
             case .success(let imageData):
                 guard let uiImage = UIImage(data: imageData) else { return }
                 ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
-                print("Image from network: ", url)
+                print("Image from network: ", url.lastPathComponent)
                 complition(.success(uiImage))
             case .failure(let error):
                 print(error)
@@ -77,10 +76,10 @@ extension PlatformsCollectionViewCell {
         platformImageView.clipsToBounds = true
         platformImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(platformImageView)
-
+        
         platformLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(platformLabel)
-
+        
         setupConstraints()
     }
     
@@ -90,7 +89,7 @@ extension PlatformsCollectionViewCell {
             platformImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             platformImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
             platformImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-
+            
             platformLabel.topAnchor.constraint(equalTo: platformImageView.bottomAnchor),
             platformLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             platformLabel.widthAnchor.constraint(equalTo: platformImageView.widthAnchor),

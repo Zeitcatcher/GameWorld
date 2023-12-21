@@ -37,7 +37,7 @@ final class NetworkManager {
         fetch(GamesCollection.self, from: JsonURL.game.rawValue) { result in
             switch result {
             case .success(let gamesCollection):
-                let filteredGames = gamesCollection.games.filter { $0.platforms != nil && $0.backgroundImage != nil}
+                let filteredGames = gamesCollection.games.filter { $0.platforms != nil && $0.backgroundImage != nil }
                 let filteredCollection = GamesCollection(games: filteredGames)
                 print("Games fetched successfuly in NetworkManager")
                 completion(.success(filteredCollection))
