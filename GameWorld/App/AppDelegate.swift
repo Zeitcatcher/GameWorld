@@ -7,20 +7,52 @@
 
 import UIKit
 
+final class Locator {
+    let networkManager: NetworkManager = NetworkManagerImpl()
+    lazy var service: Service = ServiceImpl(networkManager: networkManager)
+}
+
+final class Coordinator {
+    let locator: Locator
+    let window: UIWindow
+    lazy var navigationController = UINavigationController()
+    
+    init(locator: Locator, window: UIWindow) {
+        self.locator = locator
+        self.window = window
+    }
+    
+    func startFlow() {
+        let platformViewController = PlatformsViewController(service: locator.service) { [locator, navigationController] platformsScreenEvent in
+            switch platformsScreenEvent {
+            case .didTapPlatform(let platform):
+                let gamesVC = GamesByPlatformViewController(service: locator.service, platform: platform)
+                navigationController.pushViewController(gamesVC, animated: true)
+            }
+        }
+        
+        navigationController.setViewControllers([platformViewController], animated: false)
+        
+        window.rootViewController = navigationController
+    }
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    lazy var locator = Locator()
+    var coordinator: Coordinator?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow()
-        
-        let platformViewController = PlatformsViewController()
-        let navigationController = UINavigationController(rootViewController: platformViewController)
-        
-        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+    
+        coordinator = Coordinator(locator: locator, window: window!)
+        coordinator?.startFlow()
+        
         return true
     }
 

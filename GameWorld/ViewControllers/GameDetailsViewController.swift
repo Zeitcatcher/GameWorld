@@ -132,12 +132,12 @@ class GameDetailsViewController: UIViewController {
         pcRequirementsLabel.lineBreakMode = .byWordWrapping
         
         var pcRequirements = ""
-        game.platforms?.forEach({ platform in
-            if platform.requirements != nil {
-                pcRequirements = platform.requirements?.minimum ?? ""
-                pcRequirementsLabel.isHidden = false
-            }
-        })
+//        game.platforms?.forEach({ platform in
+//            if platform.requirements != nil {
+//                pcRequirements = platform.requirements?.minimum ?? ""
+//                pcRequirementsLabel.isHidden = false
+//            }
+//        })
         
         let styledHtmlString = styleHtmlString(with: pcRequirements)
         

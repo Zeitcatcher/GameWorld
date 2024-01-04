@@ -3,4 +3,70 @@
    uuid = "AD22A699-5739-4766-BB7E-1AA5402FA4DE"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA80557D-EA4B-48C2-862E-A7BF59D70E52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GameWorld/Services/GamesService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "urlRequest(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AA80557D-EA4B-48C2-862E-A7BF59D70E52 - eb0c3b21af66b18a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "GameWorld.ServiceImpl.urlRequest(for: GameWorld.ServiceImpl.Endpoint) throws -&gt; Foundation.URLRequest"
+                  moduleName = "GameWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zeitgeist/Documents/Swift%20programming/Apps/GameWorld/GameWorld/Services/GamesService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "1360">
+               </Location>
+               <Location
+                  uuid = "AA80557D-EA4B-48C2-862E-A7BF59D70E52 - eb0c3b21af66b18a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "GameWorld.ServiceImpl.urlRequest(for: GameWorld.ServiceImpl.Endpoint) throws -&gt; Foundation.URLRequest"
+                  moduleName = "GameWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zeitgeist/Documents/Swift%20programming/Apps/GameWorld/GameWorld/Services/GamesService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "102"
+                  endingLineNumber = "102"
+                  offsetFromSymbolStart = "1416">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9A08C82-98AC-438F-A979-4735C945B3F0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GameWorld/Services/GamesService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "urlRequest(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

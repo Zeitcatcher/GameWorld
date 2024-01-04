@@ -14,6 +14,10 @@ enum PlatformType: Int {
     case mobile = 3
 }
 
+enum PlatformsScreenEvent {
+    case didTapPlatform(Platform)
+}
+
 final class PlatformsViewController: UIViewController {
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
@@ -23,14 +27,13 @@ final class PlatformsViewController: UIViewController {
     
     private var headerLabel = UILabel()
     
-    private var allFilterButton: UIButton!
-    private var desktopFilterButton: UIButton!
-    private var consoleFilterButton: UIButton!
-    private var mobileFilterButton: UIButton!
+    private lazy var allFilterButton = createFilterButton(title: "All", type: .all)
+    private lazy var desktopFilterButton = createFilterButton(title: "Desktop", type: .pc)
+    private lazy var consoleFilterButton = createFilterButton(title: "Mobile", type: .mobile)
+    private lazy var mobileFilterButton = createFilterButton(title: "Console", type: .console)
     
     private var buttonStackView: UIStackView!
     
-    private var games: [Game] = []
     private var filteredPlatforms: Set<Platform> = []
     private var selectedPlatforms: [Platform] = []
     
@@ -40,10 +43,29 @@ final class PlatformsViewController: UIViewController {
         fetchGames()
     }
     
+    private let service: Service
+    private let eventHandler: (PlatformsScreenEvent) -> Void
+    
+    init(service: Service, eventHandler: @escaping (PlatformsScreenEvent) -> Void) {
+        self.service = service
+        self.eventHandler = eventHandler
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        assertionFailure("should never happen")
+        return nil
+    }
+    
+    deinit {
+        print("deinit \(String(describing: self))")
+    }
+    
     //MARK: - Private Methods
     private func setupUI() {
         setupPlatformsCollectionView()
-        setupFilterButtons()
+//        setupFilterButtons()
+        setupButtonStack()
         setupHeaderLabel()
         
         view.backgroundColor = .white
@@ -51,12 +73,11 @@ final class PlatformsViewController: UIViewController {
     
     private func fetchGames() {
         print("Starting fetching games in PlatformVC")
-        NetworkManager.shared.fetchGames { [ weak self ] result in
+        service.fetchPlatforms { [weak self] result in
             switch result {
-            case .success(let gamesCollection):
+            case .success(let platforms):
                 print("Games fetched succesfully")
-                self?.games = gamesCollection.games
-                self?.filterPlatrorms()
+                self?.selectedPlatforms = platforms.sorted { $0.name < $1.name }
                 self?.platformsCollectionView.reloadData()
             case .failure(let error):
                 print("Error after Games fetch: \(error)")
@@ -89,14 +110,9 @@ final class PlatformsViewController: UIViewController {
         ])
     }
     
-    private func setupFilterButtons() {
-        allFilterButton = createFilterButton(title: "All", type: .all)
-        desktopFilterButton = createFilterButton(title: "Desktop", type: .pc)
-        mobileFilterButton = createFilterButton(title: "Mobile", type: .mobile)
-        consoleFilterButton = createFilterButton(title: "Console", type: .console)
-        
-        setupButtonStack()
-    }
+//    private func setupFilterButtons() {
+//        setupButtonStack()
+//    }
     
     private func setupButtonStack() {
         buttonStackView = UIStackView(
@@ -138,6 +154,27 @@ final class PlatformsViewController: UIViewController {
         return button
     }
     
+    final class RotatedTitleButton: UIControl {
+        let label = UILabel()
+        
+        init(title: String) {
+            super.init(frame: .zero)
+            label.text = title
+//            label.transform = CGAffineTransform(rotationAngle: .pi / -2)
+            clipsToBounds = false
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+//            label
+        }
+    }
+    
     @objc private func filterPlatforms(_ sender: UIButton) {
         guard let type = PlatformType(rawValue: sender.tag) else { return }
         let platforms = filteredPlatforms.sorted { $0.name < $1.name }
@@ -159,15 +196,6 @@ final class PlatformsViewController: UIViewController {
             let indexPath = IndexPath(item: 0, section: 0)
             platformsCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         }
-    }
-    
-    private func filterPlatrorms() {
-        games.forEach { game in
-            game.platforms?.forEach({ platform in
-                filteredPlatforms.insert(platform.platform)
-            })
-        }
-        selectedPlatforms = filteredPlatforms.sorted { $0.name < $1.name }
     }
     
     private func setupHeaderLabel() {
@@ -224,22 +252,7 @@ extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - UICollectionViewDelegate
 extension PlatformsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Navigation Controller: \(String(describing: navigationController))")
-        let gamesVC = GamesByPlatformViewController()
-        print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
-        gamesVC.allGames = games.filter {
-            $0.platforms?.contains(where: {
-                $0.platform.name == selectedPlatforms[indexPath.item].name
-            }) ?? false
-        }
-
-        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item].name
-        
-        if let navController = navigationController {
-            print("Pushing GamesByPlatformViewController onto the navigation stack")
-            navController.pushViewController(gamesVC, animated: true)
-            print("Navigation controller not found")
-        } else {
-        }
+        eventHandler(.didTapPlatform(selectedPlatforms[indexPath.item]))
+//        print("Navigation Controller: \(String(describing: navigationController))")
     }
 }

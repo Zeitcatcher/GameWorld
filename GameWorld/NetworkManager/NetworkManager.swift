@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum JsonURL: String {
+enum JSONURL: String {
+    case base = "https://api.rawg.io/api/"
     case platform = "https://api.rawg.io/api/platforms?key=2bc11399a7354494b1b6d068b5a7506b"
     case game = "https://api.rawg.io/api/games?key=2bc11399a7354494b1b6d068b5a7506b"
 }
@@ -18,9 +19,19 @@ enum NetworkError: Error {
     case decodingError
 }
 
-final class NetworkManager {
-    static let shared = NetworkManager()
-    private init() {}
+
+struct Payload<Data: Decodable>: Decodable {
+    let results: Data
+}
+
+// ViewController -> GamesService -> NetworkManager
+
+protocol NetworkManager {
+    func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Payload<Model>, Error>) -> Void)
+}
+
+final class NetworkManagerImpl: NetworkManager {
+    init() {}
     
 //    func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
 //        fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
@@ -33,29 +44,8 @@ final class NetworkManager {
 //        }
 //    }
     
-    func fetchGames(completion: @escaping(Result<GamesCollection, NetworkError>) -> Void) {
-        fetch(GamesCollection.self, from: JsonURL.game.rawValue) { result in
-            switch result {
-            case .success(let gamesCollection):
-                let filteredGames = gamesCollection.games.filter { $0.platforms != nil && $0.backgroundImage != nil }
-                let filteredCollection = GamesCollection(games: filteredGames)
-                print("Games fetched successfuly in NetworkManager")
-                completion(.success(filteredCollection))
-            case .failure(let error):
-                completion(.failure(error))
-                print("Error fetching Games in NetworkManager")
-            }
-        }
-    }
-    
-    
-    private func fetch<T: Decodable>(_ type: T.Type, from url: String, complition: @escaping(Result<T, NetworkError>) -> Void) {
-        guard let url = URL(string: url) else {
-            complition(.failure(.invalidURL))
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+    func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Model, Error>) -> Void) {
+        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             // Вывод всего Json для поиска ошибки
 //            if let data = data {
 //                let responseString = String(data: data, encoding: .utf8)
@@ -63,20 +53,24 @@ final class NetworkManager {
 //            }
             
             guard let data = data else {
-                complition(.failure(.noData))
+                DispatchQueue.main.async {
+                    completion(.failure(NetworkError.noData))
+                }
                 print(error?.localizedDescription ?? "No error description")
                 return
             }
             
             do {
                 let decoder = JSONDecoder()
-                let type = try decoder.decode(T.self, from: data)
+                let type = try decoder.decode(Model.self, from: data)
                 DispatchQueue.main.async {
-                    complition(.success(type))
+                    completion(.success(type))
                 }
             } catch let error {
                 print("Decoding Error: \(error)")
-                complition(.failure(.decodingError))
+                DispatchQueue.main.async {
+                    completion(.failure(NetworkError.decodingError))
+                }
             }
         }.resume()
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class GamesCollectionViewCell: UICollectionViewCell {
     private var gameImageView = UIImageView()
@@ -13,7 +14,6 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     
     private var imageURL: URL? {
         didSet {
-            gameImageView.image = nil
             updateImage()
         }
     }
@@ -72,36 +72,9 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateImage() {
-        guard let imageURL = imageURL else { return }
-        getImage(from: imageURL) { result in
-            switch result {
-            case .success(let image):
-                print("Image received GamesVC Cell")
-                self.gameImageView.image = image
-            case .failure(let error):
-                print(error)
-                print("Image not received GamesVC Cell")
-            }
-        }
-    }
-    
-    private func getImage(from url: URL, complition: @escaping(Result<UIImage, Error>) -> Void) {
-        if let cachedImage = ImageCacheManager.shared.object(forKey: url.lastPathComponent as NSString) {
-            print("Image from cache: ", url.lastPathComponent)
-            complition(.success(cachedImage))
-            return
-        }
-        
-        NetworkManager.shared.fetchImage(from: url) { result in
-            switch result {
-            case .success(let imageData):
-                guard let uiImage = UIImage(data: imageData) else { return }
-                ImageCacheManager.shared.setObject(uiImage, forKey: url.lastPathComponent as NSString)
-                print("Image from network: ", url.lastPathComponent)
-                complition(.success(uiImage))
-            case .failure(let error):
-                print(error)
-            }
+        gameImageView.kf.cancelDownloadTask()
+        if let imageURL {
+            gameImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
         }
     }
 }

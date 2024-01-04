@@ -12,6 +12,8 @@
 		D90A9F802AF7118B00F0D405 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D90A9F7F2AF7118B00F0D405 /* Assets.xcassets */; };
 		D90A9F832AF7118B00F0D405 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90A9F812AF7118B00F0D405 /* LaunchScreen.storyboard */; };
 		D90A9F8F2AF7158E00F0D405 /* PlatformsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90A9F8E2AF7158E00F0D405 /* PlatformsViewController.swift */; };
+		D9107EA12B3A20CA00FF53B3 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9107EA02B3A20CA00FF53B3 /* Service.swift */; };
+		D9107EA42B3A2C2400FF53B3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D9107EA32B3A2C2400FF53B3 /* Kingfisher */; };
 		D929F7A32B27FD5D0051B76A /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D929F7A22B27FD5D0051B76A /* GameDetailsViewController.swift */; };
 		D93A6C5A2B2E9434002106DF /* GameDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93A6C592B2E9434002106DF /* GameDetailsViewCell.swift */; };
 		D93A6C5C2B2ECD56002106DF /* DesktopRequirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93A6C5B2B2ECD56002106DF /* DesktopRequirements.swift */; };
@@ -38,6 +40,7 @@
 		D90A9F822AF7118B00F0D405 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D90A9F842AF7118B00F0D405 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D90A9F8E2AF7158E00F0D405 /* PlatformsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewController.swift; sourceTree = "<group>"; };
+		D9107EA02B3A20CA00FF53B3 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		D929F7A22B27FD5D0051B76A /* GameDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		D93A6C592B2E9434002106DF /* GameDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewCell.swift; sourceTree = "<group>"; };
 		D93A6C5B2B2ECD56002106DF /* DesktopRequirements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopRequirements.swift; sourceTree = "<group>"; };
@@ -61,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9107EA42B3A2C2400FF53B3 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				D99AE7072B0D9DB00072EB31 /* ImageCacheManager.swift */,
+				D9107EA02B3A20CA00FF53B3 /* Service.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -184,6 +189,9 @@
 			dependencies = (
 			);
 			name = GameWorld;
+			packageProductDependencies = (
+				D9107EA32B3A2C2400FF53B3 /* Kingfisher */,
+			);
 			productName = GameWorld;
 			productReference = D90A9F732AF7118900F0D405 /* GameWorld.app */;
 			productType = "com.apple.product-type.application";
@@ -212,6 +220,9 @@
 				Base,
 			);
 			mainGroup = D90A9F6A2AF7118900F0D405;
+			packageReferences = (
+				D9107EA22B3A2C2400FF53B3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = D90A9F742AF7118900F0D405 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -249,6 +260,7 @@
 				D99AE6F82B09BB2C0072EB31 /* Store.swift in Sources */,
 				D99AE6F22B09B31B0072EB31 /* Platform.swift in Sources */,
 				D99AE6FC2B09BC8A0072EB31 /* ShortScreenshot.swift in Sources */,
+				D9107EA12B3A20CA00FF53B3 /* Service.swift in Sources */,
 				D99AE7082B0D9DB00072EB31 /* ImageCacheManager.swift in Sources */,
 				D9B0BAF42B1C4232008D170A /* GamesCollection.swift in Sources */,
 				D90A9F772AF7118900F0D405 /* AppDelegate.swift in Sources */,
@@ -475,6 +487,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D9107EA22B3A2C2400FF53B3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D9107EA32B3A2C2400FF53B3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9107EA22B3A2C2400FF53B3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D90A9F6B2AF7118900F0D405 /* Project object */;
 }

@@ -13,8 +13,24 @@ final class GamesByPlatformViewController: UIViewController {
     private var selectedPlatformLabel = UILabel()
     private var sortingButton = UIButton()
     
-    var allGames: [Game] = []
-    var selectedPlatform: String!
+    private var allGames: [Game] = []
+    
+    let service: Service
+    let platform: Platform
+    
+    init(service: Service, platform: Platform) {
+        self.service = service
+        self.platform = platform
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("deinit \(String(describing: self))")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +38,16 @@ final class GamesByPlatformViewController: UIViewController {
         setupGamesCollectionView()
         setupSelectedPlatformLabel()
         setupSortingButton()
+        
+        service.fetchGames(platform: platform) { [weak self] result in
+            switch result {
+            case .success(let games):
+                self?.allGames = games
+                self?.gamesCollectionView.reloadData()
+            case .failure(let error):
+                self?.allGames = []
+            }
+        }
     }
     
     //MARK: - Private Methods
@@ -45,7 +71,7 @@ final class GamesByPlatformViewController: UIViewController {
     }
     
     private func setupSelectedPlatformLabel() {
-        selectedPlatformLabel.text = selectedPlatform
+        selectedPlatformLabel.text = platform.name
         selectedPlatformLabel.font = UIFont.boldSystemFont(ofSize: 32)
         selectedPlatformLabel.backgroundColor = .green
         selectedPlatformLabel.numberOfLines = 2
