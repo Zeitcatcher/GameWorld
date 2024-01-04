@@ -64,7 +64,6 @@ final class PlatformsViewController: UIViewController {
     //MARK: - Private Methods
     private func setupUI() {
         setupPlatformsCollectionView()
-//        setupFilterButtons()
         setupButtonStack()
         setupHeaderLabel()
         
@@ -109,10 +108,6 @@ final class PlatformsViewController: UIViewController {
             platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
         ])
     }
-    
-//    private func setupFilterButtons() {
-//        setupButtonStack()
-//    }
     
     private func setupButtonStack() {
         buttonStackView = UIStackView(
