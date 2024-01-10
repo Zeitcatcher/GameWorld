@@ -10,7 +10,7 @@ struct Platform: Codable, Hashable {
 //    let id: Int
     let name: String
 //    let gamesCount: Int
-    let backgroundImageUrl: String
+    let backgroundImageUrl: String?
 //    let yearStart: Int?
 //    let games: [Game]
 
