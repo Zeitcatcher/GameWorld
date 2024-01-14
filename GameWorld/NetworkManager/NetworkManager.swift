@@ -128,17 +128,17 @@ final class NetworkManagerImpl: NetworkManager {
         }
     }
     
-    func fetchImage(from url: URL, complition: @escaping(Result<Data, NetworkError>) -> Void) {
-        DispatchQueue.global().async {
-            guard let imageData = try? Data(contentsOf: url) else {
-                complition(.failure(.noData))
-                return
-            }
-            DispatchQueue.main.async {
-                complition(.success(imageData))
-            }
-        }
-    }
+//    func fetchImage(from url: URL, complition: @escaping(Result<Data, NetworkError>) -> Void) {
+//        DispatchQueue.global().async {
+//            guard let imageData = try? Data(contentsOf: url) else {
+//                complition(.failure(.noData))
+//                return
+//            }
+//            DispatchQueue.main.async {
+//                complition(.success(imageData))
+//            }
+//        }
+//    }
     
     //MARK: - Private Methods
     private func urlRequest(for endpoint: Endpoint) throws -> URLRequest {
