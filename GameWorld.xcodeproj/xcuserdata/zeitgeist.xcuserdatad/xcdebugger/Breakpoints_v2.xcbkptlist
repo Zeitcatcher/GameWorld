@@ -3,4 +3,70 @@
    uuid = "AD22A699-5739-4766-BB7E-1AA5402FA4DE"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "54A44EA2-2948-487C-8526-A3476B96DB5B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GameWorld/ViewControllers/GameDetailsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "setupPcRequirementsLabel()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "54A44EA2-2948-487C-8526-A3476B96DB5B - f1858a34b3656819"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "GameWorld.GameDetailsViewController.setupPcRequirementsLabel() -&gt; ()"
+                  moduleName = "GameWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zeitgeist/Documents/Swift%20programming/Apps/GameWorld/GameWorld/ViewControllers/GameDetailsViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "2412">
+               </Location>
+               <Location
+                  uuid = "54A44EA2-2948-487C-8526-A3476B96DB5B - ac6217ff392977b6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (GameWorld.PlatformDetails) -&gt; () in GameWorld.GameDetailsViewController.setupPcRequirementsLabel() -&gt; ()"
+                  moduleName = "GameWorld"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zeitgeist/Documents/Swift%20programming/Apps/GameWorld/GameWorld/ViewControllers/GameDetailsViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "96">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F1DFF5F6-FF70-432D-8D38-22011BF564DB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GameWorld/ViewControllers/GamesByPlatformViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
