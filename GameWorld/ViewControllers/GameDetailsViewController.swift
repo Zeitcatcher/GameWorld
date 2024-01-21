@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 class GameDetailsViewController: UIViewController {
     private let networkManager: NetworkManager = NetworkManagerImpl()
     
