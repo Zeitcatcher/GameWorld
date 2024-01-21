@@ -10,6 +10,7 @@ import UIKit
 import UIKit
 
 class GameDetailsViewController: UIViewController {
+    private let networkManager: NetworkManager = NetworkManagerImpl()
     
     private var screenshotsCollectionView: UICollectionView!
     private var descriptionScrollView: UIScrollView!
@@ -18,11 +19,31 @@ class GameDetailsViewController: UIViewController {
     private var pcRequirementsLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
-    var game: Game!
+    private var selectedGame: Game!
+    
+    var tappedGameName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .yellow
+        fetchGames()
+    }
+    
+    //MARK: - Private methods
+    private func fetchGames() {
+        networkManager.fetchGames(platform: nil) { [weak self] result in
+            switch result {
+            case .success(let games):
+                print("Games fetched succesfully")
+                self?.selectedGame = games.first(where: { $0.name == self?.tappedGameName })
+                self?.setupUI()
+            case .failure(let error):
+                print("Error after Games fetch: \(error)")
+            }
+        }
+    }
+    
+    private func setupUI() {
         setupScreenshotsCollectionView()
         setupDescriptionScrollView()
         setupScreenshotsPageControl()
@@ -51,7 +72,7 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsPageControl() {
-        screenshotsPageControl.numberOfPages = game.shortScreenshots.count
+        screenshotsPageControl.numberOfPages = selectedGame.shortScreenshots.count
         screenshotsPageControl.currentPage = 0
         screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
         screenshotsPageControl.currentPageIndicatorTintColor = .blue
@@ -103,7 +124,7 @@ class GameDetailsViewController: UIViewController {
     private func setupGameDetailsLabel() {
         gameDetailsLabel.font = .systemFont(ofSize: 20)
         gameDetailsLabel.numberOfLines = 20
-        gameDetailsLabel.text = "Title: \(game.name)\nRelease date: \(game.released)"
+        gameDetailsLabel.text = "Title: \(selectedGame.name)\nRelease date: \(selectedGame.released)"
         gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(gameDetailsLabel)
@@ -115,19 +136,19 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupPcRequirementsLabel() {
-        pcRequirementsLabel.isHidden = game.platforms?.first(where: { $0.requirements != nil }) == nil
+        pcRequirementsLabel.isHidden = selectedGame.platforms?.first(where: { $0.requirements != nil }) == nil
         pcRequirementsLabel.font = .systemFont(ofSize: 20)
         pcRequirementsLabel.numberOfLines = 0
         pcRequirementsLabel.lineBreakMode = .byWordWrapping
         pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if let platform = game.platforms?.first(where: { $0.requirements != nil }),
+        if let platform = selectedGame.platforms?.first(where: { $0.requirements != nil }),
            let attributedString = convertToAttributedString(with: platform.requirements?.minimum ?? "") {
             pcRequirementsLabel.attributedText = attributedString
         }
         
         var pcRequirements = ""
-        game.platforms?.forEach({ platform in
+        selectedGame.platforms?.forEach({ platform in
             if platform.requirements != nil {
                 pcRequirements = platform.requirements?.minimum ?? ""
                 pcRequirementsLabel.isHidden = false
@@ -172,14 +193,14 @@ class GameDetailsViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension GameDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        game.shortScreenshots.count
+        selectedGame.shortScreenshots.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "screenshotCell", for: indexPath) as? GameDetailsViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: game.shortScreenshots[indexPath.item])
+        cell.configure(with: selectedGame.shortScreenshots[indexPath.item])
         return cell
     }
 }

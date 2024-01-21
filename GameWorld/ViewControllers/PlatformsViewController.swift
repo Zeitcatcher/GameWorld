@@ -215,11 +215,11 @@ extension PlatformsViewController: UICollectionViewDelegate {
         print("Navigation Controller: \(String(describing: navigationController))")
         let gamesVC = GamesByPlatformViewController()
         print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
-        gamesVC.allGames = games.filter {
-            $0.platforms?.contains(where: {
-                $0.platform.name == selectedPlatforms[indexPath.item].name
-            }) ?? false
-        }
+//        gamesVC.allGames = games.filter {
+//            $0.platforms?.contains(where: {
+//                $0.platform.name == selectedPlatforms[indexPath.item].name
+//            }) ?? false
+//        }
 //        gamesVC.allGames.forEach { game in
 //            print("transfered games are: \(game.name)")
 //        }

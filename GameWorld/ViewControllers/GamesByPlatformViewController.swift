@@ -14,7 +14,7 @@ final class GamesByPlatformViewController: UIViewController {
     private var selectedPlatformLabel = UILabel()
     private var sortingButton = UIButton()
     
-    var allGames: [Game] = []
+    private var allGames: [Game] = []
     var selectedPlatform: Platform!
     
     override func viewDidLoad() {
@@ -131,7 +131,8 @@ extension GamesByPlatformViewController: UICollectionViewDelegateFlowLayout {
 extension GamesByPlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailsVC = GameDetailsViewController()
-        detailsVC.game = allGames[indexPath.item]
+        detailsVC.tappedGameName = allGames[indexPath.item].name
+        print("---------- \(allGames[indexPath.item])")
         navigationController?.pushViewController(detailsVC, animated: true)
     }
 }
