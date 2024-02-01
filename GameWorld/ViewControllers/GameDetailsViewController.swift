@@ -134,7 +134,7 @@ class GameDetailsViewController: UIViewController {
     private func setupGameDetailsLabel() {
         gameDetailsLabel.font = .systemFont(ofSize: 20)
         gameDetailsLabel.numberOfLines = 20
-        gameDetailsLabel.text = "Title: \(selectedGame.name)\nRelease date: \(selectedGame.released)"
+        gameDetailsLabel.text = "Title: \(selectedGame.name)\nRelease date: \(selectedGame.released ?? "n/a")"
         gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(gameDetailsLabel)
