@@ -44,9 +44,9 @@ final class PlatformsViewController: UIViewController {
     //MARK: - Private Methods
     private func setupUI() {
         fetchPlatforms()
-        setupPlatformsCollectionView()
-        setupFilterButtons()
         setupHeaderLabel()
+        setupFilterButtons()
+        setupPlatformsCollectionView()
         
         view.backgroundColor = .white
     }
@@ -82,10 +82,10 @@ final class PlatformsViewController: UIViewController {
         platformsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
+            platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            platformsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            platformsCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75),
-            platformsCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55)
+            platformsCollectionView.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 16)
         ])
     }
     
@@ -107,7 +107,7 @@ final class PlatformsViewController: UIViewController {
                 mobileFilterButton
             ]
         )
-        buttonStackView.axis = .vertical
+        buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         buttonStackView.alignment = .fill
         buttonStackView.spacing = 20
@@ -117,9 +117,9 @@ final class PlatformsViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            buttonStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55),
-            buttonStackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.13)
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            buttonStackView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 96),
+            buttonStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.05)
         ])
     }
     
@@ -130,7 +130,6 @@ final class PlatformsViewController: UIViewController {
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(filterPlatforms(_:)), for: .touchUpInside)
         button.tag = type.rawValue
-        //        button.transform = CGAffineTransform(rotationAngle: .pi / -2)
         return button
     }
     
@@ -172,8 +171,8 @@ final class PlatformsViewController: UIViewController {
         view.addSubview(headerLabel)
         
         NSLayoutConstraint.activate([
+            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            headerLabel.bottomAnchor.constraint(equalTo: platformsCollectionView.topAnchor, constant: -32),
             headerLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             headerLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15)
         ])
@@ -203,7 +202,7 @@ extension PlatformsViewController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegetaFlowLayout
 extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.size.width - 48, height: collectionView.bounds.size.height)
+        return CGSize(width: collectionView.bounds.size.width * 0.7, height: collectionView.bounds.size.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
