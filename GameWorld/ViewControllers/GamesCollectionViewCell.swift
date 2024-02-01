@@ -29,7 +29,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with game: Game) {
-        gameLabel.text = "\(game.name)\n\(game.released)"
+        gameLabel.text = "\(game.name)\n\(game.released ?? "n/a")"
         imageURL = URL(string: game.backgroundImage ?? "")
     }
     
