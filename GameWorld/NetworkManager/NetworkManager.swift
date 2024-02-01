@@ -29,6 +29,7 @@ struct Payload<Data: Decodable>: Decodable {
 protocol NetworkManager {
     func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Payload<Model>, Error>) -> Void)
     func fetchGames(platform: Platform?, completion: @escaping(Result<[Game], Error>) -> Void)
+    func fetchGame(gameName: String, completion: @escaping(Result<[Game], Error>) -> Void)
     func fetchPlatforms(completion: @escaping(Result<[Platform], Error>) -> Void)
 }
 
@@ -41,6 +42,7 @@ final class NetworkManagerImpl: NetworkManager {
     private enum Endpoint {
         case games(Platform?)
         case platforms
+        case game(name: String)
     }
     
     init() {}
@@ -108,6 +110,27 @@ final class NetworkManagerImpl: NetworkManager {
         }
     }
     
+    func fetchGame(gameName: String, completion: @escaping (Result<[Game], Error>) -> Void) {
+        let urlRequest: URLRequest
+        
+        do {
+            urlRequest = try self.urlRequest(for: .game(name: gameName))
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        fetch(urlRequest: urlRequest) { (result: Result<Payload<[Game]>, Error>) in
+            switch result {
+            case .success(let payload):
+//                let filteredGames = payload.results.filter { $0.platforms != nil && $0.backgroundImage != nil }
+                completion(.success(payload.results))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func fetchPlatforms(completion: @escaping (Result<[Platform], Error>) -> Void) {
         let urlRequest: URLRequest
         
@@ -159,11 +182,15 @@ final class NetworkManagerImpl: NetworkManager {
             }
         case .platforms:
             components.path = "/api/platforms"
+        case .game(let name):
+            components.path = "/api/games"
+            queryItems.append(URLQueryItem(name: "search", value: name))
+            print("------------------ queryItems: \(queryItems)")
         }
         
         
         components.queryItems = queryItems
-    
+        print("------------------ \(components)")
         guard let url = components.url else {
             throw URLBuildingError.invalidURL
         }

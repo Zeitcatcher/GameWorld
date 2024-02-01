@@ -54,12 +54,14 @@ final class PlatformsViewController: UIViewController {
     private func fetchPlatforms() {
         print("Starting fetching Platforms in PlatformVC")
         networkManager.fetchPlatforms { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let platforms):
                 print("Platforms fetched succesfully")
-                self?.platforms = platforms.sorted { $0.name < $1.name }
-                self?.selectedPlatforms = platforms.sorted { $0.name < $1.name }
-                self?.platformsCollectionView.reloadData()
+                self.platforms = platforms.sorted { $0.name < $1.name }
+                self.selectedPlatforms = platforms.sorted { $0.name < $1.name }
+                self.platformsCollectionView.reloadData()
             case .failure(let error):
                 print("Error after Platform fetch: \(error)")
             }

@@ -10,31 +10,33 @@ import UIKit
 class GameDetailsViewController: UIViewController {
     private let networkManager: NetworkManager = NetworkManagerImpl()
     
-    private var screenshotsCollectionView: UICollectionView!
-    private var descriptionScrollView: UIScrollView!
+    private lazy var screenshotsCollectionView: UICollectionView = createScreenshotsCollectionView()
+    private lazy var descriptionScrollView: UIScrollView = createDescriptionScrollView()
     private var contentView = UIView()
     private var gameDetailsLabel = UILabel()
     private var pcRequirementsLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
-    private var selectedGame: Game!
+    var selectedGame: Game!
     
     var tappedGameName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .yellow
-        fetchGames()
+        fetchGame()
+//        setupUI()
     }
     
     //MARK: - Private methods
-    private func fetchGames() {
-        networkManager.fetchGames(platform: nil) { [weak self] result in
+    private func fetchGame() {
+        networkManager.fetchGame(gameName: tappedGameName) { [weak self] result in
+            guard let self = self else { return }
             switch result {
-            case .success(let games):
+            case .success(let game):
                 print("Games fetched succesfully")
-                self?.selectedGame = games.first(where: { $0.name == self?.tappedGameName })
-                self?.setupUI()
+                self.selectedGame = game.first
+                self.setupUI()
             case .failure(let error):
                 print("Error after Games fetch: \(error)")
             }
@@ -47,7 +49,7 @@ class GameDetailsViewController: UIViewController {
         setupScreenshotsPageControl()
     }
     
-    private func setupScreenshotsCollectionView() {
+    private func createScreenshotsCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
@@ -60,7 +62,22 @@ class GameDetailsViewController: UIViewController {
         screenshotsCollectionView.showsHorizontalScrollIndicator = false
         screenshotsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        return screenshotsCollectionView
+    }
+    
+    private func createDescriptionScrollView() -> UIScrollView {
+        descriptionScrollView = UIScrollView()
+        descriptionScrollView.backgroundColor = .white
+        descriptionScrollView.layer.cornerRadius = 20
+        descriptionScrollView.showsHorizontalScrollIndicator = false
+        descriptionScrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return descriptionScrollView
+    }
+    
+    private func setupScreenshotsCollectionView() {
         view.addSubview(screenshotsCollectionView)
+
         NSLayoutConstraint.activate([
             screenshotsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             screenshotsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -86,11 +103,6 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupDescriptionScrollView() {
-        descriptionScrollView = UIScrollView()
-        descriptionScrollView.backgroundColor = .white
-        descriptionScrollView.layer.cornerRadius = 20
-        descriptionScrollView.showsHorizontalScrollIndicator = false
-        descriptionScrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionScrollView)
         
         NSLayoutConstraint.activate([

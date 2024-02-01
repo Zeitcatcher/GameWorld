@@ -31,11 +31,13 @@ final class GamesByPlatformViewController: UIViewController {
     //MARK: - Private Methods
     private func fetchGames() {
         networkManager.fetchGames(platform: selectedPlatform) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let games):
                 print("Games fetched succesfully")
-                self?.allGames = games.sorted { $0.name > $1.name }
-                self?.gamesCollectionView.reloadData()
+                self.allGames = games.sorted { $0.name > $1.name }
+                self.gamesCollectionView.reloadData()
             case .failure(let error):
                 print("Error after Games fetch: \(error)")
             }
@@ -132,6 +134,7 @@ extension GamesByPlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailsVC = GameDetailsViewController()
         detailsVC.tappedGameName = allGames[indexPath.item].name
+        detailsVC.selectedGame = allGames[indexPath.item]
         print("---------- \(allGames[indexPath.item])")
         navigationController?.pushViewController(detailsVC, animated: true)
     }
