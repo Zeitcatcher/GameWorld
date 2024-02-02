@@ -48,7 +48,7 @@ final class PlatformsViewController: UIViewController {
         setupFilterButtons()
         setupPlatformsCollectionView()
         
-        view.backgroundColor = .white
+        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
     }
     
     private func fetchPlatforms() {
@@ -73,6 +73,7 @@ final class PlatformsViewController: UIViewController {
         layout.scrollDirection = .horizontal
         
         platformsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        platformsCollectionView.backgroundColor = UIColor.clear
         platformsCollectionView.register(PlatformsCollectionViewCell.self, forCellWithReuseIdentifier: "platformCell")
         platformsCollectionView.delegate = self
         platformsCollectionView.dataSource = self
@@ -85,7 +86,7 @@ final class PlatformsViewController: UIViewController {
             platformsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
             platformsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             platformsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            platformsCollectionView.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 16)
+            platformsCollectionView.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 32)
         ])
     }
     
@@ -118,14 +119,16 @@ final class PlatformsViewController: UIViewController {
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            buttonStackView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 96),
+            buttonStackView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 64),
             buttonStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.05)
         ])
     }
     
     private func createFilterButton(title: String, type: PlatformType) -> UIButton {
         let button = UIButton(type: .system)
-        button.backgroundColor = .red
+        button.backgroundColor = UIColor.clear
+        button.setTitleColor(#colorLiteral(red: 1, green: 0.6176686287, blue: 0.2882549167, alpha: 1), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitle(title, for: .normal)
         button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(filterPlatforms(_:)), for: .touchUpInside)
@@ -165,6 +168,7 @@ final class PlatformsViewController: UIViewController {
         headerLabel.text = "Explore the Games"
         headerLabel.font = UIFont.boldSystemFont(ofSize: 48)
         headerLabel.numberOfLines = 2
+        headerLabel.textColor = .white
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         
