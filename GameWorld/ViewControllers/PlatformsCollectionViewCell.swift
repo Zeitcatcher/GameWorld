@@ -31,7 +31,6 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         configureImageView()
         configureLabel()
-        setupConstraints()
     }
     
     private func configureImageView() {
@@ -39,7 +38,15 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         platformImageView.layer.cornerRadius = 20
         platformImageView.clipsToBounds = true
         platformImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(platformImageView)
+        
+        NSLayoutConstraint.activate([
+            platformImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            platformImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            platformImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
+            platformImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor)
+        ])
     }
 
     private func configureLabel() {
@@ -50,7 +57,15 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         platformLabel.layer.cornerRadius = 20
         platformLabel.clipsToBounds = true
         platformLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(platformLabel)
+        
+        NSLayoutConstraint.activate([
+            platformLabel.topAnchor.constraint(equalTo: platformImageView.bottomAnchor),
+            platformLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            platformLabel.widthAnchor.constraint(equalTo: platformImageView.widthAnchor),
+            platformLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
     }
     
     func configure(with platform: Platform) {
@@ -64,19 +79,5 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
     private func updateImage() {
         guard let imageURL = imageURL else { return }
         platformImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            platformImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            platformImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            platformImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.85),
-            platformImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            
-            platformLabel.topAnchor.constraint(equalTo: platformImageView.bottomAnchor),
-            platformLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            platformLabel.widthAnchor.constraint(equalTo: platformImageView.widthAnchor),
-            platformLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
     }
 }

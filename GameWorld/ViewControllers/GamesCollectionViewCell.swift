@@ -21,7 +21,6 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -43,27 +42,29 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         gameImageView.contentMode = .scaleAspectFill
         gameImageView.clipsToBounds = true
         gameImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(gameImageView)
+        
+        NSLayoutConstraint.activate([
+            gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            gameImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40)
+        ])
     }
     
     private func setupLabel() {
         gameLabel.numberOfLines = 2
         gameLabel.layer.cornerRadius = 5
-        gameLabel.backgroundColor = .white
+        gameLabel.textColor = .red
         gameLabel.textAlignment = .center
         gameLabel.clipsToBounds = true
         gameLabel.font = UIFont.systemFont(ofSize: 16)
         gameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(gameLabel)
-    }
-    
-    private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
-            gameImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            gameImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gameImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            gameImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -40),
-            
             gameLabel.topAnchor.constraint(equalTo: gameImageView.bottomAnchor),
             gameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             gameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
