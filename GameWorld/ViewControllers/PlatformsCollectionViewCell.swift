@@ -43,7 +43,8 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
     }
 
     private func configureLabel() {
-        platformLabel.backgroundColor = .white
+        platformLabel.backgroundColor = UIColor.clear
+        platformLabel.textColor = .red
         platformLabel.font = UIFont.systemFont(ofSize: 20)
         platformLabel.textAlignment = .center
         platformLabel.layer.cornerRadius = 20
