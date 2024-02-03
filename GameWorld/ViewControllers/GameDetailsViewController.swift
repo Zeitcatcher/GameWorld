@@ -14,7 +14,7 @@ class GameDetailsViewController: UIViewController {
     private lazy var descriptionScrollView: UIScrollView = createDescriptionScrollView()
     private var contentView = UIView()
     private var gameDetailsLabel = UILabel()
-    private var pcRequirementsLabel = UILabel()
+    private var descriptionLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
     private var gameDescription = "No text"
@@ -35,7 +35,6 @@ class GameDetailsViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let game):
-                print("Games fetched succesfully")
                 self.selectedGame = game.first
                 self.fetchDescription()
                 self.setupUI()
@@ -159,26 +158,25 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupPcRequirementsLabel() {
-        pcRequirementsLabel.numberOfLines = 0
-        pcRequirementsLabel.lineBreakMode = .byWordWrapping
-        pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.lineBreakMode = .byWordWrapping
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let attributedString = convertToAttributedString(with: gameDescription)
         let styledHtmlString = styleHtmlString(htmlString: gameDescription)
 
-        pcRequirementsLabel.attributedText = attributedString
+        descriptionLabel.attributedText = attributedString
         
         if let attributedString = convertToAttributedString(with: styledHtmlString) {
-            pcRequirementsLabel.attributedText = attributedString
+            descriptionLabel.attributedText = attributedString
         }
-        print("Label: \(pcRequirementsLabel.text ?? "No text")")
-        contentView.addSubview(pcRequirementsLabel)
+        contentView.addSubview(descriptionLabel)
         
         NSLayoutConstraint.activate([
-            pcRequirementsLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
-            pcRequirementsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            pcRequirementsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            pcRequirementsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            descriptionLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
     
@@ -187,10 +185,8 @@ class GameDetailsViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let game):
-                print("Games fetched succesfully")
                 self.gameDescription = game.description ?? ""
                 setupPcRequirementsLabel()
-                print("Game Description: \(game.description ?? "")")
             case .failure(let error):
                 print("Error after Game fetch: \(error)")
             }
