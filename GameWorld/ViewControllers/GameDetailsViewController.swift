@@ -17,7 +17,7 @@ class GameDetailsViewController: UIViewController {
     private var descriptionLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
-    private var gameDescription = "No description available"
+    private var gameDescription = ""
     
     var selectedGame: Game?
     var tappedGameName: String = ""
@@ -132,8 +132,6 @@ class GameDetailsViewController: UIViewController {
             gameDetailsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             gameDetailsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
-        
-        setupDescriptionLabel()
     }
     
     private func fetchGameDescription() {

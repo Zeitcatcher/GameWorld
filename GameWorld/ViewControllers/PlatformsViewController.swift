@@ -25,12 +25,12 @@ final class PlatformsViewController: UIViewController {
     
     private var headerLabel = UILabel()
     
-    private var allFilterButton: UIButton!
-    private var desktopFilterButton: UIButton!
-    private var consoleFilterButton: UIButton!
-    private var mobileFilterButton: UIButton!
+    private var allFilterButton = UIButton()
+    private var desktopFilterButton = UIButton()
+    private var consoleFilterButton = UIButton()
+    private var mobileFilterButton = UIButton()
     
-    private var buttonStackView: UIStackView!
+    private var buttonStackView = UIStackView()
     
     private var games: [Game] = []
     private var platforms: [Platform] = []
@@ -142,16 +142,11 @@ final class PlatformsViewController: UIViewController {
         case .all:
             selectedPlatforms = platforms
         case .pc:
-            print(platforms)
             selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-            print(platforms)
             selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            print(platforms)
             selectedPlatforms = platforms.filter { mobile.contains($0.name) }
-            print("---------)")
-            print(platforms)
         }
                 
         platformsCollectionView.reloadData()

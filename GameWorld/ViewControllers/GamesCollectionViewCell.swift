@@ -76,6 +76,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
         gameImageView.kf.cancelDownloadTask()
 
         guard let imageURL = imageURL else { return }
+        gameImageView.kf.indicatorType = .activity
         gameImageView.kf.setImage(
             with: imageURL,
             placeholder: nil,

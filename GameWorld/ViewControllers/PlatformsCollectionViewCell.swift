@@ -80,6 +80,7 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         platformImageView.kf.cancelDownloadTask()
 
         guard let imageURL = imageURL else { return }
+        platformImageView.kf.indicatorType = .activity
         platformImageView.kf.setImage(
             with: imageURL,
             placeholder: nil,

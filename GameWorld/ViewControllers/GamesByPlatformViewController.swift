@@ -10,7 +10,7 @@ import UIKit
 final class GamesByPlatformViewController: UIViewController {
     private let networkManager: NetworkManager = NetworkManagerImpl()
     
-    private var gamesCollectionView: UICollectionView!
+    private lazy var gamesCollectionView: UICollectionView = createGamesCollectionView()
     private var selectedPlatformLabel = UILabel()
     private var sortingButton = UIButton()
     
@@ -29,12 +29,12 @@ final class GamesByPlatformViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
+
         fetchGames()
         setupSelectedPlatformLabel()
         setupSortingButton()
         setupGamesCollectionView()
-
-        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
     }
     
     //MARK: - Private Methods
@@ -51,17 +51,21 @@ final class GamesByPlatformViewController: UIViewController {
         }
     }
     
-    private func setupGamesCollectionView() {
+    private func createGamesCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        gamesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        gamesCollectionView.backgroundColor = UIColor.clear
-        gamesCollectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
-        gamesCollectionView.dataSource = self
-        gamesCollectionView.delegate = self
-        gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.clear
+        collectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        return collectionView
+    }
+    
+    private func setupGamesCollectionView() {
         view.addSubview(gamesCollectionView)
         
         NSLayoutConstraint.activate([

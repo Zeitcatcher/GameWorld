@@ -10,29 +10,12 @@ struct Game: Codable {
     let name: String
     let released: String?
     let backgroundImage: String?
-    let rating: Double?
-    let ratingsCount: Int?
-//    let metacritic, playtime: Int
-//    let updated: String
-//    let reviewsCount: Int
-    let platforms: [PlatformDetails]?
-//    let genres: [Genre]
-//    let stores: [Store]
-//    let esrbRating: EsrbRating
     let shortScreenshots: [ShortScreenshot]?
     let description: String?
 
     enum CodingKeys: String, CodingKey {
         case id, name, released, description
         case backgroundImage = "background_image"
-        case rating
-        case ratingsCount = "ratings_count"
-//        case metacritic, playtime
-//        case updated
-//        case reviewsCount = "reviews_count"
-        case platforms
-//        case genres, stores
-//        case esrbRating = "esrb_rating"
         case shortScreenshots = "short_screenshots"
     }
 }

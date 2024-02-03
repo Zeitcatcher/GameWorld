@@ -36,6 +36,7 @@ final class GameDetailsViewCell: UICollectionViewCell {
         screenshotImageView.kf.cancelDownloadTask()
 
         guard let imageURL = imageURL else { return }
+        screenshotImageView.kf.indicatorType = .activity
         screenshotImageView.kf.setImage(
             with: imageURL,
             placeholder: nil,
