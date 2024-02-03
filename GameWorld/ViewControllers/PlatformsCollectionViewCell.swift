@@ -77,7 +77,13 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateImage() {
+        platformImageView.kf.cancelDownloadTask()
+
         guard let imageURL = imageURL else { return }
-        platformImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
+        platformImageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [.transition(.fade(0.5))]
+        )
     }
 }

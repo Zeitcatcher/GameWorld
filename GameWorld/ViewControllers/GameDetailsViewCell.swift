@@ -20,7 +20,7 @@ final class GameDetailsViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        setupImageView()
     }
     
     required init?(coder: NSCoder) {
@@ -31,17 +31,22 @@ final class GameDetailsViewCell: UICollectionViewCell {
         imageURL = URL(string: screenshot?.image ?? "")
     }
     
-    //MARK: - Private methods
+    // MARK: - Setup and Update Methods
     private func updateImage() {
+        screenshotImageView.kf.cancelDownloadTask()
+
         guard let imageURL = imageURL else { return }
-        screenshotImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
+        screenshotImageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [.transition(.fade(0.5))]
+        )
     }
     
-    private func setupViews() {
+    private func setupImageView() {
         screenshotImageView.contentMode = .scaleAspectFill
         screenshotImageView.clipsToBounds = true
         screenshotImageView.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(screenshotImageView)
         
         NSLayoutConstraint.activate([

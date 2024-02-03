@@ -74,8 +74,12 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     
     private func updateImage() {
         gameImageView.kf.cancelDownloadTask()
-        if let imageURL {
-            gameImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
-        }
+
+        guard let imageURL = imageURL else { return }
+        gameImageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [.transition(.fade(0.5))]
+        )
     }
 }

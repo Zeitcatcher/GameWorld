@@ -17,7 +17,7 @@ class GameDetailsViewController: UIViewController {
     private var descriptionLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
-    private var gameDescription = "No text"
+    private var gameDescription = "No description available"
     
     var selectedGame: Game?
     var tappedGameName: String = ""
@@ -26,25 +26,25 @@ class GameDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
-        fetchGame()
+        fetchGameDetails()
     }
     
     //MARK: - Private methods
-    private func fetchGame() {
+    private func fetchGameDetails() {
         networkManager.fetchGame(gameName: tappedGameName) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let game):
                 self.selectedGame = game.first
-                self.fetchDescription()
-                self.setupUI()
+                self.fetchGameDescription()
+                self.setupUserInterface()
             case .failure(let error):
-                print("Error after Game fetch: \(error)")
+                print("Error fetching game details: \(error)")
             }
         }
     }
     
-    private func setupUI() {
+    private func setupUserInterface() {
         setupScreenshotsCollectionView()
         setupDescriptionScrollView()
         setupScreenshotsPageControl()
@@ -55,32 +55,30 @@ class GameDetailsViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
 
-        screenshotsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        screenshotsCollectionView.isPagingEnabled = true
-        screenshotsCollectionView.register(GameDetailsViewCell.self, forCellWithReuseIdentifier: "screenshotCell")
-        screenshotsCollectionView.delegate = self
-        screenshotsCollectionView.dataSource = self
-        screenshotsCollectionView.showsHorizontalScrollIndicator = false
-        screenshotsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.isPagingEnabled = true
+        collectionView.register(GameDetailsViewCell.self, forCellWithReuseIdentifier: "screenshotCell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        return screenshotsCollectionView
+        return collectionView
     }
     
     private func createDescriptionScrollView() -> UIScrollView {
-        descriptionScrollView = UIScrollView()
-        descriptionScrollView.backgroundColor = .white
-        descriptionScrollView.layer.cornerRadius = 20
-        descriptionScrollView.showsHorizontalScrollIndicator = false
-        descriptionScrollView.translatesAutoresizingMaskIntoConstraints = false
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .white
+        scrollView.layer.cornerRadius = 20
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        return descriptionScrollView
+        return scrollView
     }
     
     private func setupScreenshotsCollectionView() {
-        screenshotsCollectionView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
-        
         view.addSubview(screenshotsCollectionView)
-
+        screenshotsCollectionView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
         NSLayoutConstraint.activate([
             screenshotsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             screenshotsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -89,29 +87,9 @@ class GameDetailsViewController: UIViewController {
         ])
     }
     
-    private func setupScreenshotsPageControl() {
-        guard let game = selectedGame?.shortScreenshots else { return}
-        
-        screenshotsPageControl.numberOfPages = game.count
-        screenshotsPageControl.currentPage = 0
-        screenshotsPageControl.currentPageIndicatorTintColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
-        screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
-        screenshotsPageControl.pageIndicatorTintColor = .lightGray
-        
-        view.addSubview(screenshotsPageControl)
-        
-        NSLayoutConstraint.activate([
-            screenshotsPageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            screenshotsPageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            screenshotsPageControl.bottomAnchor.constraint(equalTo: descriptionScrollView.topAnchor, constant: -5),
-            screenshotsPageControl.heightAnchor.constraint(equalToConstant: 20)
-        ])
-    }
-    
     private func setupDescriptionScrollView() {
-        descriptionScrollView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
-        
         view.addSubview(descriptionScrollView)
+        descriptionScrollView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
         
         NSLayoutConstraint.activate([
             descriptionScrollView.topAnchor.constraint(equalTo: screenshotsCollectionView.bottomAnchor, constant: -15),
@@ -125,7 +103,6 @@ class GameDetailsViewController: UIViewController {
     
     private func setupContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        
         descriptionScrollView.addSubview(contentView)
         
         NSLayoutConstraint.activate([
@@ -144,8 +121,8 @@ class GameDetailsViewController: UIViewController {
         
         gameDetailsLabel.font = .systemFont(ofSize: 20)
         gameDetailsLabel.textColor = .white
-        gameDetailsLabel.numberOfLines = 20
-        gameDetailsLabel.text = "Title: \(game.name)\nRelease date: \(game.released ?? "n/a")"
+        gameDetailsLabel.numberOfLines = 0
+        gameDetailsLabel.text = "Title: \(game.name)\nRelease date: \(game.released ?? "Not available")"
         gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(gameDetailsLabel)
@@ -155,56 +132,46 @@ class GameDetailsViewController: UIViewController {
             gameDetailsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             gameDetailsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
+        
+        setupDescriptionLabel()
     }
     
-    private func setupPcRequirementsLabel() {
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.lineBreakMode = .byWordWrapping
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        let attributedString = convertToAttributedString(with: gameDescription)
-        let styledHtmlString = styleHtmlString(htmlString: gameDescription)
-
-        descriptionLabel.attributedText = attributedString
-        
-        if let attributedString = convertToAttributedString(with: styledHtmlString) {
-            descriptionLabel.attributedText = attributedString
-        }
-        contentView.addSubview(descriptionLabel)
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-        ])
-    }
-    
-    private func fetchDescription() {
+    private func fetchGameDescription() {
         networkManager.fetchGameDescription(gameID: tappedGameID) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let game):
                 self.gameDescription = game.description ?? ""
-                setupPcRequirementsLabel()
+                setupDescriptionLabel()
             case .failure(let error):
                 print("Error after Game fetch: \(error)")
             }
         }
     }
     
-    private func styleHtmlString(htmlString: String) -> String {
-        let styledHtml = """
-        <style>
-            body { 
-                font-size: 20px;
-                color: white
+    private func setupDescriptionLabel() {
+            descriptionLabel.numberOfLines = 0
+            descriptionLabel.lineBreakMode = .byWordWrapping
+            descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            let attributedString = convertToAttributedString(with: gameDescription)
+            let styledHtmlString = styleHtmlString(htmlString: gameDescription)
+
+            descriptionLabel.attributedText = attributedString
+            
+            if let attributedString = convertToAttributedString(with: styledHtmlString) {
+                descriptionLabel.attributedText = attributedString
             }
-        </style>
-        \(htmlString)
-        """
-        return styledHtml
-    }
+        
+            contentView.addSubview(descriptionLabel)
+            
+            NSLayoutConstraint.activate([
+                descriptionLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
+                descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+                descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+                descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            ])
+        }
     
     private func convertToAttributedString(with htmlString: String) -> NSAttributedString? {
         guard let data = htmlString.data(using: .utf8) else { return nil }
@@ -214,21 +181,52 @@ class GameDetailsViewController: UIViewController {
         ]
         return try? NSAttributedString(data: data, options: options, documentAttributes: nil)
     }
+    
+    private func styleHtmlString(htmlString: String) -> String {
+        let styledHtml = """
+        <style>
+            body {
+                font-size: 20px;
+                color: white
+            }
+        </style>
+        \(htmlString)
+        """
+        return styledHtml
+    }
+    
+    private func setupScreenshotsPageControl() {
+        guard let game = selectedGame?.shortScreenshots else { return }
+        
+        screenshotsPageControl.numberOfPages = game.count
+        screenshotsPageControl.currentPage = 0
+        screenshotsPageControl.currentPageIndicatorTintColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
+        screenshotsPageControl.pageIndicatorTintColor = .lightGray
+        screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(screenshotsPageControl)
+        
+        NSLayoutConstraint.activate([
+            screenshotsPageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            screenshotsPageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            screenshotsPageControl.bottomAnchor.constraint(equalTo: descriptionScrollView.topAnchor, constant: -5),
+            screenshotsPageControl.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension GameDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let game = selectedGame?.shortScreenshots?.count else { return 0 }
-        return game
+        return selectedGame?.shortScreenshots?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "screenshotCell", for: indexPath) as? GameDetailsViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "screenshotCell", for: indexPath) as? GameDetailsViewCell,
+              let screenshot = selectedGame?.shortScreenshots?[indexPath.row] else {
             return UICollectionViewCell()
         }
-        guard let game = selectedGame else { return UICollectionViewCell() }
-        cell.configure(with: game.shortScreenshots?[indexPath.item])
+        cell.configure(with: screenshot)
         return cell
     }
 }
@@ -236,11 +234,11 @@ extension GameDetailsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension GameDetailsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
+        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let width = scrollView.frame.width
-        screenshotsPageControl.currentPage = Int(scrollView.contentOffset.x / width)
+        let pageIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        screenshotsPageControl.currentPage = pageIndex
     }
 }
