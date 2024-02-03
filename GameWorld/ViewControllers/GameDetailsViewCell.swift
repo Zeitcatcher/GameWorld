@@ -27,8 +27,8 @@ final class GameDetailsViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with screenshot: ShortScreenshot) {
-        imageURL = URL(string: screenshot.image)
+    func configure(with screenshot: ShortScreenshot?) {
+        imageURL = URL(string: screenshot?.image ?? "")
     }
     
     //MARK: - Private methods

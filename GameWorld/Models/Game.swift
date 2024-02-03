@@ -19,10 +19,11 @@ struct Game: Codable {
 //    let genres: [Genre]
 //    let stores: [Store]
 //    let esrbRating: EsrbRating
-    let shortScreenshots: [ShortScreenshot]
+    let shortScreenshots: [ShortScreenshot]?
+    let description: String?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, released
+        case id, name, released, description
         case backgroundImage = "background_image"
         case rating
         case ratingsCount = "ratings_count"

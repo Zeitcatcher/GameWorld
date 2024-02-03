@@ -21,15 +21,16 @@ final class GamesByPlatformViewController: UIViewController {
         super.viewDidLoad()
 
         fetchGames()
-        setupGamesCollectionView()
         setupSelectedPlatformLabel()
         setupSortingButton()
+        setupGamesCollectionView()
 
-        view.backgroundColor = .yellow
+        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
     }
     
     //MARK: - Private Methods
     private func fetchGames() {
+        print("Starting fetch games in GamesByPlatformVC")
         networkManager.fetchGames(platform: selectedPlatform) { [weak self] result in
             guard let self = self else { return }
             
@@ -49,47 +50,52 @@ final class GamesByPlatformViewController: UIViewController {
         layout.scrollDirection = .vertical
         
         gamesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        gamesCollectionView.backgroundColor = UIColor.clear
         gamesCollectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
         gamesCollectionView.dataSource = self
         gamesCollectionView.delegate = self
         gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(gamesCollectionView)
+        
         NSLayoutConstraint.activate([
-            gamesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 256),
-            gamesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -96),
-            gamesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
+            gamesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            gamesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            gamesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            gamesCollectionView.topAnchor.constraint(equalTo: selectedPlatformLabel.bottomAnchor, constant: 32)
         ])
     }
     
     private func setupSelectedPlatformLabel() {
         selectedPlatformLabel.text = selectedPlatform.name
         selectedPlatformLabel.font = UIFont.boldSystemFont(ofSize: 32)
-        selectedPlatformLabel.backgroundColor = .green
+        selectedPlatformLabel.textColor = .white
         selectedPlatformLabel.numberOfLines = 2
         selectedPlatformLabel.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(selectedPlatformLabel)
+        
         NSLayoutConstraint.activate([
-            selectedPlatformLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            selectedPlatformLabel.bottomAnchor.constraint(equalTo: gamesCollectionView.topAnchor, constant: -32),
+            selectedPlatformLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            selectedPlatformLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             selectedPlatformLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
-            selectedPlatformLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.10)
+            selectedPlatformLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1)
         ])
     }
     
     private func setupSortingButton() {
         sortingButton.setTitle("Sort the list", for: .normal)
-        sortingButton.backgroundColor = .gray
+        sortingButton.backgroundColor = UIColor.clear
+        sortingButton.setTitleColor(#colorLiteral(red: 1, green: 0.6176686287, blue: 0.2882549167, alpha: 1), for: .normal)
         sortingButton.titleLabel?.numberOfLines = 2
         sortingButton.addTarget(self, action: #selector(sortGames(_:)), for: .touchUpInside)
         sortingButton.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(sortingButton)
+        
         NSLayoutConstraint.activate([
             sortingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            sortingButton.bottomAnchor.constraint(equalTo: gamesCollectionView.topAnchor, constant: -32),
+            sortingButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             sortingButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
             sortingButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1)
         ])
@@ -135,7 +141,8 @@ extension GamesByPlatformViewController: UICollectionViewDelegate {
         let detailsVC = GameDetailsViewController()
         detailsVC.tappedGameName = allGames[indexPath.item].name
         detailsVC.selectedGame = allGames[indexPath.item]
-        print("---------- \(allGames[indexPath.item])")
+        detailsVC.tappedGameID = allGames[indexPath.item].id
+        print("----------------- allGames[indexPath.item].id: \(allGames[indexPath.item])")
         navigationController?.pushViewController(detailsVC, animated: true)
     }
 }

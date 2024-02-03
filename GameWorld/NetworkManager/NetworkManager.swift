@@ -31,6 +31,7 @@ protocol NetworkManager {
     func fetchGames(platform: Platform?, completion: @escaping(Result<[Game], Error>) -> Void)
     func fetchGame(gameName: String, completion: @escaping(Result<[Game], Error>) -> Void)
     func fetchPlatforms(completion: @escaping(Result<[Platform], Error>) -> Void)
+    func fetchGameDescription(gameID: Int, completion: @escaping(Result<Game, Error>) -> Void)
 }
 
 final class NetworkManagerImpl: NetworkManager {
@@ -43,6 +44,7 @@ final class NetworkManagerImpl: NetworkManager {
         case games(Platform?)
         case platforms
         case game(name: String)
+        case description(gameID: Int)
     }
     
     init() {}
@@ -131,6 +133,27 @@ final class NetworkManagerImpl: NetworkManager {
         }
     }
     
+    func fetchGameDescription(gameID: Int, completion: @escaping (Result<Game, Error>) -> Void) {
+        let urlRequest: URLRequest
+        
+        do {
+            urlRequest = try self.urlRequest(for: .description(gameID: gameID))
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        fetch(urlRequest: urlRequest) { (result: Result<Game, Error>) in
+            switch result {
+            case .success(let payload):
+//                let filteredGames = payload.results.filter { $0.platforms != nil && $0.backgroundImage != nil }
+                completion(.success(payload))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func fetchPlatforms(completion: @escaping (Result<[Platform], Error>) -> Void) {
         let urlRequest: URLRequest
         
@@ -186,6 +209,8 @@ final class NetworkManagerImpl: NetworkManager {
             components.path = "/api/games"
             queryItems.append(URLQueryItem(name: "search", value: name))
             print("------------------ queryItems: \(queryItems)")
+        case .description(let gameID):
+            components.path = "/api/games/\(gameID)"
         }
         
         
