@@ -17,15 +17,16 @@ class GameDetailsViewController: UIViewController {
     private var pcRequirementsLabel = UILabel()
     private var screenshotsPageControl = UIPageControl()
     
-    var selectedGame: Game!
+    private var gameDescription = "No text"
     
+    var selectedGame: Game!
     var tappedGameName: String = ""
+    var tappedGameID = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .yellow
+        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
         fetchGame()
-//        setupUI()
     }
     
     //MARK: - Private methods
@@ -36,9 +37,10 @@ class GameDetailsViewController: UIViewController {
             case .success(let game):
                 print("Games fetched succesfully")
                 self.selectedGame = game.first
+                self.fetchDescription()
                 self.setupUI()
             case .failure(let error):
-                print("Error after Games fetch: \(error)")
+                print("Error after Game fetch: \(error)")
             }
         }
     }
@@ -76,6 +78,8 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsCollectionView() {
+        screenshotsCollectionView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
+        
         view.addSubview(screenshotsCollectionView)
 
         NSLayoutConstraint.activate([
@@ -87,13 +91,14 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsPageControl() {
-        screenshotsPageControl.numberOfPages = selectedGame.shortScreenshots.count
+        screenshotsPageControl.numberOfPages = selectedGame.shortScreenshots?.count ?? 0
         screenshotsPageControl.currentPage = 0
+        screenshotsPageControl.currentPageIndicatorTintColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
         screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
-        screenshotsPageControl.currentPageIndicatorTintColor = .blue
         screenshotsPageControl.pageIndicatorTintColor = .lightGray
         
         view.addSubview(screenshotsPageControl)
+        
         NSLayoutConstraint.activate([
             screenshotsPageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             screenshotsPageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -103,6 +108,8 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupDescriptionScrollView() {
+        descriptionScrollView.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
+        
         view.addSubview(descriptionScrollView)
         
         NSLayoutConstraint.activate([
@@ -117,27 +124,30 @@ class GameDetailsViewController: UIViewController {
     
     private func setupContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        
         descriptionScrollView.addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.topAnchor, constant: 8),
+            contentView.leadingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.leadingAnchor, constant: 8),
+            contentView.trailingAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.trailingAnchor, constant: -8),
             contentView.bottomAnchor.constraint(equalTo: descriptionScrollView.contentLayoutGuide.bottomAnchor, constant: -10),
             contentView.centerXAnchor.constraint(equalTo: descriptionScrollView.centerXAnchor)
         ])
         
         setupGameDetailsLabel()
-        setupPcRequirementsLabel()
+//        setupPcRequirementsLabel()
     }
     
     private func setupGameDetailsLabel() {
         gameDetailsLabel.font = .systemFont(ofSize: 20)
+        gameDetailsLabel.textColor = .white
         gameDetailsLabel.numberOfLines = 20
         gameDetailsLabel.text = "Title: \(selectedGame.name)\nRelease date: \(selectedGame.released ?? "n/a")"
         gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(gameDetailsLabel)
+        
         NSLayoutConstraint.activate([
             gameDetailsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             gameDetailsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
@@ -146,32 +156,21 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupPcRequirementsLabel() {
-        pcRequirementsLabel.isHidden = selectedGame.platforms?.first(where: { $0.requirements != nil }) == nil
-        pcRequirementsLabel.font = .systemFont(ofSize: 20)
         pcRequirementsLabel.numberOfLines = 0
         pcRequirementsLabel.lineBreakMode = .byWordWrapping
         pcRequirementsLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        if let platform = selectedGame.platforms?.first(where: { $0.requirements != nil }),
-           let attributedString = convertToAttributedString(with: platform.requirements?.minimum ?? "") {
-            pcRequirementsLabel.attributedText = attributedString
-        }
-        
-        var pcRequirements = ""
-        selectedGame.platforms?.forEach({ platform in
-            if platform.requirements != nil {
-                pcRequirements = platform.requirements?.minimum ?? ""
-                pcRequirementsLabel.isHidden = false
-            }
-        })
+        let attributedString = convertToAttributedString(with: gameDescription)
+        let styledHtmlString = styleHtmlString(htmlString: gameDescription)
 
-        let styledHtmlString = styleHtmlString(htmlString: pcRequirements)
+        pcRequirementsLabel.attributedText = attributedString
         
         if let attributedString = convertToAttributedString(with: styledHtmlString) {
             pcRequirementsLabel.attributedText = attributedString
         }
-        
+        print("Label: \(pcRequirementsLabel.text ?? "No text")")
         contentView.addSubview(pcRequirementsLabel)
+        
         NSLayoutConstraint.activate([
             pcRequirementsLabel.topAnchor.constraint(equalTo: gameDetailsLabel.bottomAnchor, constant: 10),
             pcRequirementsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
@@ -180,10 +179,28 @@ class GameDetailsViewController: UIViewController {
         ])
     }
     
+    private func fetchDescription() {
+        networkManager.fetchGameDescription(gameID: tappedGameID) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let game):
+                print("Games fetched succesfully")
+                self.gameDescription = game.description ?? ""
+                setupPcRequirementsLabel()
+                print("Game Description: \(game.description ?? "")")
+            case .failure(let error):
+                print("Error after Game fetch: \(error)")
+            }
+        }
+    }
+    
     private func styleHtmlString(htmlString: String) -> String {
         let styledHtml = """
         <style>
-            body { font-size: 18px; }
+            body { 
+                font-size: 20px;
+                color: white
+            }
         </style>
         \(htmlString)
         """
@@ -203,14 +220,14 @@ class GameDetailsViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension GameDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        selectedGame.shortScreenshots.count
+        selectedGame.shortScreenshots?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "screenshotCell", for: indexPath) as? GameDetailsViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: selectedGame.shortScreenshots[indexPath.item])
+        cell.configure(with: selectedGame.shortScreenshots?[indexPath.item])
         return cell
     }
 }

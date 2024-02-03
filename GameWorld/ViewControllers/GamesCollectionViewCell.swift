@@ -56,7 +56,7 @@ final class GamesCollectionViewCell: UICollectionViewCell {
     private func setupLabel() {
         gameLabel.numberOfLines = 2
         gameLabel.layer.cornerRadius = 5
-        gameLabel.textColor = .red
+        gameLabel.textColor = .white
         gameLabel.textAlignment = .center
         gameLabel.clipsToBounds = true
         gameLabel.font = UIFont.systemFont(ofSize: 16)
