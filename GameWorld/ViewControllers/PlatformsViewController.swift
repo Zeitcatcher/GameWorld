@@ -218,7 +218,7 @@ extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
 extension PlatformsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Navigation Controller: \(String(describing: navigationController))")
-        let gamesVC = GamesByPlatformViewController()
+        let gamesVC = GamesByPlatformViewController(selectedPlatform: selectedPlatforms[indexPath.item])
         print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
 //        gamesVC.allGames = games.filter {
 //            $0.platforms?.contains(where: {
@@ -228,7 +228,7 @@ extension PlatformsViewController: UICollectionViewDelegate {
 //        gamesVC.allGames.forEach { game in
 //            print("transfered games are: \(game.name)")
 //        }
-        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item]
+//        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item]
 //        print("didSelectPlatform on PlatformsVC performed")
         
 

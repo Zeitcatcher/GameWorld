@@ -19,7 +19,7 @@ class GameDetailsViewController: UIViewController {
     
     private var gameDescription = "No text"
     
-    var selectedGame: Game!
+    var selectedGame: Game?
     var tappedGameName: String = ""
     var tappedGameID = 0
     
@@ -91,7 +91,9 @@ class GameDetailsViewController: UIViewController {
     }
     
     private func setupScreenshotsPageControl() {
-        screenshotsPageControl.numberOfPages = selectedGame.shortScreenshots?.count ?? 0
+        guard let game = selectedGame?.shortScreenshots else { return}
+        
+        screenshotsPageControl.numberOfPages = game.count
         screenshotsPageControl.currentPage = 0
         screenshotsPageControl.currentPageIndicatorTintColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
         screenshotsPageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -136,14 +138,15 @@ class GameDetailsViewController: UIViewController {
         ])
         
         setupGameDetailsLabel()
-//        setupPcRequirementsLabel()
     }
     
     private func setupGameDetailsLabel() {
+        guard let game = selectedGame else { return }
+        
         gameDetailsLabel.font = .systemFont(ofSize: 20)
         gameDetailsLabel.textColor = .white
         gameDetailsLabel.numberOfLines = 20
-        gameDetailsLabel.text = "Title: \(selectedGame.name)\nRelease date: \(selectedGame.released ?? "n/a")"
+        gameDetailsLabel.text = "Title: \(game.name)\nRelease date: \(game.released ?? "n/a")"
         gameDetailsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(gameDetailsLabel)
@@ -220,14 +223,16 @@ class GameDetailsViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension GameDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        selectedGame.shortScreenshots?.count ?? 0
+        guard let game = selectedGame?.shortScreenshots?.count else { return 0 }
+        return game
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "screenshotCell", for: indexPath) as? GameDetailsViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: selectedGame.shortScreenshots?[indexPath.item])
+        guard let game = selectedGame else { return UICollectionViewCell() }
+        cell.configure(with: game.shortScreenshots?[indexPath.item])
         return cell
     }
 }

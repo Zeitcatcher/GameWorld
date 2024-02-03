@@ -15,7 +15,16 @@ final class GamesByPlatformViewController: UIViewController {
     private var sortingButton = UIButton()
     
     private var allGames: [Game] = []
-    var selectedPlatform: Platform!
+    var selectedPlatform: Platform
+    
+    init(selectedPlatform: Platform) {
+        self.selectedPlatform = selectedPlatform
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +149,7 @@ extension GamesByPlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailsVC = GameDetailsViewController()
         detailsVC.tappedGameName = allGames[indexPath.item].name
-        detailsVC.selectedGame = allGames[indexPath.item]
+//        detailsVC.selectedGame = allGames[indexPath.item]
         detailsVC.tappedGameID = allGames[indexPath.item].id
         print("----------------- allGames[indexPath.item].id: \(allGames[indexPath.item])")
         navigationController?.pushViewController(detailsVC, animated: true)

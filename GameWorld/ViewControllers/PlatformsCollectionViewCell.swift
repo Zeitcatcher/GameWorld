@@ -28,6 +28,14 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with platform: Platform) {
+        platformLabel.text = platform.name
+        if let url = platform.backgroundImageUrl {
+            imageURL = URL(string: url)
+        }
+    }
+    
+    //MARK: Private methods
     private func setupViews() {
         configureImageView()
         configureLabel()
@@ -67,14 +75,6 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
             platformLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
-    func configure(with platform: Platform) {
-        platformLabel.text = platform.name
-        if let url = platform.backgroundImageUrl {
-            imageURL = URL(string: url)
-        }
-    }
-    
     
     private func updateImage() {
         guard let imageURL = imageURL else { return }
