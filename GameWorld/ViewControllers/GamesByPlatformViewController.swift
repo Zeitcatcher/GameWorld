@@ -10,33 +10,39 @@ import UIKit
 final class GamesByPlatformViewController: UIViewController {
     private let networkManager: NetworkManager = NetworkManagerImpl()
     
-    private var gamesCollectionView: UICollectionView!
+    private lazy var gamesCollectionView: UICollectionView = createGamesCollectionView()
     private var selectedPlatformLabel = UILabel()
     private var sortingButton = UIButton()
     
     private var allGames: [Game] = []
-    var selectedPlatform: Platform!
+    var selectedPlatform: Platform
+    
+    init(selectedPlatform: Platform) {
+        self.selectedPlatform = selectedPlatform
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
 
         fetchGames()
         setupSelectedPlatformLabel()
         setupSortingButton()
         setupGamesCollectionView()
-
-        view.backgroundColor = #colorLiteral(red: 0.06452215463, green: 0.215518266, blue: 0.319472909, alpha: 1)
     }
     
     //MARK: - Private Methods
     private func fetchGames() {
-        print("Starting fetch games in GamesByPlatformVC")
         networkManager.fetchGames(platform: selectedPlatform) { [weak self] result in
             guard let self = self else { return }
-            
             switch result {
             case .success(let games):
-                print("Games fetched succesfully")
                 self.allGames = games.sorted { $0.name > $1.name }
                 self.gamesCollectionView.reloadData()
             case .failure(let error):
@@ -45,17 +51,21 @@ final class GamesByPlatformViewController: UIViewController {
         }
     }
     
-    private func setupGamesCollectionView() {
+    private func createGamesCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
-        gamesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        gamesCollectionView.backgroundColor = UIColor.clear
-        gamesCollectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
-        gamesCollectionView.dataSource = self
-        gamesCollectionView.delegate = self
-        gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.clear
+        collectionView.register(GamesCollectionViewCell.self, forCellWithReuseIdentifier: "gameCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        return collectionView
+    }
+    
+    private func setupGamesCollectionView() {
         view.addSubview(gamesCollectionView)
         
         NSLayoutConstraint.activate([
@@ -140,9 +150,8 @@ extension GamesByPlatformViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailsVC = GameDetailsViewController()
         detailsVC.tappedGameName = allGames[indexPath.item].name
-        detailsVC.selectedGame = allGames[indexPath.item]
         detailsVC.tappedGameID = allGames[indexPath.item].id
-        print("----------------- allGames[indexPath.item].id: \(allGames[indexPath.item])")
+        
         navigationController?.pushViewController(detailsVC, animated: true)
     }
 }

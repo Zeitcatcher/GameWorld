@@ -7,24 +7,15 @@
 
 import Foundation
 
-enum JSONURL: String {
-    case base = "https://api.rawg.io/api/"
-    case platform = "https://api.rawg.io/api/platforms?key=2bc11399a7354494b1b6d068b5a7506b"
-    case game = "https://api.rawg.io/api/games?key=2bc11399a7354494b1b6d068b5a7506b"
-}
-
 enum NetworkError: Error {
     case invalidURL
     case noData
     case decodingError
 }
 
-
 struct Payload<Data: Decodable>: Decodable {
     let results: Data
 }
-
-// ViewController -> GamesService -> NetworkManager
 
 protocol NetworkManager {
     func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Payload<Model>, Error>) -> Void)
@@ -49,25 +40,8 @@ final class NetworkManagerImpl: NetworkManager {
     
     init() {}
     
-//    func fetchPlatforms(completion: @escaping(Result<PlatformsCollection, NetworkError>) -> Void) {
-//        fetch(PlatformsCollection.self, from: JsonURL.platform.rawValue) { result in
-//            switch result {
-//            case .success(let platformsCollection):
-//                completion(.success(platformsCollection))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//    }
-    
     func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Model, Error>) -> Void) {
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            // Вывод всего Json для поиска ошибки
-//            if let data = data {
-//                let responseString = String(data: data, encoding: .utf8)
-//                print("Response String: \(responseString ?? "nil")")
-//            }
-            
             guard let data = data else {
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.noData))
@@ -104,7 +78,6 @@ final class NetworkManagerImpl: NetworkManager {
         fetch(urlRequest: urlRequest) { (result: Result<Payload<[Game]>, Error>) in
             switch result {
             case .success(let payload):
-//                let filteredGames = payload.results.filter { $0.platforms != nil && $0.backgroundImage != nil }
                 completion(.success(payload.results))
             case .failure(let error):
                 completion(.failure(error))
@@ -125,7 +98,6 @@ final class NetworkManagerImpl: NetworkManager {
         fetch(urlRequest: urlRequest) { (result: Result<Payload<[Game]>, Error>) in
             switch result {
             case .success(let payload):
-//                let filteredGames = payload.results.filter { $0.platforms != nil && $0.backgroundImage != nil }
                 completion(.success(payload.results))
             case .failure(let error):
                 completion(.failure(error))
@@ -146,7 +118,6 @@ final class NetworkManagerImpl: NetworkManager {
         fetch(urlRequest: urlRequest) { (result: Result<Game, Error>) in
             switch result {
             case .success(let payload):
-//                let filteredGames = payload.results.filter { $0.platforms != nil && $0.backgroundImage != nil }
                 completion(.success(payload))
             case .failure(let error):
                 completion(.failure(error))
@@ -174,18 +145,6 @@ final class NetworkManagerImpl: NetworkManager {
         }
     }
     
-//    func fetchImage(from url: URL, complition: @escaping(Result<Data, NetworkError>) -> Void) {
-//        DispatchQueue.global().async {
-//            guard let imageData = try? Data(contentsOf: url) else {
-//                complition(.failure(.noData))
-//                return
-//            }
-//            DispatchQueue.main.async {
-//                complition(.success(imageData))
-//            }
-//        }
-//    }
-    
     //MARK: - Private Methods
     private func urlRequest(for endpoint: Endpoint) throws -> URLRequest {
         var components = URLComponents()
@@ -208,14 +167,11 @@ final class NetworkManagerImpl: NetworkManager {
         case .game(let name):
             components.path = "/api/games"
             queryItems.append(URLQueryItem(name: "search", value: name))
-            print("------------------ queryItems: \(queryItems)")
         case .description(let gameID):
             components.path = "/api/games/\(gameID)"
         }
         
-        
         components.queryItems = queryItems
-        print("------------------ \(components)")
         guard let url = components.url else {
             throw URLBuildingError.invalidURL
         }

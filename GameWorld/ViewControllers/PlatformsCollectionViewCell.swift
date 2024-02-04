@@ -28,6 +28,14 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(with platform: Platform) {
+        platformLabel.text = platform.name
+        if let url = platform.backgroundImageUrl {
+            imageURL = URL(string: url)
+        }
+    }
+    
+    //MARK: Private methods
     private func setupViews() {
         configureImageView()
         configureLabel()
@@ -68,16 +76,15 @@ final class PlatformsCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with platform: Platform) {
-        platformLabel.text = platform.name
-        if let url = platform.backgroundImageUrl {
-            imageURL = URL(string: url)
-        }
-    }
-    
-    
     private func updateImage() {
+        platformImageView.kf.cancelDownloadTask()
+
         guard let imageURL = imageURL else { return }
-        platformImageView.kf.setImage(with: Source.network(KF.ImageResource(downloadURL: imageURL)), options: .some([.transition(.fade(0.5))]))
+        platformImageView.kf.indicatorType = .activity
+        platformImageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [.transition(.fade(0.5))]
+        )
     }
 }

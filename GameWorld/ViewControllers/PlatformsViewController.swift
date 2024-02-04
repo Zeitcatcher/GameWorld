@@ -25,12 +25,12 @@ final class PlatformsViewController: UIViewController {
     
     private var headerLabel = UILabel()
     
-    private var allFilterButton: UIButton!
-    private var desktopFilterButton: UIButton!
-    private var consoleFilterButton: UIButton!
-    private var mobileFilterButton: UIButton!
+    private var allFilterButton = UIButton()
+    private var desktopFilterButton = UIButton()
+    private var consoleFilterButton = UIButton()
+    private var mobileFilterButton = UIButton()
     
-    private var buttonStackView: UIStackView!
+    private var buttonStackView = UIStackView()
     
     private var games: [Game] = []
     private var platforms: [Platform] = []
@@ -52,13 +52,11 @@ final class PlatformsViewController: UIViewController {
     }
     
     private func fetchPlatforms() {
-        print("Starting fetching Platforms in PlatformVC")
         networkManager.fetchPlatforms { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let platforms):
-                print("Platforms fetched succesfully")
                 self.platforms = platforms.sorted { $0.name < $1.name }
                 self.selectedPlatforms = platforms.sorted { $0.name < $1.name }
                 self.platformsCollectionView.reloadData()
@@ -144,16 +142,11 @@ final class PlatformsViewController: UIViewController {
         case .all:
             selectedPlatforms = platforms
         case .pc:
-            print(platforms)
             selectedPlatforms = platforms.filter { desktops.contains($0.name) }
         case .console:
-            print(platforms)
             selectedPlatforms = platforms.filter { !mobile.contains($0.name) && !desktops.contains($0.name) }
         case .mobile:
-            print(platforms)
             selectedPlatforms = platforms.filter { mobile.contains($0.name) }
-            print("---------)")
-            print(platforms)
         }
                 
         platformsCollectionView.reloadData()
@@ -217,28 +210,10 @@ extension PlatformsViewController: UICollectionViewDelegateFlowLayout {
 //MARK: - UICollectionViewDelegate
 extension PlatformsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Navigation Controller: \(String(describing: navigationController))")
-        let gamesVC = GamesByPlatformViewController()
-        print("During data transfer selectedPlatform is: \(selectedPlatforms[indexPath.item].name)")
-//        gamesVC.allGames = games.filter {
-//            $0.platforms?.contains(where: {
-//                $0.platform.name == selectedPlatforms[indexPath.item].name
-//            }) ?? false
-//        }
-//        gamesVC.allGames.forEach { game in
-//            print("transfered games are: \(game.name)")
-//        }
-        gamesVC.selectedPlatform = selectedPlatforms[indexPath.item]
-//        print("didSelectPlatform on PlatformsVC performed")
-        
+        let gamesVC = GamesByPlatformViewController(selectedPlatform: selectedPlatforms[indexPath.item])
 
-        // Debugging: Print the navigation controller
         if let navController = navigationController {
-            //            print("Pushing GamesByPlatformViewController onto the navigation stack")
             navController.pushViewController(gamesVC, animated: true)
         }
-//        } else {
-//            print("Navigation controller not found")
-//        }
     }
 }
