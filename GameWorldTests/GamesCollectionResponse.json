@@ -1,0 +1,19 @@
+{
+    "results": [
+        "id": 3498,
+        "name": "Grand Theft Auto V",
+        "released": "2013-09-17",
+        "background_image": "https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg",
+        "short_screenshots": [
+            {
+                "id": -1,
+                "image": "https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg"
+            },
+            {
+                "id": 1827221,
+                "image": "https://media.rawg.io/media/screenshots/a7c/a7c43871a54bed6573a6a429451564ef.jpg"
+            }
+        ],
+        "description": "Test description"
+    ]
+}
