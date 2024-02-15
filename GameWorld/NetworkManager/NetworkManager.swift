@@ -17,7 +17,7 @@ struct Payload<Data: Decodable>: Decodable {
     let results: Data
 }
 
-protocol NetworkManager {
+protocol NetworkManagerProtocol {
     func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Payload<Model>, Error>) -> Void)
     func fetchGames(platform: Platform?, completion: @escaping(Result<[Game], Error>) -> Void)
     func fetchGame(gameName: String, completion: @escaping(Result<[Game], Error>) -> Void)
@@ -25,7 +25,7 @@ protocol NetworkManager {
     func fetchGameDescription(gameID: Int, completion: @escaping(Result<Game, Error>) -> Void)
 }
 
-final class NetworkManagerImpl: NetworkManager {
+final class NetworkManagerImpl: NetworkManagerProtocol {
     
     private enum URLBuildingError: Error {
         case invalidURL

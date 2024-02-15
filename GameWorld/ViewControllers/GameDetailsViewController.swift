@@ -8,7 +8,7 @@
 import UIKit
 
 class GameDetailsViewController: UIViewController {
-    private let networkManager: NetworkManager = NetworkManagerImpl()
+    private let networkManager: NetworkManagerProtocol = NetworkManagerImpl()
     
     private lazy var screenshotsCollectionView: UICollectionView = createScreenshotsCollectionView()
     private lazy var descriptionScrollView: UIScrollView = createDescriptionScrollView()

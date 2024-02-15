@@ -8,7 +8,7 @@
 import Foundation
 @testable import GameWorld
 
-class MockNetworkManager: NetworkManager {
+class MockNetworkManager: NetworkManagerProtocol {
     
     var shouldReturnError = false
     var mockedGames: [Game]?

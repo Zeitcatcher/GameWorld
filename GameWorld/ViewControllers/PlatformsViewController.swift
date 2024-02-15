@@ -16,7 +16,7 @@ enum PlatformType: Int {
 
 final class PlatformsViewController: UIViewController {
     
-    private let networkManager: NetworkManager = NetworkManagerImpl()
+    private let networkManager: NetworkManagerProtocol = NetworkManagerImpl()
     
     private let desktops: Set<String> = ["PC", "macOS", "Linux", "Classic Macintosh", "Apple II", "Commodore / Amiga"]
     private let mobile: Set<String> = ["iOS", "Android"]

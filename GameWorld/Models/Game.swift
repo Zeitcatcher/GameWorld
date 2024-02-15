@@ -5,7 +5,17 @@
 //  Created by Arseniy Oksenoyt on 11/18/23.
 //
 
-struct Game: Codable {
+struct Game: Codable, Equatable {
+    static func == (lhs: Game, rhs: Game) -> Bool {
+        return 
+            lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.released == rhs.released &&
+            lhs.backgroundImage == rhs.backgroundImage &&
+            lhs.shortScreenshots == rhs.shortScreenshots &&
+            lhs.description == rhs.description
+    }
+    
     let id: Int
     let name: String
     let released: String?
