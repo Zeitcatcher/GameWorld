@@ -15,12 +15,12 @@ final class NetworkManagerTests: XCTestCase {
         super.setUp()
         mockNetworking = MockNetworkManager()
     }
-
+    
     override func tearDownWithError() throws {
         mockNetworking = nil
         super.tearDown()
     }
-
+    
     func testFetchGamesSuccess() {
         let expectation = self.expectation(description: "FetchGames")
         let expectedData: GamesCollection? = loadGamesCollection(fromResource: "GamesCollectionResponse")
@@ -43,7 +43,26 @@ final class NetworkManagerTests: XCTestCase {
         
         XCTAssertNil(receivedError)
         XCTAssertEqual(actualData, expectedData?.games, "The actual data does not match the expected data.")
+    }
+    
+    func testFetchGamesFailurNoData() {
+        mockNetworking.mockedGames = []
         
+        var actualData: [Game]?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGames(platform: nil) { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+        }
+                
+        XCTAssertNotNil(receivedError)
+        XCTAssert(receivedError == NetworkError.noData, "The error received \(String(describing: receivedError)) is different from the NetworkError.noDate")
+        XCTAssertNil(actualData)
     }
     
     func loadGamesCollection(fromResource resource: String) -> GamesCollection? {
@@ -51,28 +70,11 @@ final class NetworkManagerTests: XCTestCase {
               let jsonData = try? Data(contentsOf: url) else {
             return nil
         }
-
+        
         do {
             let decoder = JSONDecoder()
             let gamesCollection = try decoder.decode(GamesCollection.self, from: jsonData)
             return gamesCollection
-        } catch {
-            print("Error decoding the JSON: \(error)")
-            return nil
-        }
-    }
-
-    
-    func createArray<T: Decodable>(fromResource resource: String) -> [T]? {
-        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: "json"),
-              let jsonData = try? Data(contentsOf: url) else {
-            return nil
-        }
-
-        do {
-            let decoder = JSONDecoder()
-            let items = try decoder.decode([T].self, from: jsonData)
-            return items
         } catch {
             print("Error decoding the JSON: \(error)")
             return nil
