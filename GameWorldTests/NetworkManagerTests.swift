@@ -109,6 +109,46 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertEqual(actualData, expectedData, "The actual data does not match the expected data.")
     }
     
+    func testFetchGameFailureNoData() {
+        mockNetworking.mockedGames = []
+        
+        var actualData: [Game]?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGame(gameName: "Grand Theft Auto V") { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+        }
+        
+        XCTAssertNotNil(receivedError)
+        XCTAssert(receivedError == NetworkError.noData, "The error received \(String(describing: receivedError)) is different from the NetworkError.noDate")
+        XCTAssertNil(actualData)
+    }
+    
+    func testFetchGameFailureDecodingError() {
+        mockNetworking.shouldReturnError = true
+        
+        var actualData: [Game]?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGame(gameName: "Grand Theft Auto V") { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+        }
+        
+        XCTAssertNotNil(receivedError)
+        XCTAssert(receivedError == NetworkError.decodingError, "The error received \(String(describing: receivedError)) is different from the NetworkError.decodingError")
+        XCTAssertNil(actualData)
+    }
+    
     func loadGamesCollection(fromResource resource: String) -> GamesCollection? {
         guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: "json"),
               let jsonData = try? Data(contentsOf: url) else {
