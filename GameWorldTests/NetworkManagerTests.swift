@@ -85,6 +85,30 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertNil(actualData)
     }
     
+    func testFetchGameSuccess() {
+        let expectation = self.expectation(description: "FetchGame")
+        let expectedData: [Game]? = loadGames(fromResource: "GamesResponse")
+        mockNetworking.mockedGames = expectedData
+        
+        var actualData: [Game]?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGame(gameName: "Grand Theft Auto V") { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertNil(receivedError)
+        XCTAssertEqual(actualData, expectedData, "The actual data does not match the expected data.")
+    }
+    
     func loadGamesCollection(fromResource resource: String) -> GamesCollection? {
         guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: "json"),
               let jsonData = try? Data(contentsOf: url) else {
@@ -95,6 +119,23 @@ final class NetworkManagerTests: XCTestCase {
             let decoder = JSONDecoder()
             let gamesCollection = try decoder.decode(GamesCollection.self, from: jsonData)
             return gamesCollection
+        } catch {
+            print("Error decoding the JSON: \(error)")
+            return nil
+        }
+    }
+    
+    func loadGames(fromResource resource: String) -> [Game]? {
+        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: "json"),
+              let jsonData = try? Data(contentsOf: url) else {
+            return nil
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let game = try decoder.decode([Game].self, from: jsonData)
+            print("loadGame response: \(game)")
+            return game
         } catch {
             print("Error decoding the JSON: \(error)")
             return nil

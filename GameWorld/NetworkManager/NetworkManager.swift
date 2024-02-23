@@ -42,6 +42,12 @@ final class NetworkManagerImpl: NetworkManagerProtocol {
     
     func fetch<Model: Decodable>(urlRequest: URLRequest, completion: @escaping (Result<Model, Error>) -> Void) {
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            // Вывод всего Json для поиска ошибки
+            if let data = data {
+                let responseString = String(data: data, encoding: .utf8)
+                print("Response String: \(responseString ?? "nil")")
+            }
+            
             guard let data = data else {
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.noData))

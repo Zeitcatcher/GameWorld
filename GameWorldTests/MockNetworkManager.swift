@@ -12,7 +12,6 @@ class MockNetworkManager: NetworkManagerProtocol {
     
     var shouldReturnError = false
     var mockedGames: [Game]?
-    var mockedGame: [Game]?
     var mockedPlatforms: [Platform]?
     var mockedGameDescription: Game?
     
@@ -32,7 +31,7 @@ class MockNetworkManager: NetworkManagerProtocol {
     func fetchGame(gameName: String, completion: @escaping (Result<[GameWorld.Game], Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NetworkError.decodingError))
-        } else if let game = mockedGame, !game.isEmpty {
+        } else if let game = mockedGames, !game.isEmpty {
             completion(.success(game))
         } else {
             completion(.failure(NetworkError.noData))
