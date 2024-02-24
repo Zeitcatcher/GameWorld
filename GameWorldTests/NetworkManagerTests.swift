@@ -233,6 +233,7 @@ final class NetworkManagerTests: XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
         
+        
         XCTAssertNil(receivedError)
         XCTAssertEqual(actualData, expectedData, "The actual data does not match the expected data.")
     }
