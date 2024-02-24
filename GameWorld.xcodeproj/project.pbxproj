@@ -17,7 +17,7 @@
 		D93791622B4E1016009C7EAF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D93791612B4E1016009C7EAF /* Kingfisher */; };
 		D93A6C5A2B2E9434002106DF /* GameDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93A6C592B2E9434002106DF /* GameDetailsViewCell.swift */; };
 		D9459B852B19A56800A70249 /* GamesByPlatformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9459B842B19A56800A70249 /* GamesByPlatformViewController.swift */; };
-		D96BCF1E2B78468200548488 /* ShortScreenshotResponse.json in Sources */ = {isa = PBXBuildFile; fileRef = D96BCF1D2B78468200548488 /* ShortScreenshotResponse.json */; };
+		D96BCF1E2B78468200548488 /* GameDescriptionResponce.json in Sources */ = {isa = PBXBuildFile; fileRef = D96BCF1D2B78468200548488 /* GameDescriptionResponce.json */; };
 		D99AE6F22B09B31B0072EB31 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99AE6F12B09B31B0072EB31 /* Platform.swift */; };
 		D99AE6F42B09B69E0072EB31 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99AE6F32B09B69E0072EB31 /* Game.swift */; };
 		D99AE6FC2B09BC8A0072EB31 /* ShortScreenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99AE6FB2B09BC8A0072EB31 /* ShortScreenshot.swift */; };
@@ -31,7 +31,7 @@
 		D9DB6F3E2B86FB2400DE59D0 /* GamesResponse.json in Sources */ = {isa = PBXBuildFile; fileRef = D9DB6F3D2B86FB2400DE59D0 /* GamesResponse.json */; };
 		D9DB6F3F2B86FBF100DE59D0 /* GamesResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D9DB6F3D2B86FB2400DE59D0 /* GamesResponse.json */; };
 		D9DB6F402B86FBF700DE59D0 /* PlatformResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D9C1024E2B784555004CDF8C /* PlatformResponse.json */; };
-		D9DB6F412B86FBFA00DE59D0 /* ShortScreenshotResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D96BCF1D2B78468200548488 /* ShortScreenshotResponse.json */; };
+		D9DB6F412B86FBFA00DE59D0 /* GameDescriptionResponce.json in Resources */ = {isa = PBXBuildFile; fileRef = D96BCF1D2B78468200548488 /* GameDescriptionResponce.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		D930816A2B6F213E000DFDF3 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		D93A6C592B2E9434002106DF /* GameDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewCell.swift; sourceTree = "<group>"; };
 		D9459B842B19A56800A70249 /* GamesByPlatformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesByPlatformViewController.swift; sourceTree = "<group>"; };
-		D96BCF1D2B78468200548488 /* ShortScreenshotResponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ShortScreenshotResponse.json; sourceTree = "<group>"; };
+		D96BCF1D2B78468200548488 /* GameDescriptionResponce.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GameDescriptionResponce.json; sourceTree = "<group>"; };
 		D99AE6F12B09B31B0072EB31 /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		D99AE6F32B09B69E0072EB31 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		D99AE6FB2B09BC8A0072EB31 /* ShortScreenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortScreenshot.swift; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 				D9B964FA2B745C7300E52F4E /* MockNetworkManager.swift */,
 				D9C1024C2B78436D004CDF8C /* GamesCollectionResponse.json */,
 				D9C1024E2B784555004CDF8C /* PlatformResponse.json */,
-				D96BCF1D2B78468200548488 /* ShortScreenshotResponse.json */,
+				D96BCF1D2B78468200548488 /* GameDescriptionResponce.json */,
 				D9DB6F3D2B86FB2400DE59D0 /* GamesResponse.json */,
 			);
 			path = GameWorldTests;
@@ -288,7 +288,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9DB6F412B86FBFA00DE59D0 /* ShortScreenshotResponse.json in Resources */,
+				D9DB6F412B86FBFA00DE59D0 /* GameDescriptionResponce.json in Resources */,
 				D9DB6F402B86FBF700DE59D0 /* PlatformResponse.json in Resources */,
 				D9DB6F3F2B86FBF100DE59D0 /* GamesResponse.json in Resources */,
 				D9C1024D2B78436D004CDF8C /* GamesCollectionResponse.json in Resources */,
@@ -322,7 +322,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D96BCF1E2B78468200548488 /* ShortScreenshotResponse.json in Sources */,
+				D96BCF1E2B78468200548488 /* GameDescriptionResponce.json in Sources */,
 				D9DB6F3E2B86FB2400DE59D0 /* GamesResponse.json in Sources */,
 				D9B964FB2B745C7300E52F4E /* MockNetworkManager.swift in Sources */,
 				D9C1024F2B784555004CDF8C /* PlatformResponse.json in Sources */,

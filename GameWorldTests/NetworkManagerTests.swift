@@ -150,7 +150,7 @@ final class NetworkManagerTests: XCTestCase {
     }
     
     func testFetchPlatformsSuccess() {
-        let expectation = self.expectation(description: "FetchGames")
+        let expectation = self.expectation(description: "FetchPlatform")
         let expectedData: [Platform]? = loadPlatforms(fromResource: "PlatformResponse")
         mockNetworking.mockedPlatforms = expectedData
         
@@ -211,6 +211,84 @@ final class NetworkManagerTests: XCTestCase {
         XCTAssertNotNil(receivedError)
         XCTAssert(receivedError == NetworkError.decodingError, "The error received \(String(describing: receivedError)) is different from the NetworkError.decodingError")
         XCTAssertNil(actualData)
+    }
+    
+    func testFetchGameDescriptionSuccess() {
+        let expectation = self.expectation(description: "FetchGameDescription")
+        let expectedData: Game? = loadGameDescription(fromResource: "GameDescriptionResponce")
+        mockNetworking.mockedGameDescription = expectedData
+        
+        var actualData: Game?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGameDescription(gameID: 1) { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTAssertNil(receivedError)
+        XCTAssertEqual(actualData, expectedData, "The actual data does not match the expected data.")
+    }
+    
+    func testFetchGameDescriptionFailureNoData() {
+        var actualData: Game?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGameDescription(gameID: 1) { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+        }
+                
+        XCTAssertNotNil(receivedError)
+        XCTAssert(receivedError == NetworkError.noData, "The error received \(String(describing: receivedError)) is different from the NetworkError.noDate")
+        XCTAssertNil(actualData)
+    }
+    
+    func testFetchGameDescriptionFailureDecodingError() {
+        mockNetworking.shouldReturnError = true
+        
+        var actualData: Game?
+        var receivedError: NetworkError?
+        
+        mockNetworking.fetchGameDescription(gameID: 1) { result in
+            switch result {
+            case .success(let data):
+                actualData = data
+            case .failure(let error):
+                receivedError = error as? NetworkError
+            }
+        }
+                
+        XCTAssertNotNil(receivedError)
+        XCTAssert(receivedError == NetworkError.decodingError, "The error received \(String(describing: receivedError)) is different from the NetworkError.decodingError")
+        XCTAssertNil(actualData)
+    }
+    
+    func loadGameDescription(fromResource resource: String) -> Game? {
+        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: "json"),
+              let jsonData = try? Data(contentsOf: url) else {
+            return nil
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            let game = try decoder.decode(Game.self, from: jsonData)
+            return game
+        } catch {
+            print("Error decoding the JSON: \(error)")
+            return nil
+        }
     }
     
     func loadPlatforms(fromResource resource: String) -> [Platform]? {
