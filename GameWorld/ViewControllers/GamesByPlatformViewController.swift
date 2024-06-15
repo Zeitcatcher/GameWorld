@@ -8,7 +8,7 @@
 import UIKit
 
 final class GamesByPlatformViewController: UIViewController {
-    private let networkManager: NetworkManager = NetworkManagerImpl()
+    private let networkManager: NetworkManagerProtocol = NetworkManagerImpl()
     
     private lazy var gamesCollectionView: UICollectionView = createGamesCollectionView()
     private var selectedPlatformLabel = UILabel()
